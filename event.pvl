@@ -1,0 +1,29 @@
+(* This pv file depicts all the events in DDS Security. *)
+
+event PERM_CHECK(GUID_t,PermDoc_t,TopicID_t).
+event TOPIC_CRT_REQ(GUID_t,PermDoc_t,TopicID_t).
+event TOPIC_DISCOVERED(GUID_t,PermDoc_t,TopicID_t).
+event DISCOVERY(GUID_t,Pdata_t,GUID_t,Pdata_t).
+
+event A_discover(Pdata_t).
+event B_discover(Pdata_t).
+
+event beginAtoB(GUID_t,Cert_t,bitstring).
+event beginBtoA(GUID_t,Cert_t,bitstring).
+event endAtoB(GUID_t,Cert_t,bitstring).
+event endBtoA(GUID_t,Cert_t,bitstring).
+
+event A_0(GUID_t,Clist_t,bitstring,element_t,Pdata_t).
+event A_1(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring).
+event A_2(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring,KeyMaterial_t).
+event A_3(GUID_t,GUID_t,bitstring,CryptoHeader_t,bitstring).
+
+event ENC_COMMUNICATION(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring,KeyMaterial_t,CryptoHeader_t,bitstring).
+
+event B_0(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t).
+event B_1(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring).
+event B_2(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring,KeyMaterial_t,CryptoHeader_t,bitstring).
+event B_3(GUID_t,GUID_t,bitstring,CryptoHeader_t,bitstring).
+
+event KEY_UPDATE_begin(GUID_t,GUID_t,CryptoHeader_t,bitstring,bitstring).
+event KEY_UPDATE_end(GUID_t,GUID_t,CryptoHeader_t,bitstring,bitstring).

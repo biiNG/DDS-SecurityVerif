@@ -1,0 +1,6 @@
+Verification summary:
+
+Query not (event(A_3(GUIDB_4,GUIDA_4,ad,cryptoHeader_2,sessionKey_2)) && attacker(ad)) is false.
+
+--------------------------------------------------------------
+

@@ -1,0 +1,3 @@
+query(* <Auth_A2>: Mutual authentication between A and B *)
+    guid:GUID_t,c:Cert_t,nonce:bitstring;
+    inj-event(endBtoA(guid,c,nonce))==>inj-event(beginBtoA(guid,c,nonce)).

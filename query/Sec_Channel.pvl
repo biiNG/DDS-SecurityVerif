@@ -1,0 +1,2 @@
+query(* <Sec_Channel>: a secrue channel is created*)
+    attacker(secretData).

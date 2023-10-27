@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+                      <html>
+                    <head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                    <title>ProVerif: derivation for query 12</title>
+                    <link rel="stylesheet" href="cssproverif.css">
+                                                                           </head>
+                                                                         <body>
+                                                                         <H1>Derivation</H1>
+goal combined  <span class="pred">event</span>(<span class="fun">TOPIC_DISCOVERED</span>(<span class="var">GUIDB_4</span>,<span class="var">PermB_3</span>,<span class="var">Topic_3</span>)) <span class="conn">&amp;&amp;</span> <span class="pred">attacker_PermDoc_t</span>(<span class="var">PermA_2</span>) <span class="conn">&amp;&amp;</span> <span class="pred">attacker_PermDoc_t</span>(<span class="var">PermB_3</span>) <span class="conn">&amp;&amp;</span> <span class="pred">attacker_Pdata_t</span>(<span class="var">PdataA_3</span>) <span class="conn">&amp;&amp;</span> <span class="pred">attacker_Pdata_t</span>(<span class="var">PdataB_3</span>) <span class="conn">&amp;&amp;</span> <span class="pred">attacker_TopicID_t</span>(<span class="var">Topic_3</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="clauses31.html#clause339" target="clauses">clause 339</a> <span class="pred">event</span>(<span class="fun">TOPIC_DISCOVERED</span>(<span class="var">GUIDB_4</span>,<span class="var">PermB_3</span>,<span class="var">Topic_3</span>))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply <span class="fun">PermDoc_t-Tag_t-TopicID_t-Pdata_t-tuple</span> <span class="pred">attacker_bitstring</span>(<span class="fun"></span>(<span class="var">PermB_3</span>,<span class="fun">TopicCreateReq</span>,<span class="var">Topic_3</span>,<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>)))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duplicate <span class="pred">attacker_PermDoc_t</span>(<span class="var">PermB_3</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply <span class="fun">TopicCreateReq</span> <span class="pred">attacker_Tag_t</span>(<span class="fun">TopicCreateReq</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duplicate <span class="pred">attacker_TopicID_t</span>(<span class="var">Topic_3</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duplicate <span class="pred">attacker_Pdata_t</span>(<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply <span class="fun">GUID_t-Pdata_t-tuple</span> <span class="pred">attacker_bitstring</span>(<span class="fun"></span>(<span class="var">GUIDA_4</span>,<span class="fun">participant_data</span>(<span class="var">GUIDA_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosA_1</span>,<span class="fun">discoveryRegister</span>)))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duplicate <span class="pred">attacker_GUID_t</span>(<span class="var">GUIDA_4</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply <span class="fun">participant_data</span> <span class="pred">attacker_Pdata_t</span>(<span class="fun">participant_data</span>(<span class="var">GUIDA_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosA_1</span>,<span class="fun">discoveryRegister</span>))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any <span class="pred">attacker_GUID_t</span>(<span class="var">GUIDA_4</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duplicate <span class="pred">attacker_TopicID_t</span>(<span class="name">Topic_bd</span>[])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any <span class="pred">attacker_Qos_t</span>(<span class="var">QosA_1</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duplicate <span class="pred">attacker_Tag_t</span>(<span class="fun">discoveryRegister</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply <span class="fun">GUID_t-Pdata_t-tuple</span> <span class="pred">attacker_bitstring</span>(<span class="fun"></span>(<span class="var">GUIDB_4</span>,<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>)))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duplicate <span class="pred">attacker_GUID_t</span>(<span class="var">GUIDB_4</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply <span class="fun">participant_data</span> <span class="pred">attacker_Pdata_t</span>(<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hypothesis <span class="pred">attacker_GUID_t</span>(<span class="var">GUIDB_4</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply <span class="fun">2-proj-participant_data</span> <span class="pred">attacker_TopicID_t</span>(<span class="name">Topic_bd</span>[])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply <span class="fun">2-proj-GUID_t-Pdata_t-tuple</span> <span class="pred">attacker_Pdata_t</span>(<span class="fun">participant_data</span>(<span class="name">GUIDA</span>[],<span class="name">Topic_bd</span>[],<span class="name">QoSA</span>[],<span class="fun">discoveryRegister</span>))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="clauses31.html#clause318" target="clauses">clause 318</a> <span class="pred">attacker_bitstring</span>(<span class="fun"></span>(<span class="name">GUIDA</span>[],<span class="fun">participant_data</span>(<span class="name">GUIDA</span>[],<span class="name">Topic_bd</span>[],<span class="name">QoSA</span>[],<span class="fun">discoveryRegister</span>)))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any <span class="pred">attacker_Qos_t</span>(<span class="var">QosB_3</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply <span class="fun">discoveryRegister</span> <span class="pred">attacker_Tag_t</span>(<span class="fun">discoveryRegister</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hypothesis <span class="pred">attacker_PermDoc_t</span>(<span class="var">PermA_2</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hypothesis <span class="pred">attacker_PermDoc_t</span>(<span class="var">PermB_3</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hypothesis <span class="pred">attacker_Pdata_t</span>(<span class="var">PdataA_3</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hypothesis <span class="pred">attacker_Pdata_t</span>(<span class="var">PdataB_3</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;hypothesis <span class="pred">attacker_TopicID_t</span>(<span class="var">Topic_3</span>)<br>
+</body>
+</html>

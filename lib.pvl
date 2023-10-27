@@ -1,0 +1,212 @@
+(* This pv file defines all the primitives, types and functions in DDS Security. 
+   Some of them are regenerated from https://gitlab.inria.fr/chevalvi/echo_tls and ProVerif manual*)
+
+(********************************************************)
+(*                Channels                              *)
+(********************************************************)
+free RTPS_Ch: channel.
+(* free Discovery_ch:channel [private]. *)
+free Discovery_ch:channel .
+
+(********************************************************)
+(*                   Data types                         *)
+(********************************************************)
+type Cert_t.          	(* Certificate *)
+type GUID_t.          	(* Participant's unique identifier *)
+type Sig_t.           	(* Signature *)
+type PermDoc_t.       	(* Permission Document with its signature from CA *)
+type Tag_t.           	(* Message type tag *)
+type Seed_t.          	(* random Seed_t used by DH and other, rather than using a nonce*)
+type Qos_t.				(* Quanlity of Service, stands for a series of configuration parameters *)
+type Pdata_t.			(* Data of builtin participant *)
+type Hash_alg_t.		(* hash algorithm parameters*)
+type TopicID_t.			(* Topic identifier *)
+type DomainGovernance_t.(* how the domain should be secured.*)
+type ParticipantPermission_t.(* Participant's permissions, about allow and deny. 
+								Both DomainGovernance and ParticipantPermission are permission document 
+								with signature. we combine them as PermDoc_t*)
+type group_t.			(* g in DH *)
+type element_t.			(* g^x or g^y or g^xy in DH*)
+type Algo_t.         	(* Algorithm used by participant, including params(group element) and algoName *)
+type AlgoName_t.     	(* Algorim name of Digital signature and key agreement *)
+type HMACkey_t.			(* Key used in HMAC, can be converted to bitstring *)
+type SK_t.				(* secret key in asymmetric key, PrivK in our paper*)
+type PK_t.				(* public key in asymmetric key, contained in Cert. *)
+type Aead_alg_t.		(* algorithm type, we choose AES_GCM_128 as a example*)
+type Aead_key.			(* aead symmetric key, can be converted to bitstring. session Key(sKey) in our Paper*)
+type KeyMaterial_t.		(* generated from SharedSecret and challenges, used in sKey and CT encryption*)
+type CryptoToken_t.		(* encrypted algorthim parameters*)
+type CryptoHeader_t.	(* sessionID and IV*)
+type Clist_t.			(* List composed of Cert, Perm, Pdata, Algo*)
+
+(********************************************************)
+(*                    Constants                         *)
+(********************************************************)
+free finishA,finishB,finishDiscovery:bitstring[private].
+free secretData:bitstring[private].
+const ID_G:group_t.
+const ECDH_ECDSA,DH_RSA:AlgoName_t.
+                     (* In DDS Security, kagree_algo can be DH+MODP-2048-256 or ECDH+prime256v1-CEUM,
+                        and dsign_algo can be RSASSA-PSS-SHA256 or ECDSA-SHA256, with corresponding params.
+                        We simplify the details of these, without losing security and availablity.*)
+const SHA256:Hash_alg_t.
+const SK_CI,SK_Perm:SK_t [private].
+const SN_CI:GUID_t.
+const AES_GCM_128:Aead_alg_t.
+const discoveryRequest:Tag_t.
+const discoveryRegister:Tag_t.
+const discoveredParticipant:Tag_t.
+const TopicCreateReq:Tag_t.
+const TopicCreated:Tag_t.
+const TopicDiscovered:Tag_t.
+const PermissionChecked:Tag_t.
+
+(********************************************************)
+(*           Diffie-Hellman key exchange                *)
+(********************************************************)
+fun e2b(element_t): bitstring [typeConverter].
+fun b2e(bitstring): element_t [typeConverter].
+
+(* Key Generation, make a gx or gy *)
+fun dh_pub(group_t,bitstring): element_t.
+fun dh_exp(element_t,bitstring): element_t.
+equation forall g:group_t,x: bitstring, y: bitstring;
+                dh_exp(dh_pub(g,x),y) = dh_exp(dh_pub(g,y),x).
+
+fun dh_k(Seed_t):bitstring [private]. (*generate a nonce, x or y in DH process *)
+
+letfun dh_keygen(g:group_t) =
+  new s[]:Seed_t;
+  let gx = dh_pub(g,dh_k(s)) in
+  (dh_k(s),gx).
+
+(********************************************************)
+(* Algorithm parameters in mutual auth and key agreement   *)
+(********************************************************)
+fun make_algo(group_t,AlgoName_t):Algo_t[data].
+
+(**************************************************************)
+(*                Hash Functions                              *)
+(**************************************************************)
+fun hash(Hash_alg_t,bitstring):bitstring.
+
+(********************************************************)
+(*                      HMAC                            *)
+(********************************************************)
+
+fun b2mk(bitstring):HMACkey_t [typeConverter].
+(* suppose that hmac is concatenating key and data*)
+fun hmac(Hash_alg_t,HMACkey_t,bitstring):bitstring.
+
+
+
+(********************************************************)
+(*                Public Key Infrastructure             *)
+(********************************************************)
+
+(* suppose this DDS use only one CA, SK_CI is its private key.*)
+fun pk(SK_t): PK_t.
+
+(* RSA Signatures, typically the argument is a hash over some data *)
+(* some checksign will reveal the data and compare it with the origin,
+   while here use the origin data as a input, and verify returns a bool.*)
+fun sign(SK_t,bitstring):Sig_t.
+fun verify(PK_t,bitstring,Sig_t): bool
+reduc forall key:SK_t, x:bitstring;
+  verify(pk(key),x,sign(key,x)) = true.
+
+fun sign_cert(GUID_t,PK_t,GUID_t,SK_t): Cert_t.
+reduc forall sn:GUID_t,Pk:PK_t,CA_sn:GUID_t,Sk_CI:SK_t;
+  check_cert(sign_cert(sn,Pk,CA_sn,Sk_CI),pk(Sk_CI)) = (sn,Pk,CA_sn).
+
+(* Create a certificate *)
+letfun certificate(sn:GUID_t,Pk:PK_t) =
+  sign_cert(sn,Pk,SN_CI,SK_CI).
+
+fun sign_perm(GUID_t,DomainGovernance_t,ParticipantPermission_t,SK_t): PermDoc_t.
+reduc forall sn:GUID_t,DG:DomainGovernance_t,PP:ParticipantPermission_t,Sk_CI:SK_t;
+  check_perm(sign_perm(sn,DG,PP,Sk_CI),pk(Sk_CI)) = (sn,DG,PP).
+
+(* Create a signed permission doc *)
+letfun PermissionDoc(sn:GUID_t,DG:DomainGovernance_t,PP:ParticipantPermission_t) =
+  sign_perm(sn,DG,PP,SK_Perm).
+(********************************************************)
+(* Authenticated Encryption with Additional Data(AEAD)  *)
+(********************************************************)
+
+(* DDS Security crypto plugin uses AES-GCM-GMAC, so the
+  Symmetric encryption is model as a aead_enc/aead_dec.
+
+  AES-GMAC will only generate a MAC, and the plaintext.
+
+  GCM needs IV as counter, key as AES-key, ad as Auth Data
+  and p as plaintext.*)
+
+
+fun a2b(Aead_alg_t):bitstring [typeConverter].
+
+(* Aead_key will derive from SharedSecret, and it'll be the session key.*)
+fun b2ae(bitstring):Aead_key [typeConverter].
+
+fun aead_enc(Aead_alg_t, Aead_key, bitstring, bitstring, bitstring): bitstring.
+fun aead_dec(Aead_alg_t, Aead_key, bitstring, bitstring, bitstring): bitstring
+reduc forall a:Aead_alg_t, key:Aead_key, iv,ad,p:bitstring;
+  aead_dec(a, key, iv, ad, aead_enc(a, key, iv, ad, p)) = p
+.
+(* aead_mac generates a MAC, and it looks same to aead_dec*)
+fun aead_mac(Aead_alg_t, Aead_key, bitstring, bitstring, bitstring): bitstring.
+reduc forall a:Aead_alg_t, key:Aead_key, iv,ad,p:bitstring;
+  aead_mac_check(a, key, iv, ad, p,aead_mac(a, key, iv, ad, p)) = true.
+
+(********************************************************)
+(*         Constructor functions in process             *)
+(********************************************************)
+
+fun participant_data(GUID_t,TopicID_t,Qos_t,Tag_t):Pdata_t [data].
+
+fun km2b(KeyMaterial_t):bitstring [typeConverter].
+
+fun KDF(bitstring,bitstring,bitstring):KeyMaterial_t.
+fun encCryptoToken(KeyMaterial_t,Algo_t,Hash_alg_t,Aead_alg_t):CryptoToken_t.
+reduc forall kmt:KeyMaterial_t,al:Algo_t,h:Hash_alg_t,ae:Aead_alg_t;
+                decCryptoToken(encCryptoToken(kmt,al,h,ae),
+                                kmt,al,h,ae)=true.
+
+
+fun chtob(CryptoHeader_t):bitstring [typeConverter].
+fun makeCryptoHeader(bitstring,bitstring):CryptoHeader_t [data].
+
+fun make_C_list(Cert_t,PermDoc_t,Pdata_t,Algo_t,Hash_alg_t):Clist_t[data].
+fun Clist2bit(Clist_t):bitstring [typeConverter].
+
+
+(********************************************************)
+(*        all the events in DDS Security                *)
+(********************************************************)
+event PERM_CHECK(GUID_t,PermDoc_t,TopicID_t).
+event TOPIC_CRT_REQ(GUID_t,PermDoc_t,TopicID_t).
+event TOPIC_DISCOVERED(GUID_t,PermDoc_t,TopicID_t).
+event DISCOVERY(GUID_t,Pdata_t,GUID_t,Pdata_t).
+
+event A_discover(Pdata_t).
+event B_discover(Pdata_t).
+
+event beginAtoB(GUID_t,Cert_t,bitstring).
+event beginBtoA(GUID_t,Cert_t,bitstring).
+event endAtoB(GUID_t,Cert_t,bitstring).
+event endBtoA(GUID_t,Cert_t,bitstring).
+
+event A_0(GUID_t,Clist_t,bitstring,element_t,Pdata_t).
+event A_1(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring).
+event A_2(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring,KeyMaterial_t).
+event A_3(GUID_t,GUID_t,bitstring,CryptoHeader_t,bitstring).
+
+event ENC_COMMUNICATION(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring,KeyMaterial_t,CryptoHeader_t,bitstring).
+
+event B_0(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t).
+event B_1(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring).
+event B_2(GUID_t,Clist_t,bitstring,element_t,GUID_t,Clist_t,bitstring,element_t,bitstring,KeyMaterial_t,CryptoHeader_t,bitstring).
+event B_3(GUID_t,GUID_t,bitstring,CryptoHeader_t,bitstring).
+
+event KEY_UPDATE_begin(GUID_t,GUID_t,CryptoHeader_t,bitstring,bitstring).
+event KEY_UPDATE_end(GUID_t,GUID_t,CryptoHeader_t,bitstring,bitstring).

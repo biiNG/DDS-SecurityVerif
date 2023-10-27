@@ -1,0 +1,11 @@
+query(*!! <Permission>: the PermDoc is verified, and corresponding to B_1 *)
+      PermB:PermDoc_t,SharedSecret:bitstring,Topic:TopicID_t,
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t;
+    event(PERM_CHECK(GUIDB,PermB,Topic))
+    ==>
+    (event(TOPIC_DISCOVERED(GUIDB,PermB,Topic))
+    ==>
+    (event(TOPIC_CRT_REQ(GUIDB,PermB,Topic)) 
+    ==>  
+    event(B_1(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA,SharedSecret)))).

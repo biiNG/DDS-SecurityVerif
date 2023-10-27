@@ -1,0 +1,301 @@
+digraph {
+graph [ordering = out]
+edge [arrowhead = none, penwidth = 1.6, fontsize = 30]
+node [shape = point, width = 0, height = 0, fontsize = 30]
+Trace<br/>
+[label = <A trace has been found.<br/>
+>, shape = plaintext]
+P0__0 [label = "Honest Process", shape = plaintext]
+P__0 [label = "Attacker", shape = plaintext]
+Trace -> P0__0 [label = "", style = invisible, weight = 100]{rank = same; P0__0 P__0}
+P0__0 -> P0__1 [label = <>, weight = 100]
+P0__1 -> P0__2 [label = <>, weight = 100]
+P__0 -> P__1 [label = <>, weight = 100]
+{rank = same; P__1 P0__2}
+P0__2 -> P0__3 [label = <>, weight = 100]
+P__1 -> P__2 [label = <>, weight = 100]
+{rank = same; P__2 P0__3}
+P0__3 -> P__2 [label = <~M = pk(SK_CI)>, arrowhead = normal]
+P0__3 -> P0__4 [label = <>, weight = 100]
+P__2 -> P__3 [label = <>, weight = 100]
+{rank = same; P__3 P0__4}
+P0__4 -> P0__5 [label = <>, weight = 100]
+P__3 -> P__4 [label = <>, weight = 100]
+{rank = same; P__4 P0__5}
+P0__5 -> P0__6 [label = <>, weight = 100]
+P__4 -> P__5 [label = <>, weight = 100]
+{rank = same; P__5 P0__6}
+P0__6 -> P__5 [label = <~M_1 = pk(SK_Perm)>, arrowhead = normal]
+P0__6 -> P0__7 [label = <>, weight = 100]
+P__5 -> P__6 [label = <>, weight = 100]
+{rank = same; P__6 P0__7}
+P0__7 -> P0__8 [label = <>, weight = 100]
+P0__8 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{5}</FONT><FONT COLOR="blue">new </FONT>Topic_bd_4</TD></TR></TABLE>>]
+P0__8 -> P0__9 [label = <>, weight = 100]
+/*RPar */
+P0__9 -> P0_2__9 [label = <>]
+P0__9 -> P0_1__9 [label = <>]
+P0__9 -> P0_0__9 [label = <>]
+P0__9 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
+{rank = same; P0_0__9 P0_1__9 P0_2__9}
+P0_0__9 [label = "!", shape = ellipse]
+P0_1__9 -> P0_1__10 [label = <>, weight = 100]
+P0_1__10 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{73}</FONT><FONT COLOR="blue">new </FONT>GUIDB_4</TD></TR><TR><TD><FONT COLOR="darkgreen">{74}</FONT><FONT COLOR="blue">new </FONT>PrivKB_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{78}</FONT><FONT COLOR="blue">new </FONT>DGB_2</TD></TR><TR><TD><FONT COLOR="darkgreen">{79}</FONT><FONT COLOR="blue">new </FONT>PPB_2</TD></TR><TR><TD><FONT COLOR="darkgreen">{80}</FONT><FONT COLOR="blue">new </FONT>QosB_3</TD></TR></TABLE>>]
+P0_1__10 -> P0_1__11 [label = <>, weight = 100]
+P0_1__11 [label = "!", shape = ellipse]
+P0_1_0__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
+P0_1__11 -> P0_1_0__11 [label = <>, weight = 100]
+P0_1_0__11 -> P0_1_0__12 [label = <>, weight = 100]
+P0_1_0__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantB</FONT></TD></TR><TR><TD><FONT COLOR="darkgreen">{94}</FONT><FONT COLOR="blue">event</FONT> B_discover(participant_data(GUIDB_4,<br/>
+Topic_bd_4,QosB_3,discoveryRegister))</TD></TR></TABLE>>]
+P0_1_0__12 -> P0_1_0__13 [label = <>, weight = 100]
+P0_1_0__13 -> P0_1_0__14 [label = <>, weight = 100]
+P0_0__10 [label = "", style = invisible]
+P0_0__9 -> P0_0__10 [label = <>, weight = 100, style = invisible]
+P__6 -> P__7 [label = <>, weight = 100]
+{rank = same; P__7 P0_0__10 P0_1_0__14}
+P0_1_0__14 -> P0_1_0__15 [label = <>, weight = 100]
+P__7 -> P__8 [label = <>, weight = 100]
+{rank = same; P__8 P0_1_0__15}
+P0_1_0__15 -> P__8 [label = <(~M_2,participant_data(~M_3,~M_4,~M_5,~M_6)) =<br/>
+(GUIDB_4,participant_data(GUIDB_4,Topic_bd_4,QosB_3,<br/>
+discoveryRegister))>, arrowhead = normal]
+P0_1_0__15 -> P0_1_0__16 [label = <>, weight = 100]
+P0_0__11 [label = "", style = invisible]
+P0_0__10 -> P0_0__11 [label = <>, weight = 100, style = invisible]
+P__8 -> P__9 [label = <>, weight = 100]
+{rank = same; P__9 P0_0__11 P0_1_0__16}
+P0_2__9 -> P0_2__10 [label = <>, weight = 100]
+P0_2__10 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{6}</FONT><FONT COLOR="blue">new </FONT>GUIDA_4</TD></TR><TR><TD><FONT COLOR="darkgreen">{7}</FONT><FONT COLOR="blue">new </FONT>PrivKA_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{11}</FONT><FONT COLOR="blue">new </FONT>DGA_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{12}</FONT><FONT COLOR="blue">new </FONT>PPA_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{13}</FONT><FONT COLOR="blue">new </FONT>QoSA_2</TD></TR></TABLE>>]
+P0_2__10 -> P0_2__11 [label = <>, weight = 100]
+P0_2__11 [label = "!", shape = ellipse]
+{rank = same; P0_2_2__11 P0_2_1__11 P0_2_0__11}
+P0_2_2__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
+P0_2__11 -> P0_2_2__11 [label = <>]
+P0_2_1__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
+P0_2__11 -> P0_2_1__11 [label = <>]
+P0_2_0__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
+P0_2__11 -> P0_2_0__11 [label = <>]
+P0_2_0__11 -> P0_2_0__12 [label = <>, weight = 100]
+P0_2_0__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantA</FONT></TD></TR></TABLE>>]
+P0_2_0__12 -> P0_2_0__13 [label = <>, weight = 100]
+P0_2_0__13 -> P0_2_0__14 [label = <>, weight = 100]
+P0_1_0__16 -> P0_1_0__17 [label = <>, weight = 100]
+P0_0__12 [label = "", style = invisible]
+P0_0__11 -> P0_0__12 [label = <>, weight = 100, style = invisible]
+P__9 -> P__10 [label = <>, weight = 100]
+{rank = same; P__10 P0_0__12 P0_1_0__17 P0_2_0__14}
+P0_2_0__14 -> P0_2_0__15 [label = <>, weight = 100]
+P__10 -> P__11 [label = <>, weight = 100]
+{rank = same; P__11 P0_2_0__15}
+P0_2_0__15 -> P__11 [label = <(~M_7,participant_data(~M_8,~M_9,~M_10,~M_11))<br/>
+= (GUIDA_4,participant_data(GUIDA_4,Topic_bd_4,<br/>
+QoSA_2,discoveryRegister))>, arrowhead = normal]
+P0_2_0__15 -> P0_2_0__16 [label = <>, weight = 100]
+P0_1_0__17 -> P0_1_0__18 [label = <>, weight = 100]
+P0_0__13 [label = "", style = invisible]
+P0_0__12 -> P0_0__13 [label = <>, weight = 100, style = invisible]
+P__11 -> P__12 [label = <>, weight = 100]
+{rank = same; P__12 P0_0__13 P0_1_0__18 P0_2_0__16}
+P0_2_1__11 -> P0_2_1__12 [label = <>, weight = 100]
+P0_2_1__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantA</FONT></TD></TR></TABLE>>]
+P0_2_1__12 -> P0_2_1__13 [label = <>, weight = 100]
+P0_2_1__13 -> P0_2_1__14 [label = <>, weight = 100]
+P0_2_0__16 -> P0_2_0__17 [label = <>, weight = 100]
+P0_1_0__18 -> P0_1_0__19 [label = <>, weight = 100]
+P0_0__14 [label = "", style = invisible]
+P0_0__13 -> P0_0__14 [label = <>, weight = 100, style = invisible]
+P__12 -> P__13 [label = <>, weight = 100]
+{rank = same; P__13 P0_0__14 P0_1_0__19 P0_2_0__17 P0_2_1__14}
+P0_2_1__14 -> P0_2_1__15 [label = <>, weight = 100]
+P__13 -> P__14 [label = <>, weight = 100]
+{rank = same; P__14 P0_2_1__15}
+P0_2_1__15 -> P__14 [label = <(~M_12,participant_data(~M_13,~M_14,~M_15,~M_16))<br/>
+= (GUIDA_4,participant_data(GUIDA_4,Topic_bd_4,<br/>
+QoSA_2,discoveryRegister))>, arrowhead = normal]
+P0_2_1__15 -> P0_2_1__16 [label = <>, weight = 100]
+P0_2_0__17 -> P0_2_0__18 [label = <>, weight = 100]
+P0_1_0__19 -> P0_1_0__20 [label = <>, weight = 100]
+P0_0__15 [label = "", style = invisible]
+P0_0__14 -> P0_0__15 [label = <>, weight = 100, style = invisible]
+P__14 -> P__15 [label = <>, weight = 100]
+{rank = same; P__15 P0_0__15 P0_1_0__20 P0_2_0__18 P0_2_1__16}
+P0_2_2__11 -> P0_2_2__12 [label = <>, weight = 100]
+P0_2_2__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantA</FONT></TD></TR></TABLE>>]
+P0_2_2__12 -> P0_2_2__13 [label = <>, weight = 100]
+P0_2_2__13 -> P0_2_2__14 [label = <>, weight = 100]
+P0_2_1__16 -> P0_2_1__17 [label = <>, weight = 100]
+P0_2_0__18 -> P0_2_0__19 [label = <>, weight = 100]
+P0_1_0__20 -> P0_1_0__21 [label = <>, weight = 100]
+P0_0__16 [label = "", style = invisible]
+P0_0__15 -> P0_0__16 [label = <>, weight = 100, style = invisible]
+P__15 -> P__16 [label = <>, weight = 100]
+{rank = same; P__16 P0_0__16 P0_1_0__21 P0_2_0__19 P0_2_1__17 P0_2_2__14}
+P0_2_2__14 -> P0_2_2__15 [label = <>, weight = 100]
+P__16 -> P__17 [label = <>, weight = 100]
+{rank = same; P__17 P0_2_2__15}
+P0_2_2__15 -> P__17 [label = <(~M_17,participant_data(~M_18,~M_19,~M_20,~M_21))<br/>
+= (GUIDA_4,participant_data(GUIDA_4,Topic_bd_4,<br/>
+QoSA_2,discoveryRegister))>, arrowhead = normal]
+P0_2_2__15 -> P0_2_2__16 [label = <>, weight = 100]
+P0_2_1__17 -> P0_2_1__18 [label = <>, weight = 100]
+P0_2_0__19 -> P0_2_0__20 [label = <>, weight = 100]
+P0_1_0__21 -> P0_1_0__22 [label = <>, weight = 100]
+P0_0__17 [label = "", style = invisible]
+P0_0__16 -> P0_0__17 [label = <>, weight = 100, style = invisible]
+P__17 -> P__18 [label = <>, weight = 100]
+{rank = same; P__18 P0_0__17 P0_1_0__22 P0_2_0__20 P0_2_1__18 P0_2_2__16}
+P0_2_2__16 -> P0_2_2__17 [label = <>, weight = 100]
+P0_2_1__18 -> P0_2_1__19 [label = <>, weight = 100]
+P0_2_0__20 -> P0_2_0__21 [label = <>, weight = 100]
+P0_1_0__22 -> P0_1_0__23 [label = <>, weight = 100]
+P0_0__18 [label = "", style = invisible]
+P0_0__17 -> P0_0__18 [label = <>, weight = 100, style = invisible]
+P__18 -> P__19 [label = <>, weight = 100]
+{rank = same; P__19 P0_0__18 P0_1_0__23 P0_2_0__21 P0_2_1__19 P0_2_2__17}
+P0_2_2__17 -> P0_2_2__18 [label = <>, weight = 100]
+P__19 -> P__20 [label = <>, weight = 100]
+{rank = same; P__20 P0_2_2__18}
+P0_2_2__18 -> P__20 [label = <~X_1>, dir = back, arrowhead = normal]
+P0_2_2__18 -> P0_2_2__19 [label = <>, weight = 100]
+P0_2_1__19 -> P0_2_1__20 [label = <>, weight = 100]
+P0_2_0__21 -> P0_2_0__22 [label = <>, weight = 100]
+P0_1_0__23 -> P0_1_0__24 [label = <>, weight = 100]
+P0_0__19 [label = "", style = invisible]
+P0_0__18 -> P0_0__19 [label = <>, weight = 100, style = invisible]
+P__20 -> P__21 [label = <>, weight = 100]
+{rank = same; P__21 P0_0__19 P0_1_0__24 P0_2_0__22 P0_2_1__20 P0_2_2__19}
+P0_2_2__19 -> P0_2_2__20 [label = <>, weight = 100]
+P0_2_2__20 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{29}</FONT><FONT COLOR="blue">event</FONT> A_discover(a_4)</TD></TR><TR><TD><FONT COLOR="darkgreen">{31}</FONT><FONT COLOR="blue">new </FONT>ChallengeA_5</TD></TR><TR><TD><FONT COLOR="darkgreen">{32}</FONT><FONT COLOR="blue">new </FONT>s_5</TD></TR><TR><TD><FONT COLOR="darkgreen">{37}</FONT><FONT COLOR="blue">event</FONT> A_0(GUIDA_4,make_C_list(sign_cert(GUIDA_4,<br/>
+pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,<br/>
+PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,<br/>
+QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
+SHA256),ChallengeA_5,dh_pub(ID_G,dh_k(s_5)),a_4)<br/>
+</TD></TR></TABLE>>]
+P0_2_2__20 -> P0_2_2__21 [label = <>, weight = 100]
+P0_2_2__21 -> P0_2_2__22 [label = <>, weight = 100]
+P0_2_1__20 -> P0_2_1__21 [label = <>, weight = 100]
+P0_2_0__22 -> P0_2_0__23 [label = <>, weight = 100]
+P0_1_0__24 -> P0_1_0__25 [label = <>, weight = 100]
+P0_0__20 [label = "", style = invisible]
+P0_0__19 -> P0_0__20 [label = <>, weight = 100, style = invisible]
+P__21 -> P__22 [label = <>, weight = 100]
+{rank = same; P__22 P0_0__20 P0_1_0__25 P0_2_0__23 P0_2_1__21 P0_2_2__22}
+P0_2_2__22 -> P0_2_2__23 [label = <>, weight = 100]
+P__22 -> P__23 [label = <>, weight = 100]
+{rank = same; P__23 P0_2_2__23}
+P0_2_2__23 -> P__23 [label = <(make_C_list(~M_22,~M_23,participant_data(~M_24,<br/>
+~M_25,~M_26,~M_27),make_algo(~M_28,~M_29),~M_30),<br/>
+~M_31,~M_32,~M_33)>, arrowhead = normal]
+P0_2_2__23 -> P0_2_2__24 [label = <>, weight = 100]
+P0_2_1__21 -> P0_2_1__22 [label = <>, weight = 100]
+P0_2_0__23 -> P0_2_0__24 [label = <>, weight = 100]
+P0_1_0__25 -> P0_1_0__26 [label = <>, weight = 100]
+P0_0__21 [label = "", style = invisible]
+P0_0__20 -> P0_0__21 [label = <>, weight = 100, style = invisible]
+P__23 -> P__24 [label = <>, weight = 100]
+{rank = same; P__24 P0_0__21 P0_1_0__26 P0_2_0__24 P0_2_1__22 P0_2_2__24}
+P0_2_0__24 -> P0_2_0__25 [label = <>, weight = 100]
+P0_1_0__26 -> P0_1_0__27 [label = <>, weight = 100]
+P0_0__22 [label = "", style = invisible]
+P0_0__21 -> P0_0__22 [label = <>, weight = 100, style = invisible]
+P__24 -> P__25 [label = <>, weight = 100]
+{rank = same; P__25 P0_0__22 P0_1_0__27 P0_2_0__25}
+P0_2_0__25 -> P0_2_0__26 [label = <>, weight = 100]
+P__25 -> P__26 [label = <>, weight = 100]
+{rank = same; P__26 P0_2_0__26}
+P0_2_0__26 -> P__26 [label = <~X_2>, dir = back, arrowhead = normal]
+P0_2_0__26 -> P0_2_0__27 [label = <>, weight = 100]
+P0_1_0__27 -> P0_1_0__28 [label = <>, weight = 100]
+P0_0__23 [label = "", style = invisible]
+P0_0__22 -> P0_0__23 [label = <>, weight = 100, style = invisible]
+P__26 -> P__27 [label = <>, weight = 100]
+{rank = same; P__27 P0_0__23 P0_1_0__28 P0_2_0__27}
+P0_2_0__27 -> P0_2_0__28 [label = <>, weight = 100]
+P0_2_0__28 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{29}</FONT><FONT COLOR="blue">event</FONT> A_discover(a_5)</TD></TR><TR><TD><FONT COLOR="darkgreen">{31}</FONT><FONT COLOR="blue">new </FONT>ChallengeA_6</TD></TR><TR><TD><FONT COLOR="darkgreen">{32}</FONT><FONT COLOR="blue">new </FONT>s_6</TD></TR></TABLE>>]
+P0_2_0__28 -> P0_2_0__29 [label = <>, weight = 100]
+P0_2_0__29 -> P0_2_0__30 [label = <>, weight = 100]
+P0_2_0__30 [color = red, shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{37}</FONT><FONT COLOR="blue">event</FONT> A_0(GUIDA_4,make_C_list(sign_cert(GUIDA_4,<br/>
+pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,<br/>
+PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,<br/>
+QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
+SHA256),ChallengeA_6,dh_pub(ID_G,dh_k(s_6)),a_5)<br/>
+</TD></TR></TABLE>>]
+P0_2_0__30 -> P0_2_0__31 [label = <>, weight = 100]
+P0_2_0__31 -> P0_2_0__32 [label = <>, weight = 100]
+P0_1_0__28 -> P0_1_0__29 [label = <>, weight = 100]
+P0_0__24 [label = "", style = invisible]
+P0_0__23 -> P0_0__24 [label = <>, weight = 100, style = invisible]
+P__27 -> P__28 [label = <>, weight = 100]
+{rank = same; P__28 P0_0__24 P0_1_0__29 P0_2_0__32}
+P0_2_0__32 -> P0_2_0__33 [label = <>, weight = 100]
+P__28 -> P__29 [label = <>, weight = 100]
+{rank = same; P__29 P0_2_0__33}
+P0_2_0__33 -> P__29 [label = <(make_C_list(~M_34,~M_35,participant_data(~M_36,<br/>
+~M_37,~M_38,~M_39),make_algo(~M_40,~M_41),~M_42),<br/>
+~M_43,~M_44,~M_45)>, arrowhead = normal]
+P0_2_0__33 -> P0_2_0__34 [label = <>, weight = 100]
+P0_1_0__29 -> P0_1_0__30 [label = <>, weight = 100]
+P0_0__25 [label = "", style = invisible]
+P0_0__24 -> P0_0__25 [label = <>, weight = 100, style = invisible]
+P__29 -> P__30 [label = <>, weight = 100]
+{rank = same; P__30 P0_0__25 P0_1_0__30 P0_2_0__34}
+P0_1_0__30 -> P0_1_0__31 [label = <>, weight = 100]
+P0_0__26 [label = "", style = invisible]
+P0_0__25 -> P0_0__26 [label = <>, weight = 100, style = invisible]
+P__30 -> P__31 [label = <>, weight = 100]
+{rank = same; P__31 P0_0__26 P0_1_0__31}
+P0_1_0__31 -> P0_1_0__32 [label = <>, weight = 100]
+P__31 -> P__32 [label = <>, weight = 100]
+{rank = same; P__32 P0_1_0__32}
+P0_1_0__32 -> P__32 [label = <~X_3>, dir = back, arrowhead = normal]
+P0_1_0__32 -> P0_1_0__33 [label = <>, weight = 100]
+P0_0__27 [label = "", style = invisible]
+P0_0__26 -> P0_0__27 [label = <>, weight = 100, style = invisible]
+P__32 -> P__33 [label = <>, weight = 100]
+{rank = same; P__33 P0_0__27 P0_1_0__33}
+P0_1_0__33 -> P0_1_0__34 [label = <>, weight = 100]
+P0_1_0__34 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{101}</FONT><FONT COLOR="blue">new </FONT>ChallengeB_3</TD></TR><TR><TD><FONT COLOR="darkgreen">{102}</FONT><FONT COLOR="blue">new </FONT>s_7</TD></TR><TR><TD><FONT COLOR="darkgreen">{108}</FONT><FONT COLOR="blue">event</FONT> beginAtoB(GUIDB_4,sign_cert(GUIDB_4,<br/>
+pk(PrivKB_1),SN_CI,SK_CI),ChallengeA_6)</TD></TR></TABLE>>]
+P0_1_0__34 -> P0_1_0__35 [label = <>, weight = 100]
+P0_1_0__35 -> P0_1_0__36 [label = <>, weight = 100]
+P0_1_0__36 [color = red, shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{109}</FONT><FONT COLOR="blue">event</FONT> B_0(GUIDB_4,make_C_list(sign_cert(GUIDB_4,<br/>
+pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,<br/>
+PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,<br/>
+QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
+SHA256),ChallengeB_3,dh_pub(ID_G,dh_k(s_7)),GUIDA_4,<br/>
+make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,<br/>
+SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
+participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
+make_algo(ID_G,DH_RSA),SHA256),ChallengeA_6,dh_pub(<br/>
+ID_G,dh_k(s_6)))</TD></TR></TABLE>>]
+P0_1_0__36 -> P0_1_0__37 [label = <>, weight = 100]
+Abbrev [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR> <TD> Abbreviations </TD></TR><TR><TD>~X_1 = (a_4,discoveredParticipant,participant_data(~M_7,<br/>
+~M_4,~M_10,discoveryRegister))<br/>
+= (a_4,discoveredParticipant,<br/>
+participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister))</TD></TR><TR><TD>~M_22 = sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI)</TD></TR><TR><TD>~M_23 = sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm)</TD></TR><TR><TD>~M_24 = GUIDA_4</TD></TR><TR><TD>~M_25 = Topic_bd_4</TD></TR><TR><TD>~M_26 = QoSA_2</TD></TR><TR><TD>~M_27 = discoveryRegister</TD></TR><TR><TD>~M_28 = ID_G</TD></TR><TR><TD>~M_29 = DH_RSA</TD></TR><TR><TD>~M_30 = SHA256</TD></TR><TR><TD>~M_31 = hash(SHA256,Clist2bit(make_C_list(sign_cert(<br/>
+GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,<br/>
+DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,<br/>
+Topic_bd_4,QoSA_2,discoveryRegister),make_algo(<br/>
+ID_G,DH_RSA),SHA256)))</TD></TR><TR><TD>~M_32 = ChallengeA_5</TD></TR><TR><TD>~M_33 = dh_pub(ID_G,dh_k(s_5))</TD></TR><TR><TD>~X_2 = (a_5,discoveredParticipant,participant_data(~M_7,<br/>
+~M_4,~M_10,discoveryRegister))<br/>
+= (a_5,discoveredParticipant,<br/>
+participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister))</TD></TR><TR><TD>~M_34 = sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI)</TD></TR><TR><TD>~M_35 = sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm)</TD></TR><TR><TD>~M_36 = GUIDA_4</TD></TR><TR><TD>~M_37 = Topic_bd_4</TD></TR><TR><TD>~M_38 = QoSA_2</TD></TR><TR><TD>~M_39 = discoveryRegister</TD></TR><TR><TD>~M_40 = ID_G</TD></TR><TR><TD>~M_41 = DH_RSA</TD></TR><TR><TD>~M_42 = SHA256</TD></TR><TR><TD>~M_43 = hash(SHA256,Clist2bit(make_C_list(sign_cert(<br/>
+GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,<br/>
+DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,<br/>
+Topic_bd_4,QoSA_2,discoveryRegister),make_algo(<br/>
+ID_G,DH_RSA),SHA256)))</TD></TR><TR><TD>~M_44 = ChallengeA_6</TD></TR><TR><TD>~M_45 = dh_pub(ID_G,dh_k(s_6))</TD></TR><TR><TD>~X_3 = (make_C_list(~M_22,~M_23,participant_data(~M_7,<br/>
+~M_4,~M_10,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
+SHA256),hash(SHA256,Clist2bit(make_C_list(~M_22,<br/>
+~M_23,participant_data(~M_7,~M_4,~M_10,discoveryRegister),<br/>
+make_algo(ID_G,DH_RSA),SHA256))),~M_44,~M_45)<br/>
+=<br/>
+(make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,<br/>
+SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
+participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
+make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,Clist2bit(<br/>
+make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,<br/>
+SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
+participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
+make_algo(ID_G,DH_RSA),SHA256))),ChallengeA_6,<br/>
+dh_pub(ID_G,dh_k(s_6)))</TD></TR></TABLE>>]Abbrev -> P__0 [style = invisible, weight =100]}

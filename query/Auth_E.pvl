@@ -1,0 +1,8 @@
+query(* <Auth_E>: stepwise *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring;
+    event(B_1(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA,SharedSecret))
+    ==>
+    event(A_1(GUIDA,CA,ChallengeA,gx_DHA,GUIDB,CB,ChallengeB,gy_DHB,SharedSecret)) 
+    && event(B_0(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA)).

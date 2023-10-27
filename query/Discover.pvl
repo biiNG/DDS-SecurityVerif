@@ -1,0 +1,3 @@
+query(* <Discover> *)
+    PdataB:Pdata_t;
+    event(A_discover(PdataB))==>event(B_discover(PdataB)).

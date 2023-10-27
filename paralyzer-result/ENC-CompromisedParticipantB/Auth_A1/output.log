@@ -1,0 +1,358 @@
+Linear part:
+dh_exp(dh_pub(g,x),y) = dh_exp(dh_pub(g,y),x)
+Completing equations...
+Completed equations:
+dh_exp(dh_pub(g,x),y) = dh_exp(dh_pub(g,y),x)
+Convergent part: No equation.
+Process 0 (that is, the initial process):
+{1}let PK_CI: PK_t = pk(SK_CI) in
+{2}out(RTPS_Ch, PK_CI);
+{3}let PK_Perm: PK_t = pk(SK_Perm) in
+{4}out(RTPS_Ch, PK_Perm);
+{5}new GUIDA: GUID_t;
+{6}new PrivKA: SK_t;
+{7}let sn: GUID_t = GUIDA in
+{8}let Pk: PK_t = pk(PrivKA) in
+{9}let CertA: Cert_t = sign_cert(sn,Pk,SN_CI,SK_CI) in
+{10}new DGA: DomainGovernance_t;
+{11}new PPA: ParticipantPermission_t;
+{12}new QoSA: Qos_t;
+{13}let sn_1: GUID_t = GUIDA in
+{14}let DG: DomainGovernance_t = DGA in
+{15}let PP: ParticipantPermission_t = PPA in
+{16}let PermA: PermDoc_t = sign_perm(sn_1,DG,PP,SK_Perm) in
+{17}let DHAlgoA: Algo_t = make_algo(ID_G,DH_RSA) in
+{18}new GUIDB: GUID_t;
+{19}new PrivKB: SK_t;
+{20}let sn_2: GUID_t = GUIDB in
+{21}let Pk_1: PK_t = pk(PrivKB) in
+{22}let CertB: Cert_t = sign_cert(sn_2,Pk_1,SN_CI,SK_CI) in
+{23}new DGB: DomainGovernance_t;
+{24}new PPB: ParticipantPermission_t;
+{25}new QosB: Qos_t;
+{26}let sn_3: GUID_t = GUIDB in
+{27}let DG_1: DomainGovernance_t = DGB in
+{28}let PP_1: ParticipantPermission_t = PPB in
+{29}let PermB: PermDoc_t = sign_perm(sn_3,DG_1,PP_1,SK_Perm) in
+{30}let DHAlgoB: Algo_t = make_algo(ID_G,DH_RSA) in
+{31}new Topic_bd: TopicID_t;
+(
+    {32}let sk: SK_t = PrivKB in
+    {33}out(RTPS_Ch, sk)
+) | (
+    {34}!
+    {35}let GUIDA_1: GUID_t = GUIDA in
+    {36}let PrivK_A: SK_t = PrivKA in
+    {37}let HashAlgoA: Hash_alg_t = SHA256 in
+    {38}let QoSA_1: Qos_t = QoSA in
+    {39}let AeadAlgoA: Aead_alg_t = AES_GCM_128 in
+    {40}let Topic_bd_1: TopicID_t = Topic_bd in
+    {41}let PdataA: Pdata_t = participant_data(GUIDA_1,Topic_bd_1,QoSA_1,discoveryRegister) in
+    {42}out(Discovery_ch, (GUIDA_1,PdataA));
+    {43}in(Discovery_ch, (PdataB: Pdata_t,=discoveredParticipant,=PdataA));
+    {44}event A_discover(PdataB);
+    {45}let make_algo(g: group_t,algoName: AlgoName_t) = DHAlgoA in
+    {46}new ChallengeA: bitstring;
+    {47}new s[]: Seed_t;
+    {48}let gx: element_t = dh_pub(g,dh_k(s)) in
+    {49}let (x: bitstring,gx_DHA: element_t) = (dh_k(s),gx) in
+    {50}let CA: Clist_t = make_C_list(CertA,PermA,PdataA,DHAlgoA,HashAlgoA) in
+    {51}let hash_CA: bitstring = hash(HashAlgoA,CA) in
+    {52}event A_0(GUIDA_1,CA,ChallengeA,gx_DHA,PdataB);
+    {53}out(RTPS_Ch, (CA,hash_CA,ChallengeA,gx_DHA));
+    {54}in(RTPS_Ch, (CB: Clist_t,hash_CB: bitstring,=ChallengeA,ChallengeB: bitstring,gy_DHB: element_t,=hash_CA,=gx_DHA,sigB: Sig_t));
+    {55}let make_C_list(CertB_1: Cert_t,PermB_1: PermDoc_t,=PdataB,=DHAlgoA,=HashAlgoA) = CB in
+    {56}let (GUIDB_1: GUID_t,PkB: PK_t,=SN_CI) = check_cert(CertB_1,PK_CI) in
+    {57}if verify(PkB,(hash(HashAlgoA,CB),ChallengeB,gy_DHB,ChallengeA,gx_DHA,hash_CA),sigB) then
+    {58}event endAtoB(GUIDB_1,CertB_1,ChallengeA);
+    {59}let gxy_SharedSecret: element_t = dh_exp(gy_DHB,x) in
+    {60}let SharedSecret: bitstring = gxy_SharedSecret in
+    {61}let sigA: Sig_t = sign(PrivK_A,(hash_CA,ChallengeA,gx_DHA,ChallengeB,gy_DHB,hash_CB)) in
+    {62}event beginBtoA(GUIDA_1,CertA,ChallengeB);
+    {63}event A_1(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret);
+    {64}out(RTPS_Ch, (hash_CA,hash(HashAlgoA,CB),gx_DHA,gy_DHB,ChallengeA,ChallengeB,sigA));
+    {65}in(Discovery_ch, (PermB_x: PermDoc_t,=TopicDiscovered,Topic: TopicID_t,=PdataB));
+    {66}if (PermB_x = PermB_1) then
+    {67}let (=GUIDB_1,DGB_1: DomainGovernance_t,PPB_1: ParticipantPermission_t) = check_perm(PermB_1,PK_Perm) in
+    {68}event PERM_CHECK(GUIDB_1,PermB_1,Topic);
+    {69}out(RTPS_Ch, (GUIDA_1,PermissionChecked,GUIDB_1,Topic));
+    {70}let KeyMaterial: KeyMaterial_t = KDF(SharedSecret,ChallengeA,ChallengeB) in
+    {71}let CryptoToken: CryptoToken_t = encCryptoToken(KeyMaterial,DHAlgoA,HashAlgoA,AeadAlgoA) in
+    {72}event A_2(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial);
+    {73}out(RTPS_Ch, CryptoToken);
+    {74}in(RTPS_Ch, (cryptoHeader: CryptoHeader_t,encryptedApplicationData: bitstring));
+    {75}let makeCryptoHeader(sessionID: bitstring,IV: bitstring) = cryptoHeader in
+    {76}let sessionKey: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID,KeyMaterial)) in
+    {77}let (applicationData: bitstring,=secretData) = aead_dec(AeadAlgoA,sessionKey,IV,cryptoHeader,encryptedApplicationData) in
+    {78}event A_3(GUIDB_1,GUIDA_1,applicationData,cryptoHeader,sessionKey);
+    {79}event ENC_COMMUNICATION(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial,cryptoHeader,sessionKey);
+    {80}new sessionID_new: bitstring;
+    {81}new IV_new: bitstring;
+    {82}let cryptoHeader_new: CryptoHeader_t = makeCryptoHeader(sessionID_new,IV_new) in
+    {83}let sessionKey_new: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID_new,KeyMaterial)) in
+    {84}new applicationData_new: bitstring;
+    {85}event KEY_UPDATE_begin(GUIDA_1,GUIDB_1,cryptoHeader_new,sessionKey_new,applicationData_new);
+    {86}out(RTPS_Ch, (cryptoHeader_new,aead_enc(AeadAlgoA,sessionKey_new,IV,cryptoHeader_new,applicationData_new)));
+    {87}out(RTPS_Ch, finishA)
+) | (
+    {88}!
+    {89}let GUIDB_2: GUID_t = GUIDB in
+    {90}let PrivK_B: SK_t = PrivKB in
+    {91}let HashAlgoB: Hash_alg_t = SHA256 in
+    {92}let QosB_1: Qos_t = QosB in
+    {93}let AeadAlgoB: Aead_alg_t = AES_GCM_128 in
+    {94}let Topic_bd_2: TopicID_t = Topic_bd in
+    {95}let PdataB_1: Pdata_t = participant_data(GUIDB_2,Topic_bd_2,QosB_1,discoveryRegister) in
+    {96}event B_discover(PdataB_1);
+    {97}out(Discovery_ch, (GUIDB_2,PdataB_1));
+    {98}in(RTPS_Ch, (CA_1: Clist_t,hash_CA_1: bitstring,ChallengeA_1: bitstring,gx_DHA_1: element_t));
+    {99}let make_C_list(CertA_1: Cert_t,PermA_1: PermDoc_t,PdataA_1: Pdata_t,=DHAlgoB,=HashAlgoB) = CA_1 in
+    {100}let make_algo(g_1: group_t,algoName_1: AlgoName_t) = DHAlgoB in
+    {101}let (GUIDA_2: GUID_t,PkA: PK_t,=SN_CI) = check_cert(CertA_1,PK_CI) in
+    {102}if (hash(HashAlgoB,CA_1) = hash_CA_1) then
+    {103}new ChallengeB_1: bitstring;
+    {104}new s_1[]: Seed_t;
+    {105}let gx_1: element_t = dh_pub(g_1,dh_k(s_1)) in
+    {106}let (y: bitstring,gy_DHB_1: element_t) = (dh_k(s_1),gx_1) in
+    {107}let CB_1: Clist_t = make_C_list(CertB,PermB,PdataB_1,DHAlgoB,HashAlgoB) in
+    {108}let hash_CB_1: bitstring = hash(HashAlgoB,CB_1) in
+    {109}let sigB_1: Sig_t = sign(PrivK_B,(hash_CB_1,ChallengeB_1,gy_DHB_1,ChallengeA_1,gx_DHA_1,hash_CA_1)) in
+    {110}event beginAtoB(GUIDB_2,CertB,ChallengeA_1);
+    {111}event B_0(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1);
+    {112}out(RTPS_Ch, (CB_1,hash_CB_1,ChallengeA_1,ChallengeB_1,gy_DHB_1,hash_CA_1,gx_DHA_1,sigB_1));
+    {113}in(RTPS_Ch, (=hash_CA_1,=hash_CB_1,=gx_DHA_1,=gy_DHB_1,=ChallengeA_1,=ChallengeB_1,sigA_1: Sig_t));
+    {114}if verify(PkA,(hash_CA_1,ChallengeA_1,gx_DHA_1,ChallengeB_1,gy_DHB_1,hash_CB_1),sigA_1) then
+    {115}event endBtoA(GUIDA_2,CertA_1,ChallengeB_1);
+    {116}let gxy_SharedSecret_1: element_t = dh_exp(gx_DHA_1,y) in
+    {117}let SharedSecret_1: bitstring = gxy_SharedSecret_1 in
+    {118}event B_1(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1);
+    {119}new Topic_1: TopicID_t;
+    {120}event TOPIC_CRT_REQ(GUIDB_2,PermB,Topic_1);
+    {121}out(Discovery_ch, (PermB,TopicCreateReq,Topic_1,PdataB_1));
+    {122}in(RTPS_Ch, (=GUIDA_2,=PermissionChecked,=GUIDB_2,=Topic_1));
+    {123}let KeyMaterial_1: KeyMaterial_t = KDF(SharedSecret_1,ChallengeA_1,ChallengeB_1) in
+    {124}in(RTPS_Ch, CryptoToken_1: CryptoToken_t);
+    {125}if decCryptoToken(CryptoToken_1,KeyMaterial_1,DHAlgoB,HashAlgoB,AeadAlgoB) then
+    {126}new sessionID_1: bitstring;
+    {127}new IV_1: bitstring;
+    {128}let cryptoHeader_1: CryptoHeader_t = makeCryptoHeader(sessionID_1,IV_1) in
+    {129}let sessionKey_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_1,KeyMaterial_1)) in
+    {130}event B_2(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1,KeyMaterial_1,cryptoHeader_1,sessionKey_1);
+    {131}new applicationData_1: bitstring;
+    {132}event B_3(GUIDB_2,GUIDA_2,applicationData_1,cryptoHeader_1,sessionKey_1);
+    {133}out(RTPS_Ch, (cryptoHeader_1,aead_enc(AeadAlgoB,sessionKey_1,IV_1,cryptoHeader_1,(applicationData_1,secretData))));
+    {134}in(RTPS_Ch, (cryptoHeader_n: CryptoHeader_t,encryptedApplicationData_1: bitstring));
+    {135}let makeCryptoHeader(sessionID_new_1: bitstring,IV_new_1: bitstring) = cryptoHeader_n in
+    {136}if (sessionID_new_1 ≠ sessionID_1) then
+    {137}let sessionKey_new_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_new_1,KeyMaterial_1)) in
+    {138}let applicationData_new_1: bitstring = aead_dec(AeadAlgoB,sessionKey_new_1,IV_1,cryptoHeader_n,encryptedApplicationData_1) in
+        {139}event KEY_UPDATE_end(GUIDA_2,GUIDB_2,cryptoHeader_n,sessionKey_new_1,applicationData_new_1);
+        {140}out(RTPS_Ch, finishB)
+    else
+        {141}out(RTPS_Ch, finishB)
+) | (
+    {142}!
+    {143}let Topic_bd_3: TopicID_t = Topic_bd in
+    {144}in(Discovery_ch, (GUIDB_3: GUID_t,PdataB_2: Pdata_t));
+    {145}let participant_data(=GUIDB_3,=Topic_bd_3,QosB_2: Qos_t,=discoveryRegister) = PdataB_2 in
+    {146}in(Discovery_ch, (GUIDA_3: GUID_t,PdataA_2: Pdata_t));
+    {147}let participant_data(=GUIDA_3,=Topic_bd_3,QosA: Qos_t,=discoveryRegister) = PdataA_2 in
+    {148}event DISCOVERY(GUIDB_3,PdataB_2,GUIDA_3,PdataA_2);
+    {149}out(Discovery_ch, (PdataB_2,discoveredParticipant,PdataA_2));
+    {150}in(Discovery_ch, (PermB_2: PermDoc_t,=TopicCreateReq,Topic_2: TopicID_t,=PdataB_2));
+    {151}event TOPIC_DISCOVERED(GUIDB_3,PermB_2,Topic_2);
+    {152}out(Discovery_ch, (PermB_2,TopicDiscovered,Topic_2,PdataB_2));
+    {153}out(RTPS_Ch, finishDiscovery)
+)
+
+--  Process 1 (that is, process 0, with let moved downwards):
+{1}let PK_CI: PK_t = pk(SK_CI) in
+{2}out(RTPS_Ch, PK_CI);
+{3}let PK_Perm: PK_t = pk(SK_Perm) in
+{4}out(RTPS_Ch, PK_Perm);
+{5}new GUIDA: GUID_t;
+{6}new PrivKA: SK_t;
+{10}new DGA: DomainGovernance_t;
+{11}new PPA: ParticipantPermission_t;
+{12}new QoSA: Qos_t;
+{18}new GUIDB: GUID_t;
+{19}new PrivKB: SK_t;
+{23}new DGB: DomainGovernance_t;
+{24}new PPB: ParticipantPermission_t;
+{25}new QosB: Qos_t;
+{31}new Topic_bd: TopicID_t;
+(
+    {32}let sk: SK_t = PrivKB in
+    {33}out(RTPS_Ch, sk)
+) | (
+    {34}!
+    {40}let Topic_bd_1: TopicID_t = Topic_bd in
+    {38}let QoSA_1: Qos_t = QoSA in
+    {35}let GUIDA_1: GUID_t = GUIDA in
+    {41}let PdataA: Pdata_t = participant_data(GUIDA_1,Topic_bd_1,QoSA_1,discoveryRegister) in
+    {42}out(Discovery_ch, (GUIDA_1,PdataA));
+    {43}in(Discovery_ch, (PdataB: Pdata_t,=discoveredParticipant,=PdataA));
+    {44}event A_discover(PdataB);
+    {17}let DHAlgoA: Algo_t = make_algo(ID_G,DH_RSA) in
+    {45}let make_algo(g: group_t,algoName: AlgoName_t) = DHAlgoA in
+    {46}new ChallengeA: bitstring;
+    {47}new s[]: Seed_t;
+    {48}let gx: element_t = dh_pub(g,dh_k(s)) in
+    {49}let (x: bitstring,gx_DHA: element_t) = (dh_k(s),gx) in
+    {37}let HashAlgoA: Hash_alg_t = SHA256 in
+    {15}let PP: ParticipantPermission_t = PPA in
+    {14}let DG: DomainGovernance_t = DGA in
+    {13}let sn_1: GUID_t = GUIDA in
+    {16}let PermA: PermDoc_t = sign_perm(sn_1,DG,PP,SK_Perm) in
+    {8}let Pk: PK_t = pk(PrivKA) in
+    {7}let sn: GUID_t = GUIDA in
+    {9}let CertA: Cert_t = sign_cert(sn,Pk,SN_CI,SK_CI) in
+    {50}let CA: Clist_t = make_C_list(CertA,PermA,PdataA,DHAlgoA,HashAlgoA) in
+    {52}event A_0(GUIDA_1,CA,ChallengeA,gx_DHA,PdataB);
+    {51}let hash_CA: bitstring = hash(HashAlgoA,CA) in
+    {53}out(RTPS_Ch, (CA,hash_CA,ChallengeA,gx_DHA));
+    {54}in(RTPS_Ch, (CB: Clist_t,hash_CB: bitstring,=ChallengeA,ChallengeB: bitstring,gy_DHB: element_t,=hash_CA,=gx_DHA,sigB: Sig_t));
+    {55}let make_C_list(CertB_1: Cert_t,PermB_1: PermDoc_t,=PdataB,=DHAlgoA,=HashAlgoA) = CB in
+    {56}let (GUIDB_1: GUID_t,PkB: PK_t,=SN_CI) = check_cert(CertB_1,PK_CI) in
+    {57}if verify(PkB,(hash(HashAlgoA,CB),ChallengeB,gy_DHB,ChallengeA,gx_DHA,hash_CA),sigB) then
+    {58}event endAtoB(GUIDB_1,CertB_1,ChallengeA);
+    {62}event beginBtoA(GUIDA_1,CertA,ChallengeB);
+    {59}let gxy_SharedSecret: element_t = dh_exp(gy_DHB,x) in
+    {60}let SharedSecret: bitstring = gxy_SharedSecret in
+    {63}event A_1(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret);
+    {36}let PrivK_A: SK_t = PrivKA in
+    {61}let sigA: Sig_t = sign(PrivK_A,(hash_CA,ChallengeA,gx_DHA,ChallengeB,gy_DHB,hash_CB)) in
+    {64}out(RTPS_Ch, (hash_CA,hash(HashAlgoA,CB),gx_DHA,gy_DHB,ChallengeA,ChallengeB,sigA));
+    {65}in(Discovery_ch, (PermB_x: PermDoc_t,=TopicDiscovered,Topic: TopicID_t,=PdataB));
+    {66}if (PermB_x = PermB_1) then
+    {67}let (=GUIDB_1,DGB_1: DomainGovernance_t,PPB_1: ParticipantPermission_t) = check_perm(PermB_1,PK_Perm) in
+    {68}event PERM_CHECK(GUIDB_1,PermB_1,Topic);
+    {69}out(RTPS_Ch, (GUIDA_1,PermissionChecked,GUIDB_1,Topic));
+    {70}let KeyMaterial: KeyMaterial_t = KDF(SharedSecret,ChallengeA,ChallengeB) in
+    {72}event A_2(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial);
+    {39}let AeadAlgoA: Aead_alg_t = AES_GCM_128 in
+    {71}let CryptoToken: CryptoToken_t = encCryptoToken(KeyMaterial,DHAlgoA,HashAlgoA,AeadAlgoA) in
+    {73}out(RTPS_Ch, CryptoToken);
+    {74}in(RTPS_Ch, (cryptoHeader: CryptoHeader_t,encryptedApplicationData: bitstring));
+    {75}let makeCryptoHeader(sessionID: bitstring,IV: bitstring) = cryptoHeader in
+    {76}let sessionKey: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID,KeyMaterial)) in
+    {77}let (applicationData: bitstring,=secretData) = aead_dec(AeadAlgoA,sessionKey,IV,cryptoHeader,encryptedApplicationData) in
+    {78}event A_3(GUIDB_1,GUIDA_1,applicationData,cryptoHeader,sessionKey);
+    {79}event ENC_COMMUNICATION(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial,cryptoHeader,sessionKey);
+    {80}new sessionID_new: bitstring;
+    {81}new IV_new: bitstring;
+    {84}new applicationData_new: bitstring;
+    {83}let sessionKey_new: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID_new,KeyMaterial)) in
+    {82}let cryptoHeader_new: CryptoHeader_t = makeCryptoHeader(sessionID_new,IV_new) in
+    {85}event KEY_UPDATE_begin(GUIDA_1,GUIDB_1,cryptoHeader_new,sessionKey_new,applicationData_new);
+    {86}out(RTPS_Ch, (cryptoHeader_new,aead_enc(AeadAlgoA,sessionKey_new,IV,cryptoHeader_new,applicationData_new)));
+    {87}out(RTPS_Ch, finishA)
+) | (
+    {88}!
+    {94}let Topic_bd_2: TopicID_t = Topic_bd in
+    {92}let QosB_1: Qos_t = QosB in
+    {89}let GUIDB_2: GUID_t = GUIDB in
+    {95}let PdataB_1: Pdata_t = participant_data(GUIDB_2,Topic_bd_2,QosB_1,discoveryRegister) in
+    {96}event B_discover(PdataB_1);
+    {97}out(Discovery_ch, (GUIDB_2,PdataB_1));
+    {98}in(RTPS_Ch, (CA_1: Clist_t,hash_CA_1: bitstring,ChallengeA_1: bitstring,gx_DHA_1: element_t));
+    {91}let HashAlgoB: Hash_alg_t = SHA256 in
+    {30}let DHAlgoB: Algo_t = make_algo(ID_G,DH_RSA) in
+    {99}let make_C_list(CertA_1: Cert_t,PermA_1: PermDoc_t,PdataA_1: Pdata_t,=DHAlgoB,=HashAlgoB) = CA_1 in
+    {100}let make_algo(g_1: group_t,algoName_1: AlgoName_t) = DHAlgoB in
+    {101}let (GUIDA_2: GUID_t,PkA: PK_t,=SN_CI) = check_cert(CertA_1,PK_CI) in
+    {102}if (hash(HashAlgoB,CA_1) = hash_CA_1) then
+    {103}new ChallengeB_1: bitstring;
+    {104}new s_1[]: Seed_t;
+    {105}let gx_1: element_t = dh_pub(g_1,dh_k(s_1)) in
+    {106}let (y: bitstring,gy_DHB_1: element_t) = (dh_k(s_1),gx_1) in
+    {21}let Pk_1: PK_t = pk(PrivKB) in
+    {20}let sn_2: GUID_t = GUIDB in
+    {22}let CertB: Cert_t = sign_cert(sn_2,Pk_1,SN_CI,SK_CI) in
+    {110}event beginAtoB(GUIDB_2,CertB,ChallengeA_1);
+    {28}let PP_1: ParticipantPermission_t = PPB in
+    {27}let DG_1: DomainGovernance_t = DGB in
+    {26}let sn_3: GUID_t = GUIDB in
+    {29}let PermB: PermDoc_t = sign_perm(sn_3,DG_1,PP_1,SK_Perm) in
+    {107}let CB_1: Clist_t = make_C_list(CertB,PermB,PdataB_1,DHAlgoB,HashAlgoB) in
+    {111}event B_0(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1);
+    {108}let hash_CB_1: bitstring = hash(HashAlgoB,CB_1) in
+    {90}let PrivK_B: SK_t = PrivKB in
+    {109}let sigB_1: Sig_t = sign(PrivK_B,(hash_CB_1,ChallengeB_1,gy_DHB_1,ChallengeA_1,gx_DHA_1,hash_CA_1)) in
+    {112}out(RTPS_Ch, (CB_1,hash_CB_1,ChallengeA_1,ChallengeB_1,gy_DHB_1,hash_CA_1,gx_DHA_1,sigB_1));
+    {113}in(RTPS_Ch, (=hash_CA_1,=hash_CB_1,=gx_DHA_1,=gy_DHB_1,=ChallengeA_1,=ChallengeB_1,sigA_1: Sig_t));
+    {114}if verify(PkA,(hash_CA_1,ChallengeA_1,gx_DHA_1,ChallengeB_1,gy_DHB_1,hash_CB_1),sigA_1) then
+    {115}event endBtoA(GUIDA_2,CertA_1,ChallengeB_1);
+    {116}let gxy_SharedSecret_1: element_t = dh_exp(gx_DHA_1,y) in
+    {117}let SharedSecret_1: bitstring = gxy_SharedSecret_1 in
+    {118}event B_1(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1);
+    {119}new Topic_1: TopicID_t;
+    {120}event TOPIC_CRT_REQ(GUIDB_2,PermB,Topic_1);
+    {121}out(Discovery_ch, (PermB,TopicCreateReq,Topic_1,PdataB_1));
+    {122}in(RTPS_Ch, (=GUIDA_2,=PermissionChecked,=GUIDB_2,=Topic_1));
+    {124}in(RTPS_Ch, CryptoToken_1: CryptoToken_t);
+    {123}let KeyMaterial_1: KeyMaterial_t = KDF(SharedSecret_1,ChallengeA_1,ChallengeB_1) in
+    {93}let AeadAlgoB: Aead_alg_t = AES_GCM_128 in
+    {125}if decCryptoToken(CryptoToken_1,KeyMaterial_1,DHAlgoB,HashAlgoB,AeadAlgoB) then
+    {126}new sessionID_1: bitstring;
+    {127}new IV_1: bitstring;
+    {129}let sessionKey_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_1,KeyMaterial_1)) in
+    {128}let cryptoHeader_1: CryptoHeader_t = makeCryptoHeader(sessionID_1,IV_1) in
+    {130}event B_2(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1,KeyMaterial_1,cryptoHeader_1,sessionKey_1);
+    {131}new applicationData_1: bitstring;
+    {132}event B_3(GUIDB_2,GUIDA_2,applicationData_1,cryptoHeader_1,sessionKey_1);
+    {133}out(RTPS_Ch, (cryptoHeader_1,aead_enc(AeadAlgoB,sessionKey_1,IV_1,cryptoHeader_1,(applicationData_1,secretData))));
+    {134}in(RTPS_Ch, (cryptoHeader_n: CryptoHeader_t,encryptedApplicationData_1: bitstring));
+    {135}let makeCryptoHeader(sessionID_new_1: bitstring,IV_new_1: bitstring) = cryptoHeader_n in
+    {136}if (sessionID_new_1 ≠ sessionID_1) then
+    {137}let sessionKey_new_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_new_1,KeyMaterial_1)) in
+    {138}let applicationData_new_1: bitstring = aead_dec(AeadAlgoB,sessionKey_new_1,IV_1,cryptoHeader_n,encryptedApplicationData_1) in
+        {139}event KEY_UPDATE_end(GUIDA_2,GUIDB_2,cryptoHeader_n,sessionKey_new_1,applicationData_new_1);
+        {140}out(RTPS_Ch, finishB)
+    else
+        {141}out(RTPS_Ch, finishB)
+) | (
+    {142}!
+    {144}in(Discovery_ch, (GUIDB_3: GUID_t,PdataB_2: Pdata_t));
+    {143}let Topic_bd_3: TopicID_t = Topic_bd in
+    {145}let participant_data(=GUIDB_3,=Topic_bd_3,QosB_2: Qos_t,=discoveryRegister) = PdataB_2 in
+    {146}in(Discovery_ch, (GUIDA_3: GUID_t,PdataA_2: Pdata_t));
+    {147}let participant_data(=GUIDA_3,=Topic_bd_3,QosA: Qos_t,=discoveryRegister) = PdataA_2 in
+    {148}event DISCOVERY(GUIDB_3,PdataB_2,GUIDA_3,PdataA_2);
+    {149}out(Discovery_ch, (PdataB_2,discoveredParticipant,PdataA_2));
+    {150}in(Discovery_ch, (PermB_2: PermDoc_t,=TopicCreateReq,Topic_2: TopicID_t,=PdataB_2));
+    {151}event TOPIC_DISCOVERED(GUIDB_3,PermB_2,Topic_2);
+    {152}out(Discovery_ch, (PermB_2,TopicDiscovered,Topic_2,PdataB_2));
+    {153}out(RTPS_Ch, finishDiscovery)
+)
+
+-- Query inj-event(endAtoB(guid,c,nonce)) ==> inj-event(beginAtoB(guid,c,nonce)) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Termination warning: Selecting an hypothesis matching the conclusion.
+In case of non-termination, try a noselect declaration implying the following one:
+   noselect PkA_1:PK_t, GUIDA_4:GUID_t; attacker(sign_cert(GUIDA_4,PkA_1,SN_CI,SK_CI)).
+200 rules inserted. Base: 173 rules (55 with conclusion selected). Queue: 20 rules.
+Termination warning: Selecting an hypothesis matching the conclusion.
+In case of non-termination, try a noselect declaration implying the following one:
+   noselect PdataA_3:Pdata_t, PermA_2:PermDoc_t; attacker(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256))).
+400 rules inserted. Base: 264 rules (76 with conclusion selected). Queue: 56 rules.
+600 rules inserted. Base: 333 rules (76 with conclusion selected). Queue: 117 rules.
+800 rules inserted. Base: 421 rules (79 with conclusion selected). Queue: 166 rules.
+1000 rules inserted. Base: 545 rules (84 with conclusion selected). Queue: 94 rules.
+1200 rules inserted. Base: 602 rules (86 with conclusion selected). Queue: 85 rules.
+1400 rules inserted. Base: 700 rules (92 with conclusion selected). Queue: 63 rules.
+1600 rules inserted. Base: 751 rules (92 with conclusion selected). Queue: 113 rules.
+1800 rules inserted. Base: 815 rules (92 with conclusion selected). Queue: 89 rules.
+2000 rules inserted. Base: 872 rules (108 with conclusion selected). Queue: 93 rules.
+2200 rules inserted. Base: 928 rules (135 with conclusion selected). Queue: 109 rules.
+2400 rules inserted. Base: 980 rules (143 with conclusion selected). Queue: 117 rules.
+2600 rules inserted. Base: 1026 rules (143 with conclusion selected). Queue: 139 rules.
+2800 rules inserted. Base: 1045 rules (145 with conclusion selected). Queue: 195 rules.
+3000 rules inserted. Base: 1065 rules (145 with conclusion selected). Queue: 185 rules.
+3200 rules inserted. Base: 1132 rules (147 with conclusion selected). Queue: 252 rules.
+3400 rules inserted. Base: 1172 rules (147 with conclusion selected). Queue: 262 rules.
+3600 rules inserted. Base: 1202 rules (147 with conclusion selected). Queue: 242 rules.
+3800 rules inserted. Base: 1256 rules (147 with conclusion selected). Queue: 194 rules.
+4000 rules inserted. Base: 1286 rules (154 with conclusion selected). Queue: 173 rules.
+4200 rules inserted. Base: 1343 rules (175 with conclusion selected). Queue: 316 rules.

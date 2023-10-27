@@ -1,0 +1,359 @@
+(* This pv file depicts all the QUERY in DDS Security *)
+(* Every has its own <name>. The name will be useful in 
+   batch analysis and result extraction*)
+set ignoreTypes = false.
+
+(* Reachability: the three processes can run to the end *)
+query 
+(* <ReachabilityA>  *)
+    attacker(finishA).
+query 
+(* <ReachabilityB> *)
+    attacker(finishB).
+query 
+(* <ReachabilityDIS> *)
+    attacker(finishDiscovery).
+
+query 
+(* <Sec_Channel>: a secrue channel is created*)
+    attacker(secretData). 
+
+query 
+(* <Sec_KM1>: the p2pKeyMaterial maintains confidentiality when A generate it(A_2) *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t;
+    attacker(p2pKeyMaterial) 
+    && event(A_2(GUIDA,CA,ChallengeA,gx_DHA,
+                 GUIDB,CB,ChallengeB,gy_DHB,
+                 SharedSecret,p2pKeyMaterial))
+    ==> false
+.
+
+query 
+(* <Sec_KM2>: the p2pKeyMaterial maintains confidentiality when B generate it(B_2) *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    attacker(p2pKeyMaterial) 
+    && event(B_2(GUIDA,CA,ChallengeA,gx_DHA,
+                 GUIDB,CB,ChallengeB,gy_DHB,
+                 SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))
+    ==> false
+.
+
+query 
+(* <Sec_SessK1>:the session key maintains confidentiality when B generate it(B_2) *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    attacker(sessionKey) 
+    && event(B_2(GUIDA,CA,ChallengeA,gx_DHA,
+                 GUIDB,CB,ChallengeB,gy_DHB,
+                 SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))
+    ==> false
+.
+
+query 
+(* <Sec_SessK2>:the session key maintains confidentiality when A generate it and a secrue channel is created(ENC_COMMUNICATION) *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    attacker(sessionKey)
+    && event(ENC_COMMUNICATION(GUIDA,CA,ChallengeA,gx_DHA,
+                            GUIDB,CB,ChallengeB,gy_DHB,
+                            SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))
+    ==> false
+.
+
+query 
+(* <Sec_KM3>: the p2pKeyMaterial maintains confidentiality when a secrue channel is created(ENC_COMMUNICATION) *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    attacker(p2pKeyMaterial)
+    && event(ENC_COMMUNICATION(GUIDA,CA,ChallengeA,gx_DHA,
+                            GUIDB,CB,ChallengeB,gy_DHB,
+                            SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))
+    ==> false
+.
+
+query
+(* <Sec_Data>: the applicationData maintains confidentiality when A_3 *)
+    GUIDB:GUID_t,GUIDA:GUID_t,ad:bitstring,cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    attacker(ad)
+    && event(A_3(GUIDB,GUIDA,ad,cryptoHeader,sessionKey))
+    ==> false
+.
+
+query
+(*!! <Integrity>: B sends A data which is not tempered with *)
+    GUIDA:GUID_t,GUIDB:GUID_t,aD:bitstring,
+    cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    event(A_3(GUIDB,GUIDA,aD,cryptoHeader,sessionKey))
+    ==>
+    event(B_3(GUIDB,GUIDA,aD,cryptoHeader,sessionKey))
+.
+
+query 
+(* <Auth_A1>: Mutual authentication between A and B *)
+    guid:GUID_t,c:Cert_t,nonce:bitstring;
+    inj-event(endAtoB(guid,c,nonce))==>inj-event(beginAtoB(guid,c,nonce)).
+query 
+(* <Auth_A2>: Mutual authentication between A and B *)
+    guid:GUID_t,c:Cert_t,nonce:bitstring;
+    inj-event(endBtoA(guid,c,nonce))==>inj-event(beginBtoA(guid,c,nonce)).
+
+
+query 
+(*!! <Auth_B>: stepwise---when authentication begin, AB were discovered *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      PdataB:Pdata_t,PdataA:Pdata_t;
+    event(A_0(GUIDA,CA,ChallengeA,gx_DHA,PdataB)) && event(B_0(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA))
+    ==>
+    event(DISCOVERY(GUIDB,PdataB,GUIDA,PdataA))
+.
+
+query 
+(*!! <Auth_C>: stepwise *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,PdataB:Pdata_t;
+    event(B_0(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA))
+    ==>
+    event(A_0(GUIDA,CA,ChallengeA,gx_DHA,PdataB))
+.
+
+query
+(* <Auth_D>: stepwise *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,PdataB:Pdata_t,
+      SharedSecret:bitstring;
+    event(A_1(GUIDA,CA,ChallengeA,gx_DHA,GUIDB,CB,ChallengeB,gy_DHB,SharedSecret))
+    ==>
+    event(B_0(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA)) 
+    && event(A_0(GUIDA,CA,ChallengeA,gx_DHA,PdataB))
+.
+
+query
+(* <Auth_E>: stepwise *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring;
+    event(B_1(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA,SharedSecret))
+    ==>
+    event(A_1(GUIDA,CA,ChallengeA,gx_DHA,GUIDB,CB,ChallengeB,gy_DHB,SharedSecret)) 
+    && event(B_0(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA))
+.
+
+query
+(*!! <Auth_F>: stepwise *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t;
+    event(A_2(GUIDA,CA,ChallengeA,gx_DHA,
+              GUIDB,CB,ChallengeB,gy_DHB,
+              SharedSecret,p2pKeyMaterial))
+    ==>
+       event(B_1(GUIDB,CB,ChallengeB,gy_DHB,
+                 GUIDA,CA,ChallengeA,gx_DHA,
+                 SharedSecret)) 
+    && event(A_1(GUIDA,CA,ChallengeA,gx_DHA,
+                 GUIDB,CB,ChallengeB,gy_DHB,
+                 SharedSecret))
+.
+
+query
+(* <Auth_G>: stepwise *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    event(B_2(GUIDB,CB,ChallengeB,gy_DHB,
+              GUIDA,CA,ChallengeA,gx_DHA,
+              SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))
+    ==>
+       event(A_2(GUIDA,CA,ChallengeA,gx_DHA,
+                 GUIDB,CB,ChallengeB,gy_DHB,
+                 SharedSecret,p2pKeyMaterial)) 
+    && event(B_1(GUIDB,CB,ChallengeB,gy_DHB,
+                 GUIDA,CA,ChallengeA,gx_DHA,
+                 SharedSecret))
+.
+
+query
+(* <Auth_H>: stepwise---when secrue channel is created, A_2 and B_2 have happened *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    event(ENC_COMMUNICATION(GUIDA,CA,ChallengeA,gx_DHA,
+                            GUIDB,CB,ChallengeB,gy_DHB,
+                            SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))
+    ==>
+       event(A_2(GUIDA,CA,ChallengeA,gx_DHA,
+                 GUIDB,CB,ChallengeB,gy_DHB,
+                 SharedSecret,p2pKeyMaterial)) 
+    && event(B_2(GUIDB,CB,ChallengeB,gy_DHB,
+                 GUIDA,CA,ChallengeA,gx_DHA,
+                 SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))
+.
+
+query
+(*!! <Permission>: the PermDoc is verified, and corresponding to B_1 *)
+      PermB:PermDoc_t,SharedSecret:bitstring,Topic:TopicID_t,
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t;
+    event(PERM_CHECK(GUIDB,PermB,Topic))
+    ==>
+    (event(TOPIC_DISCOVERED(GUIDB,PermB,Topic))
+    ==>
+    (event(TOPIC_CRT_REQ(GUIDB,PermB,Topic)) 
+    ==>  
+    event(B_1(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA,SharedSecret))))
+.
+
+query
+(* <Sequence_A>: the secure channel is created after PERM_CHECK and A_2 *)
+     GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,Topic:TopicID_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring,PermB:PermDoc_t,
+      t1:time,t2:time,t3:time;
+    event(ENC_COMMUNICATION(GUIDA,CA,ChallengeA,gx_DHA,
+                            GUIDB,CB,ChallengeB,gy_DHB,
+                            SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))@t3
+    ==>
+        (event(PERM_CHECK(GUIDB,PermB,Topic))@t1
+    &&  event(A_2(GUIDA,CA,ChallengeA,gx_DHA,
+                  GUIDB,CB,ChallengeB,gy_DHB,
+                  SharedSecret,p2pKeyMaterial))@t2 
+    &&  t1<t2 && t2<t3)
+.
+
+
+query 
+(* <Sequence_B>: the secure channel is created after TOPIC_CRT_REQ and B_2 *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,Topic:TopicID_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring,PermB:PermDoc_t,
+      t1:time,t2:time,t3:time;
+    event(ENC_COMMUNICATION(GUIDA,CA,ChallengeA,gx_DHA,
+                            GUIDB,CB,ChallengeB,gy_DHB,
+                            SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))@t3
+    ==>
+        (event(TOPIC_CRT_REQ(GUIDB,PermB,Topic))@t1
+    &&  event(B_2(GUIDB,CB,ChallengeB,gy_DHB,
+                 GUIDA,CA,ChallengeA,gx_DHA,
+                 SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))@t2 
+    &&  t1<t2 && t2<t3)
+.
+
+
+
+query
+(*!! <Sequence_C>: the permission check is executed after DISCOVERY *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,Topic:TopicID_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring,PermB:PermDoc_t,
+      PdataA:Pdata_t,PdataB:Pdata_t,
+      t1:time,t2:time,t3:time,t4:time,t5:time;
+    event(ENC_COMMUNICATION(GUIDA,CA,ChallengeA,gx_DHA,
+                            GUIDB,CB,ChallengeB,gy_DHB,
+                            SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))@t5
+    ==>
+        (event(PERM_CHECK(GUIDB,PermB,Topic))@t4
+    &&  event(TOPIC_DISCOVERED(GUIDB,PermB,Topic))@t3
+    &&  event(TOPIC_CRT_REQ(GUIDB,PermB,Topic))@t2
+    &&  event(DISCOVERY(GUIDB,PdataB,GUIDA,PdataA))@t1
+    && t1<t2 && t2<t3 && t3<t4 && t4<t5)
+.
+
+query 
+(* <DoS_A> *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,PdataB:Pdata_t,
+      SharedSecret:bitstring;
+    event(A_1(GUIDA,CA,ChallengeA,gx_DHA,GUIDB,CB,ChallengeB,gy_DHB,SharedSecret))
+    ==>
+    event(B_0(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA)) 
+.
+
+query
+(* <DoS_B> *)
+     GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring;
+    event(B_1(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA,SharedSecret))
+    ==>
+    event(A_1(GUIDA,CA,ChallengeA,gx_DHA,GUIDB,CB,ChallengeB,gy_DHB,SharedSecret)) 
+.
+
+query
+(* <DoS_C> *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    event(B_2(GUIDB,CB,ChallengeB,gy_DHB,
+              GUIDA,CA,ChallengeA,gx_DHA,
+              SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))
+    ==>
+    event(A_2(GUIDA,CA,ChallengeA,gx_DHA,
+                 GUIDB,CB,ChallengeB,gy_DHB,
+                 SharedSecret,p2pKeyMaterial)) 
+.
+
+query
+(* <Auth_SessKupdate> *)
+      GUIDA:GUID_t,GUIDB:GUID_t,
+      cryptoHeader_n:CryptoHeader_t,
+      sessionKey_new:bitstring,
+      applicationData_new:bitstring;
+    event(KEY_UPDATE_end(GUIDA,GUIDB,cryptoHeader_n,sessionKey_new,applicationData_new))
+    ==>
+    event(KEY_UPDATE_begin(GUIDA,GUIDB,cryptoHeader_n,sessionKey_new,applicationData_new))
+.
+
+query
+(* <Sec_SessKupdate> *)
+	  GUIDA:GUID_t,GUIDB:GUID_t,
+      cryptoHeader_n:CryptoHeader_t,
+      sessionKey_new:bitstring,
+      applicationData_new:bitstring;
+    event(KEY_UPDATE_end(GUIDA,GUIDB,cryptoHeader_n,sessionKey_new,applicationData_new))
+	&& attacker(sessionKey_new)
+	==> false
+.
+
+query 
+(* <Pri_A> *)
+    GUIDA:GUID_t,GUIDB:GUID_t,
+    PermA:PermDoc_t,PdataA:Pdata_t,
+    PermB:PermDoc_t,PdataB:Pdata_t,Topic:TopicID_t;
+    (attacker(PermA)&&attacker(PermB)&&attacker(PdataA)&&attacker(PdataB)&&attacker(Topic))
+    && event(DISCOVERY(GUIDB,PdataB,GUIDA,PdataA)) 
+    ==> false
+.
+
+query 
+(* <Pri_B> *)
+    GUIDA:GUID_t,GUIDB:GUID_t,
+    PermA:PermDoc_t,PdataA:Pdata_t,
+    PermB:PermDoc_t,PdataB:Pdata_t,Topic:TopicID_t;
+    (attacker(PermA)&&attacker(PermB)&&attacker(PdataA)&&attacker(PdataB)&&attacker(Topic))
+    && event(TOPIC_DISCOVERED(GUIDB,PermB,Topic)) 
+    ==> false
+.
+
+query
+(* <Discover> *)
+    PdataB:Pdata_t;
+    event(A_discover(PdataB))==>event(B_discover(PdataB))
+.

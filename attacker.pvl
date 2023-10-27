@@ -1,0 +1,49 @@
+(* This pv document depicts all the attackers in DDS Security. 
+
+   In the paper, we have analyze the Base and MP. But other attackers
+   are also worth paying attention to. Perhaps these attackers 
+   may be too serious to be analyzed in formal analysis, but they 
+   still indicate that DDS Security needs to apply more measures 
+   to resist attacks.
+   
+   This attacker description method can also provide assistance 
+   in multi-scenario analysis of other protocols.
+   
+   All following processes will be respectively added into the main 
+   ProVerif file to strengthen the attacker, which results in tons of 
+   querys. The Parallel analysis tool will handle this. See more in main.py*)
+
+let Base()=
+(* Base attacker: don't need to do anything special *)
+0.
+
+let SafeDiscovery()=
+(* change "free secureTopic_ch:channel ." to "free secureTopic_ch:channel [private]."
+   manually add [private] *)
+0.
+
+let CompromisedParticipantA(sk:SK_t)=
+(* ParticipantA's PrivK is compromised, which is sent on RTPS_Ch *)
+    out(RTPS_Ch,sk);
+0.
+
+let CompromisedParticipantB(sk:SK_t)=
+    out(RTPS_Ch,sk);
+0.
+
+let MaliciousParticipant()=
+(* MP attacker: the attacker gains a legel identity (and parameters) in DDS,
+   which is sent on RTPS_Ch *)
+    new GUID:GUID_t; new PrivK:SK_t;let Cert=certificate(GUID,pk(PrivK)) in
+    new DG:DomainGovernance_t; new PP:ParticipantPermission_t;new Qos:Qos_t; let Perm=PermissionDoc(GUID,DG,PP) in
+    let DHAlgo=make_algo(ID_G,DH_RSA) in
+    out(RTPS_Ch,(GUID,PrivK,Cert,Perm,DHAlgo));
+0.
+
+let BadPermCA()=
+    out(RTPS_Ch,SK_Perm);
+0.
+
+let BadAuthCA()=
+    out(RTPS_Ch,SK_CI);
+0.

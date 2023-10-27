@@ -1,0 +1,8 @@
+query(* <Auth_SessKupdate> *)
+      GUIDA:GUID_t,GUIDB:GUID_t,
+      cryptoHeader_n:CryptoHeader_t,
+      sessionKey_new:bitstring,
+      applicationData_new:bitstring;
+    event(KEY_UPDATE_end(GUIDA,GUIDB,cryptoHeader_n,sessionKey_new,applicationData_new))
+    ==>
+    event(KEY_UPDATE_begin(GUIDA,GUIDB,cryptoHeader_n,sessionKey_new,applicationData_new)).

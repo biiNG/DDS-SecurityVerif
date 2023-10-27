@@ -1,0 +1,2 @@
+query(* <ReachabilityA>  *)
+    attacker(finishA).

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+                      <html>
+                    <head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                    <title>ProVerif: derivation for query 2</title>
+                    <link rel="stylesheet" href="cssproverif.css">
+                                                                           </head>
+                                                                         <body>
+                                                                         <H1>Explained derivation</H1>
+
+<ol>
+
+<li><a name=step1>Using the function <span class="fun">discoveryRegister</span> the attacker may obtain <span class="fun">discoveryRegister</span>.<br>
+<span class="pred">attacker_Tag_t</span>(<span class="fun">discoveryRegister</span>).<br>
+
+<li><a name=step2>The attacker has some term <span class="var">QosB_3</span>.<br>
+<span class="pred">attacker_Qos_t</span>(<span class="var">QosB_3</span>).<br>
+
+<li><a name=step3>The message <span class="fun"></span>(<span class="name">GUIDA</span>[],<span class="fun">participant_data</span>(<span class="name">GUIDA</span>[],<span class="name">Topic_bd</span>[],<span class="name">QoSA</span>[],<span class="fun">discoveryRegister</span>)) may be sent to the attacker at output <a href="process_1.html#occ27" target="process" class="occ">{27}</a>.<br>
+<span class="pred">attacker_bitstring</span>(<span class="fun"></span>(<span class="name">GUIDA</span>[],<span class="fun">participant_data</span>(<span class="name">GUIDA</span>[],<span class="name">Topic_bd</span>[],<span class="name">QoSA</span>[],<span class="fun">discoveryRegister</span>))).<br>
+
+<li><a name=step4>By <a href="#step3">3</a>, the attacker may know <span class="fun"></span>(<span class="name">GUIDA</span>[],<span class="fun">participant_data</span>(<span class="name">GUIDA</span>[],<span class="name">Topic_bd</span>[],<span class="name">QoSA</span>[],<span class="fun">discoveryRegister</span>)).<br>
+Using the function <span class="fun">2-proj-GUID_t-Pdata_t-tuple</span> the attacker may obtain <span class="fun">participant_data</span>(<span class="name">GUIDA</span>[],<span class="name">Topic_bd</span>[],<span class="name">QoSA</span>[],<span class="fun">discoveryRegister</span>).<br>
+<span class="pred">attacker_Pdata_t</span>(<span class="fun">participant_data</span>(<span class="name">GUIDA</span>[],<span class="name">Topic_bd</span>[],<span class="name">QoSA</span>[],<span class="fun">discoveryRegister</span>)).<br>
+
+<li><a name=step5>By <a href="#step4">4</a>, the attacker may know <span class="fun">participant_data</span>(<span class="name">GUIDA</span>[],<span class="name">Topic_bd</span>[],<span class="name">QoSA</span>[],<span class="fun">discoveryRegister</span>).<br>
+Using the function <span class="fun">2-proj-participant_data</span> the attacker may obtain <span class="name">Topic_bd</span>[].<br>
+<span class="pred">attacker_TopicID_t</span>(<span class="name">Topic_bd</span>[]).<br>
+
+<li><a name=step6>The attacker has some term <span class="var">GUIDB_4</span>.<br>
+<span class="pred">attacker_GUID_t</span>(<span class="var">GUIDB_4</span>).<br>
+
+<li><a name=step7>By <a href="#step6">6</a>, the attacker may know <span class="var">GUIDB_4</span>.<br>
+By <a href="#step5">5</a>, the attacker may know <span class="name">Topic_bd</span>[].<br>
+By <a href="#step2">2</a>, the attacker may know <span class="var">QosB_3</span>.<br>
+By <a href="#step1">1</a>, the attacker may know <span class="fun">discoveryRegister</span>.<br>
+Using the function <span class="fun">participant_data</span> the attacker may obtain <span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>).<br>
+<span class="pred">attacker_Pdata_t</span>(<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>)).<br>
+
+<li><a name=step8>By <a href="#step6">6</a>, the attacker may know <span class="var">GUIDB_4</span>.<br>
+By <a href="#step7">7</a>, the attacker may know <span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>).<br>
+Using the function <span class="fun">GUID_t-Pdata_t-tuple</span> the attacker may obtain <span class="fun"></span>(<span class="var">GUIDB_4</span>,<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>)).<br>
+<span class="pred">attacker_bitstring</span>(<span class="fun"></span>(<span class="var">GUIDB_4</span>,<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>))).<br>
+
+<li><a name=step9>The attacker has some term <span class="var">QosA_1</span>.<br>
+<span class="pred">attacker_Qos_t</span>(<span class="var">QosA_1</span>).<br>
+
+<li><a name=step10>The attacker has some term <span class="var">GUIDA_4</span>.<br>
+<span class="pred">attacker_GUID_t</span>(<span class="var">GUIDA_4</span>).<br>
+
+<li><a name=step11>By <a href="#step10">10</a>, the attacker may know <span class="var">GUIDA_4</span>.<br>
+By <a href="#step5">5</a>, the attacker may know <span class="name">Topic_bd</span>[].<br>
+By <a href="#step9">9</a>, the attacker may know <span class="var">QosA_1</span>.<br>
+By <a href="#step1">1</a>, the attacker may know <span class="fun">discoveryRegister</span>.<br>
+Using the function <span class="fun">participant_data</span> the attacker may obtain <span class="fun">participant_data</span>(<span class="var">GUIDA_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosA_1</span>,<span class="fun">discoveryRegister</span>).<br>
+<span class="pred">attacker_Pdata_t</span>(<span class="fun">participant_data</span>(<span class="var">GUIDA_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosA_1</span>,<span class="fun">discoveryRegister</span>)).<br>
+
+<li><a name=step12>By <a href="#step10">10</a>, the attacker may know <span class="var">GUIDA_4</span>.<br>
+By <a href="#step11">11</a>, the attacker may know <span class="fun">participant_data</span>(<span class="var">GUIDA_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosA_1</span>,<span class="fun">discoveryRegister</span>).<br>
+Using the function <span class="fun">GUID_t-Pdata_t-tuple</span> the attacker may obtain <span class="fun"></span>(<span class="var">GUIDA_4</span>,<span class="fun">participant_data</span>(<span class="var">GUIDA_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosA_1</span>,<span class="fun">discoveryRegister</span>)).<br>
+<span class="pred">attacker_bitstring</span>(<span class="fun"></span>(<span class="var">GUIDA_4</span>,<span class="fun">participant_data</span>(<span class="var">GUIDA_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosA_1</span>,<span class="fun">discoveryRegister</span>))).<br>
+
+<li><a name=step13>The attacker has some term <span class="var">Topic_3</span>.<br>
+<span class="pred">attacker_TopicID_t</span>(<span class="var">Topic_3</span>).<br>
+
+<li><a name=step14>Using the function <span class="fun">TopicCreateReq</span> the attacker may obtain <span class="fun">TopicCreateReq</span>.<br>
+<span class="pred">attacker_Tag_t</span>(<span class="fun">TopicCreateReq</span>).<br>
+
+<li><a name=step15>The attacker has some term <span class="var">PermB_3</span>.<br>
+<span class="pred">attacker_PermDoc_t</span>(<span class="var">PermB_3</span>).<br>
+
+<li><a name=step16>By <a href="#step15">15</a>, the attacker may know <span class="var">PermB_3</span>.<br>
+By <a href="#step14">14</a>, the attacker may know <span class="fun">TopicCreateReq</span>.<br>
+By <a href="#step13">13</a>, the attacker may know <span class="var">Topic_3</span>.<br>
+By <a href="#step7">7</a>, the attacker may know <span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>).<br>
+Using the function <span class="fun">PermDoc_t-Tag_t-TopicID_t-Pdata_t-tuple</span> the attacker may obtain <span class="fun"></span>(<span class="var">PermB_3</span>,<span class="fun">TopicCreateReq</span>,<span class="var">Topic_3</span>,<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>)).<br>
+<span class="pred">attacker_bitstring</span>(<span class="fun"></span>(<span class="var">PermB_3</span>,<span class="fun">TopicCreateReq</span>,<span class="var">Topic_3</span>,<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>))).<br>
+
+<li><a name=step17>The message <span class="fun"></span>(<span class="var">GUIDB_4</span>,<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>)) that the attacker may have by <a href="#step8">8</a> may be received at input <a href="process_1.html#occ142" target="process" class="occ">{142}</a>.<br>
+The message <span class="fun"></span>(<span class="var">GUIDA_4</span>,<span class="fun">participant_data</span>(<span class="var">GUIDA_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosA_1</span>,<span class="fun">discoveryRegister</span>)) that the attacker may have by <a href="#step12">12</a> may be received at input <a href="process_1.html#occ144" target="process" class="occ">{144}</a>.<br>
+The message <span class="fun"></span>(<span class="var">PermB_3</span>,<span class="fun">TopicCreateReq</span>,<span class="var">Topic_3</span>,<span class="fun">participant_data</span>(<span class="var">GUIDB_4</span>,<span class="name">Topic_bd</span>[],<span class="var">QosB_3</span>,<span class="fun">discoveryRegister</span>)) that the attacker may have by <a href="#step16">16</a> may be received at input <a href="process_1.html#occ148" target="process" class="occ">{148}</a>.<br>
+So the message <span class="name">finishDiscovery</span>[] may be sent to the attacker at output <a href="process_1.html#occ151" target="process" class="occ">{151}</a>.<br>
+<span class="pred">attacker_bitstring</span>(<span class="name">finishDiscovery</span>[]).<br>
+
+<li><a name=step18>By <a href="#step17">17</a>, <span class="pred">attacker_bitstring</span>(<span class="name">finishDiscovery</span>[]).<br>
+The goal is reached, represented in the following fact:<br>
+<span class="pred">attacker_bitstring</span>(<span class="name">finishDiscovery</span>[]).<br>
+
+</ol>
+</body>
+</html>

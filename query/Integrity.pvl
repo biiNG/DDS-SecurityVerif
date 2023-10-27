@@ -1,0 +1,6 @@
+query(*!! <Integrity>: B sends A data which is not tempered with *)
+    GUIDA:GUID_t,GUIDB:GUID_t,aD:bitstring,
+    cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    event(A_3(GUIDB,GUIDA,aD,cryptoHeader,sessionKey))
+    ==>
+    event(B_3(GUIDB,GUIDA,aD,cryptoHeader,sessionKey)).

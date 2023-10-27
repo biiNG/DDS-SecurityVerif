@@ -1,0 +1,6 @@
+Verification summary:
+
+Query inj-event(endBtoA(guid,c,nonce)) ==> inj-event(beginBtoA(guid,c,nonce)) is false.
+
+--------------------------------------------------------------
+

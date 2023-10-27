@@ -1,0 +1,6 @@
+Verification summary:
+
+Query not (event(B_2(GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,SharedSecret_2,p2pKeyMaterial,cryptoHeader_2,sessionKey_2)) && attacker(sessionKey_2)) is false.
+
+--------------------------------------------------------------
+
