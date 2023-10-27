@@ -37,7 +37,7 @@ The results we got are saved in `./paralyzer-result` folder.
 - **Pool size**: In line 172 of the code, you can choose the number of processes in the process pool. The default pool size is equal to the number of CPU cores, and the program will continuously create new processes to start the analysis until all analyses are completed. Therefore, if you run the `Paralyzer.py` directly, it may cause your laptop to become unresponsive due to the simultaneous execution of multiple CPU-intensive processes. You can set the pool size as follows.
 
 ```python
-    p = Pool() # the default number of subprocess is the number of cores.
+	p = Pool() # the default number of subprocess is the number of cores.
 	p2 = Pool(4) # the pool size is 4, and this will not significantly impact the computer's performance.
 ```
 
