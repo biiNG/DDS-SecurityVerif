@@ -2,19 +2,25 @@
 
  ## How to reproduce the results
 
-Under **Windows**, run this command in PowerShell(or cmd) at the directory. ProVerif will give all the result of the code, in **ENC-BASE**. Remember to add the path of ProVerif to the environment PATH.
+Under **Linux**, run this command in PowerShell(or cmd) at the directory. ProVerif will give all the result of the code, in **ENC-BASE**. Remember to add the path of ProVerif to the environment PATH.
 
-```powershell
-proverif  -lib .\lib.pvl -lib .\query.pvl -lib .\attacker.pvl  .\ENC.pv
+```shell
+proverif  -lib ./lib.pvl -lib ./query.pvl -lib ./attacker.pvl  ./ENC.pv
 ```
 
-Under **Linux**, please change `\` to `/`.
+Under **Windows**, please change `/ `to `\`.
 
-In **MAC** case, please change the ` .\ENC.pv` to ` .\MAC.pv`.
+In **MAC** case, please change the ` ./ENC.pv` to ` ./MAC.pv`.
 
 In **MP** case, it need to do some change in ENC.pv (or MAC.pv). Please change the ` (* <compromiseScenarios> *)`  to `MaliciousParticipant()` in line 218. Then run the command above.
 
-We have also designed other compromised scenarios, which are included in the `.\attacker.pvl`. Some of them maybe too strong to make sense, or just to prove the conditions of certain attacks. Please check and try it in the same way.
+We have also designed other compromised scenarios, which are included in the `./attacker.pvl`. Some of them maybe too strong to make sense, or just to prove the conditions of certain attacks. Please check and try it in the same way.
+
+You can view the html and graph results of ENC-BASE in the folder `./result`, which is generate by the command below under **Windows**.
+
+```powershell
+proverif  -html .\result -lib .\lib.pvl -lib .\query.pvl -lib .\attacker.pvl .\ENC.pv 
+```
 
  ## Parallel analysis
 

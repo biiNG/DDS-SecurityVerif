@@ -2,8 +2,7 @@ digraph {
 graph [ordering = out]
 edge [arrowhead = none, penwidth = 1.6, fontsize = 30]
 node [shape = point, width = 0, height = 0, fontsize = 30]
-Trace<br/>
-[label = <A trace has been found.<br/>
+Trace [label = <A trace has been found.<br/>
 >, shape = plaintext]
 P0__0 [label = "Honest Process", shape = plaintext]
 P__0 [label = "Attacker", shape = plaintext]
@@ -30,7 +29,7 @@ P0__6 -> P0__7 [label = <>, weight = 100]
 P__5 -> P__6 [label = <>, weight = 100]
 {rank = same; P__6 P0__7}
 P0__7 -> P0__8 [label = <>, weight = 100]
-P0__8 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{5}</FONT><FONT COLOR="blue">new </FONT>Topic_bd_4</TD></TR></TABLE>>]
+P0__8 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{5}</FONT><FONT COLOR="blue">new </FONT>GUIDA_5</TD></TR><TR><TD><FONT COLOR="darkgreen">{6}</FONT><FONT COLOR="blue">new </FONT>PrivKA_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{10}</FONT><FONT COLOR="blue">new </FONT>DGA_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{11}</FONT><FONT COLOR="blue">new </FONT>PPA_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{12}</FONT><FONT COLOR="blue">new </FONT>QoSA_2</TD></TR><TR><TD><FONT COLOR="darkgreen">{18}</FONT><FONT COLOR="blue">new </FONT>GUIDB_5</TD></TR><TR><TD><FONT COLOR="darkgreen">{19}</FONT><FONT COLOR="blue">new </FONT>PrivKB_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{23}</FONT><FONT COLOR="blue">new </FONT>DGB_2</TD></TR><TR><TD><FONT COLOR="darkgreen">{24}</FONT><FONT COLOR="blue">new </FONT>PPB_2</TD></TR><TR><TD><FONT COLOR="darkgreen">{25}</FONT><FONT COLOR="blue">new </FONT>QosB_4</TD></TR><TR><TD><FONT COLOR="darkgreen">{31}</FONT><FONT COLOR="blue">new </FONT>Topic_bd_4</TD></TR></TABLE>>]
 P0__8 -> P0__9 [label = <>, weight = 100]
 /*RPar */
 P0__9 -> P0_2__9 [label = <>]
@@ -39,853 +38,91 @@ P0__9 -> P0_0__9 [label = <>]
 P0__9 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
 {rank = same; P0_0__9 P0_1__9 P0_2__9}
 P0_0__9 [label = "!", shape = ellipse]
-P0_1__9 -> P0_1__10 [label = <>, weight = 100]
-P0_1__10 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{73}</FONT><FONT COLOR="blue">new </FONT>GUIDB_4</TD></TR><TR><TD><FONT COLOR="darkgreen">{74}</FONT><FONT COLOR="blue">new </FONT>PrivKB_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{78}</FONT><FONT COLOR="blue">new </FONT>DGB_2</TD></TR><TR><TD><FONT COLOR="darkgreen">{79}</FONT><FONT COLOR="blue">new </FONT>PPB_2</TD></TR><TR><TD><FONT COLOR="darkgreen">{80}</FONT><FONT COLOR="blue">new </FONT>QosB_3</TD></TR></TABLE>>]
-P0_1__10 -> P0_1__11 [label = <>, weight = 100]
-P0_1__11 [label = "!", shape = ellipse]
-{rank = same; P0_1_2__11 P0_1_1__11 P0_1_0__11}
-P0_1_2__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
-P0_1__11 -> P0_1_2__11 [label = <>]
-P0_1_1__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
-P0_1__11 -> P0_1_1__11 [label = <>]
-P0_1_0__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
-P0_1__11 -> P0_1_0__11 [label = <>]
-P0_1_0__11 -> P0_1_0__12 [label = <>, weight = 100]
-P0_1_0__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantB</FONT></TD></TR><TR><TD><FONT COLOR="darkgreen">{94}</FONT><FONT COLOR="blue">event</FONT> B_discover(participant_data(GUIDB_4,<br/>
-Topic_bd_4,QosB_3,discoveryRegister))</TD></TR></TABLE>>]
-P0_1_0__12 -> P0_1_0__13 [label = <>, weight = 100]
-P0_1_0__13 -> P0_1_0__14 [label = <>, weight = 100]
-P0_0__10 [label = "", style = invisible]
-P0_0__9 -> P0_0__10 [label = <>, weight = 100, style = invisible]
-P__6 -> P__7 [label = <>, weight = 100]
-{rank = same; P__7 P0_0__10 P0_1_0__14}
-P0_1_0__14 -> P0_1_0__15 [label = <>, weight = 100]
-P__7 -> P__8 [label = <>, weight = 100]
-{rank = same; P__8 P0_1_0__15}
-P0_1_0__15 -> P__8 [label = <(~M_2,participant_data(~M_3,~M_4,~M_5,~M_6)) =<br/>
-(GUIDB_4,participant_data(GUIDB_4,Topic_bd_4,QosB_3,<br/>
-discoveryRegister))>, arrowhead = normal]
-P0_1_0__15 -> P0_1_0__16 [label = <>, weight = 100]
-P0_0__11 [label = "", style = invisible]
-P0_0__10 -> P0_0__11 [label = <>, weight = 100, style = invisible]
-P__8 -> P__9 [label = <>, weight = 100]
-{rank = same; P__9 P0_0__11 P0_1_0__16}
-P0_1_1__11 -> P0_1_1__12 [label = <>, weight = 100]
-P0_1_1__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantB</FONT></TD></TR><TR><TD><FONT COLOR="darkgreen">{94}</FONT><FONT COLOR="blue">event</FONT> B_discover(participant_data(GUIDB_4,<br/>
-Topic_bd_4,QosB_3,discoveryRegister))</TD></TR></TABLE>>]
-P0_1_1__12 -> P0_1_1__13 [label = <>, weight = 100]
-P0_1_1__13 -> P0_1_1__14 [label = <>, weight = 100]
-P0_1_0__16 -> P0_1_0__17 [label = <>, weight = 100]
-P0_0__12 [label = "", style = invisible]
-P0_0__11 -> P0_0__12 [label = <>, weight = 100, style = invisible]
-P__9 -> P__10 [label = <>, weight = 100]
-{rank = same; P__10 P0_0__12 P0_1_0__17 P0_1_1__14}
-P0_1_1__14 -> P0_1_1__15 [label = <>, weight = 100]
-P__10 -> P__11 [label = <>, weight = 100]
-{rank = same; P__11 P0_1_1__15}
-P0_1_1__15 -> P__11 [label = <(~M_7,participant_data(~M_8,~M_9,~M_10,~M_11))<br/>
-= (GUIDB_4,participant_data(GUIDB_4,Topic_bd_4,<br/>
-QosB_3,discoveryRegister))>, arrowhead = normal]
-P0_1_1__15 -> P0_1_1__16 [label = <>, weight = 100]
-P0_1_0__17 -> P0_1_0__18 [label = <>, weight = 100]
-P0_0__13 [label = "", style = invisible]
-P0_0__12 -> P0_0__13 [label = <>, weight = 100, style = invisible]
-P__11 -> P__12 [label = <>, weight = 100]
-{rank = same; P__12 P0_0__13 P0_1_0__18 P0_1_1__16}
-P0_1_2__11 -> P0_1_2__12 [label = <>, weight = 100]
-P0_1_2__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantB</FONT></TD></TR><TR><TD><FONT COLOR="darkgreen">{94}</FONT><FONT COLOR="blue">event</FONT> B_discover(participant_data(GUIDB_4,<br/>
-Topic_bd_4,QosB_3,discoveryRegister))</TD></TR></TABLE>>]
-P0_1_2__12 -> P0_1_2__13 [label = <>, weight = 100]
-P0_1_2__13 -> P0_1_2__14 [label = <>, weight = 100]
-P0_1_1__16 -> P0_1_1__17 [label = <>, weight = 100]
-P0_1_0__18 -> P0_1_0__19 [label = <>, weight = 100]
-P0_0__14 [label = "", style = invisible]
-P0_0__13 -> P0_0__14 [label = <>, weight = 100, style = invisible]
-P__12 -> P__13 [label = <>, weight = 100]
-{rank = same; P__13 P0_0__14 P0_1_0__19 P0_1_1__17 P0_1_2__14}
-P0_1_2__14 -> P0_1_2__15 [label = <>, weight = 100]
-P__13 -> P__14 [label = <>, weight = 100]
-{rank = same; P__14 P0_1_2__15}
-P0_1_2__15 -> P__14 [label = <(~M_12,participant_data(~M_13,~M_14,~M_15,~M_16))<br/>
-= (GUIDB_4,participant_data(GUIDB_4,Topic_bd_4,<br/>
-QosB_3,discoveryRegister))>, arrowhead = normal]
-P0_1_2__15 -> P0_1_2__16 [label = <>, weight = 100]
-P0_1_1__17 -> P0_1_1__18 [label = <>, weight = 100]
-P0_1_0__19 -> P0_1_0__20 [label = <>, weight = 100]
-P0_0__15 [label = "", style = invisible]
-P0_0__14 -> P0_0__15 [label = <>, weight = 100, style = invisible]
-P__14 -> P__15 [label = <>, weight = 100]
-{rank = same; P__15 P0_0__15 P0_1_0__20 P0_1_1__18 P0_1_2__16}
-P0_2__9 -> P0_2__10 [label = <>, weight = 100]
-P0_2__10 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{6}</FONT><FONT COLOR="blue">new </FONT>GUIDA_4</TD></TR><TR><TD><FONT COLOR="darkgreen">{7}</FONT><FONT COLOR="blue">new </FONT>PrivKA_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{11}</FONT><FONT COLOR="blue">new </FONT>DGA_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{12}</FONT><FONT COLOR="blue">new </FONT>PPA_1</TD></TR><TR><TD><FONT COLOR="darkgreen">{13}</FONT><FONT COLOR="blue">new </FONT>QoSA_2</TD></TR></TABLE>>]
-P0_2__10 -> P0_2__11 [label = <>, weight = 100]
-P0_2__11 [label = "!", shape = ellipse]
-{rank = same; P0_2_2__11 P0_2_1__11 P0_2_0__11}
-P0_2_2__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
-P0_2__11 -> P0_2_2__11 [label = <>]
-P0_2_1__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
-P0_2__11 -> P0_2_1__11 [label = <>]
-P0_2_0__11 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
-P0_2__11 -> P0_2_0__11 [label = <>]
+P0_0_0__9 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
+P0_0__9 -> P0_0_0__9 [label = <>, weight = 100]
+P0_0_0__9 -> P0_0_0__10 [label = <>, weight = 100]
+P0_0_0__10 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">Discovery</FONT></TD></TR></TABLE>>]
+P0_0_0__10 -> P0_0_0__11 [label = <>, weight = 100]
+P0_1__9 [label = "!", shape = ellipse]
+P0_2__9 [label = "!", shape = ellipse]
+P0_2_0__9 [label = "", fixedsize = false, width = 0, height = 0, shape = none]
+P0_2__9 -> P0_2_0__9 [label = <>, weight = 100]
+P0_2_0__9 -> P0_2_0__10 [label = <>, weight = 100]
+P0_2_0__10 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantA</FONT></TD></TR></TABLE>>]
+P0_2_0__10 -> P0_2_0__11 [label = <>, weight = 100]
 P0_2_0__11 -> P0_2_0__12 [label = <>, weight = 100]
-P0_2_0__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantA</FONT></TD></TR></TABLE>>]
+P0_1__10 [label = "", style = invisible]
+P0_1__9 -> P0_1__10 [label = <>, weight = 100, style = invisible]
+P0_0_0__11 -> P0_0_0__12 [label = <>, weight = 100]
+P__6 -> P__7 [label = <>, weight = 100]
+{rank = same; P__7 P0_0_0__12 P0_1__10 P0_2_0__12}
 P0_2_0__12 -> P0_2_0__13 [label = <>, weight = 100]
+P__7 -> P__8 [label = <>, weight = 100]
+{rank = same; P__8 P0_2_0__13}
+P0_2_0__13 -> P__8 [label = <(~M_2,participant_data(~M_3,~M_4,~M_5,~M_6)) =<br/>
+(GUIDA_5,participant_data(GUIDA_5,Topic_bd_4,QoSA_2,<br/>
+discoveryRegister))>, arrowhead = normal]
 P0_2_0__13 -> P0_2_0__14 [label = <>, weight = 100]
-P0_1_2__16 -> P0_1_2__17 [label = <>, weight = 100]
-P0_1_1__18 -> P0_1_1__19 [label = <>, weight = 100]
-P0_1_0__20 -> P0_1_0__21 [label = <>, weight = 100]
-P0_0__16 [label = "", style = invisible]
-P0_0__15 -> P0_0__16 [label = <>, weight = 100, style = invisible]
+P0_1__11 [label = "", style = invisible]
+P0_1__10 -> P0_1__11 [label = <>, weight = 100, style = invisible]
+P0_0_0__12 -> P0_0_0__13 [label = <>, weight = 100]
+P__8 -> P__9 [label = <>, weight = 100]
+{rank = same; P__9 P0_0_0__13 P0_1__11 P0_2_0__14}
+P0_0_0__13 -> P0_0_0__14 [label = <>, weight = 100]
+P__9 -> P__10 [label = <>, weight = 100]
+{rank = same; P__10 P0_0_0__14}
+P0_0_0__14 -> P0_0_0__15 [label = <>, weight = 100]
+P__10 -> P__11 [label = <>, weight = 100]
+{rank = same; P__11 P0_0_0__15}
+P0_0_0__15 -> P__11 [label = <(a_1,participant_data(a_1,~M_4,a_2,discoveryRegister))<br/>
+= (a_1,participant_data(a_1,Topic_bd_4,a_2,discoveryRegister))>, dir = back, arrowhead = normal]
+P0_0_0__15 -> P0_0_0__16 [label = <>, weight = 100]
+P__11 -> P__12 [label = <>, weight = 100]
+{rank = same; P__12 P0_0_0__16}
+P0_0_0__16 -> P0_0_0__17 [label = <>, weight = 100]
+P__12 -> P__13 [label = <>, weight = 100]
+{rank = same; P__13 P0_0_0__17}
+P0_0_0__17 -> P0_0_0__18 [label = <>, weight = 100]
+P__13 -> P__14 [label = <>, weight = 100]
+{rank = same; P__14 P0_0_0__18}
+P0_0_0__18 -> P__14 [label = <(a_4,participant_data(a_4,~M_4,a_5,discoveryRegister))<br/>
+= (a_4,participant_data(a_4,Topic_bd_4,a_5,discoveryRegister))>, dir = back, arrowhead = normal]
+P0_0_0__18 -> P0_0_0__19 [label = <>, weight = 100]
+P__14 -> P__15 [label = <>, weight = 100]
+{rank = same; P__15 P0_0_0__19}
+P0_0_0__19 -> P0_0_0__20 [label = <>, weight = 100]
+P0_0_0__20 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{146}</FONT><FONT COLOR="blue">event</FONT> DISCOVERY(a_1,participant_data(a_1,<br/>
+Topic_bd_4,a_2,discoveryRegister),a_4,participant_data(<br/>
+a_4,Topic_bd_4,a_5,discoveryRegister))</TD></TR></TABLE>>]
+P0_0_0__20 -> P0_0_0__21 [label = <>, weight = 100]
+P0_0_0__21 -> P0_0_0__22 [label = <>, weight = 100]
 P__15 -> P__16 [label = <>, weight = 100]
-{rank = same; P__16 P0_0__16 P0_1_0__21 P0_1_1__19 P0_1_2__17 P0_2_0__14}
-P0_2_0__14 -> P0_2_0__15 [label = <>, weight = 100]
+{rank = same; P__16 P0_0_0__22}
+P0_0_0__22 -> P0_0_0__23 [label = <>, weight = 100]
 P__16 -> P__17 [label = <>, weight = 100]
-{rank = same; P__17 P0_2_0__15}
-P0_2_0__15 -> P__17 [label = <(~M_17,participant_data(~M_18,~M_19,~M_20,~M_21))<br/>
-= (GUIDA_4,participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister))>, arrowhead = normal]
-P0_2_0__15 -> P0_2_0__16 [label = <>, weight = 100]
-P0_1_2__17 -> P0_1_2__18 [label = <>, weight = 100]
-P0_1_1__19 -> P0_1_1__20 [label = <>, weight = 100]
-P0_1_0__21 -> P0_1_0__22 [label = <>, weight = 100]
-P0_0__17 [label = "", style = invisible]
-P0_0__16 -> P0_0__17 [label = <>, weight = 100, style = invisible]
+{rank = same; P__17 P0_0_0__23}
+P0_0_0__23 -> P__17 [label = <(participant_data(~M_7,~M_8,~M_9,~M_10),~M_11,<br/>
+participant_data(~M_12,~M_13,~M_14,~M_15))>, arrowhead = normal]
+P0_0_0__23 -> P0_0_0__24 [label = <>, weight = 100]
 P__17 -> P__18 [label = <>, weight = 100]
-{rank = same; P__18 P0_0__17 P0_1_0__22 P0_1_1__20 P0_1_2__18 P0_2_0__16}
-P0_2_1__11 -> P0_2_1__12 [label = <>, weight = 100]
-P0_2_1__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantA</FONT></TD></TR></TABLE>>]
-P0_2_1__12 -> P0_2_1__13 [label = <>, weight = 100]
-P0_2_1__13 -> P0_2_1__14 [label = <>, weight = 100]
-P0_2_0__16 -> P0_2_0__17 [label = <>, weight = 100]
-P0_1_2__18 -> P0_1_2__19 [label = <>, weight = 100]
-P0_1_1__20 -> P0_1_1__21 [label = <>, weight = 100]
-P0_1_0__22 -> P0_1_0__23 [label = <>, weight = 100]
-P0_0__18 [label = "", style = invisible]
-P0_0__17 -> P0_0__18 [label = <>, weight = 100, style = invisible]
+{rank = same; P__18 P0_0_0__24}
+P0_0_0__24 -> P0_0_0__25 [label = <>, weight = 100]
 P__18 -> P__19 [label = <>, weight = 100]
-{rank = same; P__19 P0_0__18 P0_1_0__23 P0_1_1__21 P0_1_2__19 P0_2_0__17 P0_2_1__14}
-P0_2_1__14 -> P0_2_1__15 [label = <>, weight = 100]
+{rank = same; P__19 P0_0_0__25}
+P0_0_0__25 -> P0_0_0__26 [label = <>, weight = 100]
 P__19 -> P__20 [label = <>, weight = 100]
-{rank = same; P__20 P0_2_1__15}
-P0_2_1__15 -> P__20 [label = <(~M_22,participant_data(~M_23,~M_24,~M_25,~M_26))<br/>
-= (GUIDA_4,participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister))>, arrowhead = normal]
-P0_2_1__15 -> P0_2_1__16 [label = <>, weight = 100]
-P0_2_0__17 -> P0_2_0__18 [label = <>, weight = 100]
-P0_1_2__19 -> P0_1_2__20 [label = <>, weight = 100]
-P0_1_1__21 -> P0_1_1__22 [label = <>, weight = 100]
-P0_1_0__23 -> P0_1_0__24 [label = <>, weight = 100]
-P0_0__19 [label = "", style = invisible]
-P0_0__18 -> P0_0__19 [label = <>, weight = 100, style = invisible]
+{rank = same; P__20 P0_0_0__26}
+P0_0_0__26 -> P__20 [label = <~X_1>, dir = back, arrowhead = normal]
+P0_0_0__26 -> P0_0_0__27 [label = <>, weight = 100]
 P__20 -> P__21 [label = <>, weight = 100]
-{rank = same; P__21 P0_0__19 P0_1_0__24 P0_1_1__22 P0_1_2__20 P0_2_0__18 P0_2_1__16}
-P0_2_2__11 -> P0_2_2__12 [label = <>, weight = 100]
-P0_2_2__12 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>Beginning of process <FONT COLOR="darkgreen">ParticipantA</FONT></TD></TR></TABLE>>]
-P0_2_2__12 -> P0_2_2__13 [label = <>, weight = 100]
-P0_2_2__13 -> P0_2_2__14 [label = <>, weight = 100]
-P0_2_1__16 -> P0_2_1__17 [label = <>, weight = 100]
-P0_2_0__18 -> P0_2_0__19 [label = <>, weight = 100]
-P0_1_2__20 -> P0_1_2__21 [label = <>, weight = 100]
-P0_1_1__22 -> P0_1_1__23 [label = <>, weight = 100]
-P0_1_0__24 -> P0_1_0__25 [label = <>, weight = 100]
-P0_0__20 [label = "", style = invisible]
-P0_0__19 -> P0_0__20 [label = <>, weight = 100, style = invisible]
+{rank = same; P__21 P0_0_0__27}
+P0_0_0__27 -> P0_0_0__28 [label = <>, weight = 100]
+P0_0_0__28 [color = red, shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{149}</FONT><FONT COLOR="blue">event</FONT> TOPIC_DISCOVERED(a_1,a_6,a_7)</TD></TR></TABLE>>]
+P0_0_0__28 -> P0_0_0__29 [label = <>, weight = 100]
 P__21 -> P__22 [label = <>, weight = 100]
-{rank = same; P__22 P0_0__20 P0_1_0__25 P0_1_1__23 P0_1_2__21 P0_2_0__19 P0_2_1__17 P0_2_2__14}
-P0_2_2__14 -> P0_2_2__15 [label = <>, weight = 100]
+P__22 [color = red, shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD>The attacker has the message a_8</TD></TR><TR><TD>The attacker has the message a_6</TD></TR><TR><TD>The attacker has the message a_9</TD></TR><TR><TD>The attacker has the message a_10</TD></TR><TR><TD>The attacker has the message a_7</TD></TR></TABLE>>]
 P__22 -> P__23 [label = <>, weight = 100]
-{rank = same; P__23 P0_2_2__15}
-P0_2_2__15 -> P__23 [label = <(~M_27,participant_data(~M_28,~M_29,~M_30,~M_31))<br/>
-= (GUIDA_4,participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister))>, arrowhead = normal]
-P0_2_2__15 -> P0_2_2__16 [label = <>, weight = 100]
-P0_2_1__17 -> P0_2_1__18 [label = <>, weight = 100]
-P0_2_0__19 -> P0_2_0__20 [label = <>, weight = 100]
-P0_1_2__21 -> P0_1_2__22 [label = <>, weight = 100]
-P0_1_1__23 -> P0_1_1__24 [label = <>, weight = 100]
-P0_1_0__25 -> P0_1_0__26 [label = <>, weight = 100]
-P0_0__21 [label = "", style = invisible]
-P0_0__20 -> P0_0__21 [label = <>, weight = 100, style = invisible]
-P__23 -> P__24 [label = <>, weight = 100]
-{rank = same; P__24 P0_0__21 P0_1_0__26 P0_1_1__24 P0_1_2__22 P0_2_0__20 P0_2_1__18 P0_2_2__16}
-P0_2_2__16 -> P0_2_2__17 [label = <>, weight = 100]
-P0_2_1__18 -> P0_2_1__19 [label = <>, weight = 100]
-P0_2_0__20 -> P0_2_0__21 [label = <>, weight = 100]
-P0_1_2__22 -> P0_1_2__23 [label = <>, weight = 100]
-P0_1_1__24 -> P0_1_1__25 [label = <>, weight = 100]
-P0_1_0__26 -> P0_1_0__27 [label = <>, weight = 100]
-P0_0__22 [label = "", style = invisible]
-P0_0__21 -> P0_0__22 [label = <>, weight = 100, style = invisible]
-P__24 -> P__25 [label = <>, weight = 100]
-{rank = same; P__25 P0_0__22 P0_1_0__27 P0_1_1__25 P0_1_2__23 P0_2_0__21 P0_2_1__19 P0_2_2__17}
-P0_2_2__17 -> P0_2_2__18 [label = <>, weight = 100]
-P__25 -> P__26 [label = <>, weight = 100]
-{rank = same; P__26 P0_2_2__18}
-P0_2_2__18 -> P__26 [label = <~X_1>, dir = back, arrowhead = normal]
-P0_2_2__18 -> P0_2_2__19 [label = <>, weight = 100]
-P0_2_1__19 -> P0_2_1__20 [label = <>, weight = 100]
-P0_2_0__21 -> P0_2_0__22 [label = <>, weight = 100]
-P0_1_2__23 -> P0_1_2__24 [label = <>, weight = 100]
-P0_1_1__25 -> P0_1_1__26 [label = <>, weight = 100]
-P0_1_0__27 -> P0_1_0__28 [label = <>, weight = 100]
-P0_0__23 [label = "", style = invisible]
-P0_0__22 -> P0_0__23 [label = <>, weight = 100, style = invisible]
-P__26 -> P__27 [label = <>, weight = 100]
-{rank = same; P__27 P0_0__23 P0_1_0__28 P0_1_1__26 P0_1_2__24 P0_2_0__22 P0_2_1__20 P0_2_2__19}
-P0_2_2__19 -> P0_2_2__20 [label = <>, weight = 100]
-P0_2_2__20 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{29}</FONT><FONT COLOR="blue">event</FONT> A_discover(a_6)</TD></TR><TR><TD><FONT COLOR="darkgreen">{31}</FONT><FONT COLOR="blue">new </FONT>ChallengeA_7</TD></TR><TR><TD><FONT COLOR="darkgreen">{32}</FONT><FONT COLOR="blue">new </FONT>s_6</TD></TR><TR><TD><FONT COLOR="darkgreen">{37}</FONT><FONT COLOR="blue">event</FONT> A_0(GUIDA_4,make_C_list(sign_cert(GUIDA_4,<br/>
-pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,<br/>
-PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),ChallengeA_7,dh_pub(ID_G,dh_k(s_6)),a_6)<br/>
-</TD></TR></TABLE>>]
-P0_2_2__20 -> P0_2_2__21 [label = <>, weight = 100]
-P0_2_2__21 -> P0_2_2__22 [label = <>, weight = 100]
-P0_2_1__20 -> P0_2_1__21 [label = <>, weight = 100]
-P0_2_0__22 -> P0_2_0__23 [label = <>, weight = 100]
-P0_1_2__24 -> P0_1_2__25 [label = <>, weight = 100]
-P0_1_1__26 -> P0_1_1__27 [label = <>, weight = 100]
-P0_1_0__28 -> P0_1_0__29 [label = <>, weight = 100]
-P0_0__24 [label = "", style = invisible]
-P0_0__23 -> P0_0__24 [label = <>, weight = 100, style = invisible]
-P__27 -> P__28 [label = <>, weight = 100]
-{rank = same; P__28 P0_0__24 P0_1_0__29 P0_1_1__27 P0_1_2__25 P0_2_0__23 P0_2_1__21 P0_2_2__22}
-P0_2_2__22 -> P0_2_2__23 [label = <>, weight = 100]
-P__28 -> P__29 [label = <>, weight = 100]
-{rank = same; P__29 P0_2_2__23}
-P0_2_2__23 -> P__29 [label = <(make_C_list(~M_32,~M_33,participant_data(~M_34,<br/>
-~M_35,~M_36,~M_37),make_algo(~M_38,~M_39),~M_40),<br/>
-~M_41,~M_42,~M_43)>, arrowhead = normal]
-P0_2_2__23 -> P0_2_2__24 [label = <>, weight = 100]
-P0_2_1__21 -> P0_2_1__22 [label = <>, weight = 100]
-P0_2_0__23 -> P0_2_0__24 [label = <>, weight = 100]
-P0_1_2__25 -> P0_1_2__26 [label = <>, weight = 100]
-P0_1_1__27 -> P0_1_1__28 [label = <>, weight = 100]
-P0_1_0__29 -> P0_1_0__30 [label = <>, weight = 100]
-P0_0__25 [label = "", style = invisible]
-P0_0__24 -> P0_0__25 [label = <>, weight = 100, style = invisible]
-P__29 -> P__30 [label = <>, weight = 100]
-{rank = same; P__30 P0_0__25 P0_1_0__30 P0_1_1__28 P0_1_2__26 P0_2_0__24 P0_2_1__22 P0_2_2__24}
-P0_2_0__24 -> P0_2_0__25 [label = <>, weight = 100]
-P0_1_2__26 -> P0_1_2__27 [label = <>, weight = 100]
-P0_1_1__28 -> P0_1_1__29 [label = <>, weight = 100]
-P0_1_0__30 -> P0_1_0__31 [label = <>, weight = 100]
-P0_0__26 [label = "", style = invisible]
-P0_0__25 -> P0_0__26 [label = <>, weight = 100, style = invisible]
-P__30 -> P__31 [label = <>, weight = 100]
-{rank = same; P__31 P0_0__26 P0_1_0__31 P0_1_1__29 P0_1_2__27 P0_2_0__25}
-P0_2_0__25 -> P0_2_0__26 [label = <>, weight = 100]
-P__31 -> P__32 [label = <>, weight = 100]
-{rank = same; P__32 P0_2_0__26}
-P0_2_0__26 -> P__32 [label = <~X_2>, dir = back, arrowhead = normal]
-P0_2_0__26 -> P0_2_0__27 [label = <>, weight = 100]
-P0_1_2__27 -> P0_1_2__28 [label = <>, weight = 100]
-P0_1_1__29 -> P0_1_1__30 [label = <>, weight = 100]
-P0_1_0__31 -> P0_1_0__32 [label = <>, weight = 100]
-P0_0__27 [label = "", style = invisible]
-P0_0__26 -> P0_0__27 [label = <>, weight = 100, style = invisible]
-P__32 -> P__33 [label = <>, weight = 100]
-{rank = same; P__33 P0_0__27 P0_1_0__32 P0_1_1__30 P0_1_2__28 P0_2_0__27}
-P0_2_0__27 -> P0_2_0__28 [label = <>, weight = 100]
-P0_2_0__28 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{29}</FONT><FONT COLOR="blue">event</FONT> A_discover(participant_data(GUIDB_4,<br/>
-Topic_bd_4,QosB_3,discoveryRegister))</TD></TR><TR><TD><FONT COLOR="darkgreen">{31}</FONT><FONT COLOR="blue">new </FONT>ChallengeA_8</TD></TR><TR><TD><FONT COLOR="darkgreen">{32}</FONT><FONT COLOR="blue">new </FONT>s_7</TD></TR><TR><TD><FONT COLOR="darkgreen">{37}</FONT><FONT COLOR="blue">event</FONT> A_0(GUIDA_4,make_C_list(sign_cert(GUIDA_4,<br/>
-pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,<br/>
-PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),ChallengeA_8,dh_pub(ID_G,dh_k(s_7)),participant_data(<br/>
-GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister))</TD></TR></TABLE>>]
-P0_2_0__28 -> P0_2_0__29 [label = <>, weight = 100]
-P0_2_0__29 -> P0_2_0__30 [label = <>, weight = 100]
-P0_1_2__28 -> P0_1_2__29 [label = <>, weight = 100]
-P0_1_1__30 -> P0_1_1__31 [label = <>, weight = 100]
-P0_1_0__32 -> P0_1_0__33 [label = <>, weight = 100]
-P0_0__28 [label = "", style = invisible]
-P0_0__27 -> P0_0__28 [label = <>, weight = 100, style = invisible]
-P__33 -> P__34 [label = <>, weight = 100]
-{rank = same; P__34 P0_0__28 P0_1_0__33 P0_1_1__31 P0_1_2__29 P0_2_0__30}
-P0_2_0__30 -> P0_2_0__31 [label = <>, weight = 100]
-P__34 -> P__35 [label = <>, weight = 100]
-{rank = same; P__35 P0_2_0__31}
-P0_2_0__31 -> P__35 [label = <(make_C_list(~M_44,~M_45,participant_data(~M_46,<br/>
-~M_47,~M_48,~M_49),make_algo(~M_50,~M_51),~M_52),<br/>
-~M_53,~M_54,~M_55)>, arrowhead = normal]
-P0_2_0__31 -> P0_2_0__32 [label = <>, weight = 100]
-P0_1_2__29 -> P0_1_2__30 [label = <>, weight = 100]
-P0_1_1__31 -> P0_1_1__32 [label = <>, weight = 100]
-P0_1_0__33 -> P0_1_0__34 [label = <>, weight = 100]
-P0_0__29 [label = "", style = invisible]
-P0_0__28 -> P0_0__29 [label = <>, weight = 100, style = invisible]
-P__35 -> P__36 [label = <>, weight = 100]
-{rank = same; P__36 P0_0__29 P0_1_0__34 P0_1_1__32 P0_1_2__30 P0_2_0__32}
-P0_1_2__30 -> P0_1_2__31 [label = <>, weight = 100]
-P0_1_1__32 -> P0_1_1__33 [label = <>, weight = 100]
-P0_1_0__34 -> P0_1_0__35 [label = <>, weight = 100]
-P0_0__30 [label = "", style = invisible]
-P0_0__29 -> P0_0__30 [label = <>, weight = 100, style = invisible]
-P__36 -> P__37 [label = <>, weight = 100]
-{rank = same; P__37 P0_0__30 P0_1_0__35 P0_1_1__33 P0_1_2__31}
-P0_1_2__31 -> P0_1_2__32 [label = <>, weight = 100]
-P__37 -> P__38 [label = <>, weight = 100]
-{rank = same; P__38 P0_1_2__32}
-P0_1_2__32 -> P__38 [label = <~X_3>, dir = back, arrowhead = normal]
-P0_1_2__32 -> P0_1_2__33 [label = <>, weight = 100]
-P0_1_1__33 -> P0_1_1__34 [label = <>, weight = 100]
-P0_1_0__35 -> P0_1_0__36 [label = <>, weight = 100]
-P0_0__31 [label = "", style = invisible]
-P0_0__30 -> P0_0__31 [label = <>, weight = 100, style = invisible]
-P__38 -> P__39 [label = <>, weight = 100]
-{rank = same; P__39 P0_0__31 P0_1_0__36 P0_1_1__34 P0_1_2__33}
-P0_1_2__33 -> P0_1_2__34 [label = <>, weight = 100]
-P0_1_2__34 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{101}</FONT><FONT COLOR="blue">new </FONT>ChallengeB_5</TD></TR><TR><TD><FONT COLOR="darkgreen">{102}</FONT><FONT COLOR="blue">new </FONT>s_8</TD></TR><TR><TD><FONT COLOR="darkgreen">{108}</FONT><FONT COLOR="blue">event</FONT> beginAtoB(GUIDB_4,sign_cert(GUIDB_4,<br/>
-pk(PrivKB_1),SN_CI,SK_CI),a_9)</TD></TR><TR><TD><FONT COLOR="darkgreen">{109}</FONT><FONT COLOR="blue">event</FONT> B_0(GUIDB_4,make_C_list(sign_cert(GUIDB_4,<br/>
-pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,<br/>
-PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,<br/>
-QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),ChallengeB_5,dh_pub(ID_G,dh_k(s_8)),GUIDA_4,<br/>
-make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,<br/>
-SK_CI),a_7,a_8,make_algo(ID_G,DH_RSA),SHA256),<br/>
-a_9,a_10)</TD></TR></TABLE>>]
-P0_1_2__34 -> P0_1_2__35 [label = <>, weight = 100]
-P0_1_2__35 -> P0_1_2__36 [label = <>, weight = 100]
-P0_1_1__34 -> P0_1_1__35 [label = <>, weight = 100]
-P0_1_0__36 -> P0_1_0__37 [label = <>, weight = 100]
-P0_0__32 [label = "", style = invisible]
-P0_0__31 -> P0_0__32 [label = <>, weight = 100, style = invisible]
-P__39 -> P__40 [label = <>, weight = 100]
-{rank = same; P__40 P0_0__32 P0_1_0__37 P0_1_1__35 P0_1_2__36}
-P0_1_2__36 -> P0_1_2__37 [label = <>, weight = 100]
-P__40 -> P__41 [label = <>, weight = 100]
-{rank = same; P__41 P0_1_2__37}
-P0_1_2__37 -> P__41 [label = <~X_4>, arrowhead = normal]
-P0_1_2__37 -> P0_1_2__38 [label = <>, weight = 100]
-P0_1_1__35 -> P0_1_1__36 [label = <>, weight = 100]
-P0_1_0__37 -> P0_1_0__38 [label = <>, weight = 100]
-P0_0__33 [label = "", style = invisible]
-P0_0__32 -> P0_0__33 [label = <>, weight = 100, style = invisible]
-P__41 -> P__42 [label = <>, weight = 100]
-{rank = same; P__42 P0_0__33 P0_1_0__38 P0_1_1__36 P0_1_2__38}
-P0_1_1__36 -> P0_1_1__37 [label = <>, weight = 100]
-P0_1_0__38 -> P0_1_0__39 [label = <>, weight = 100]
-P0_0__34 [label = "", style = invisible]
-P0_0__33 -> P0_0__34 [label = <>, weight = 100, style = invisible]
-P__42 -> P__43 [label = <>, weight = 100]
-{rank = same; P__43 P0_0__34 P0_1_0__39 P0_1_1__37}
-P0_1_1__37 -> P0_1_1__38 [label = <>, weight = 100]
-P__43 -> P__44 [label = <>, weight = 100]
-{rank = same; P__44 P0_1_1__38}
-P0_1_1__38 -> P__44 [label = <~X_5>, dir = back, arrowhead = normal]
-P0_1_1__38 -> P0_1_1__39 [label = <>, weight = 100]
-P0_1_0__39 -> P0_1_0__40 [label = <>, weight = 100]
-P0_0__35 [label = "", style = invisible]
-P0_0__34 -> P0_0__35 [label = <>, weight = 100, style = invisible]
-P__44 -> P__45 [label = <>, weight = 100]
-{rank = same; P__45 P0_0__35 P0_1_0__40 P0_1_1__39}
-P0_1_1__39 -> P0_1_1__40 [label = <>, weight = 100]
-P0_1_1__40 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{101}</FONT><FONT COLOR="blue">new </FONT>ChallengeB_6</TD></TR><TR><TD><FONT COLOR="darkgreen">{102}</FONT><FONT COLOR="blue">new </FONT>s_9</TD></TR><TR><TD><FONT COLOR="darkgreen">{108}</FONT><FONT COLOR="blue">event</FONT> beginAtoB(GUIDB_4,sign_cert(GUIDB_4,<br/>
-pk(PrivKB_1),SN_CI,SK_CI),ChallengeA_8)</TD></TR><TR><TD><FONT COLOR="darkgreen">{109}</FONT><FONT COLOR="blue">event</FONT> B_0(GUIDB_4,make_C_list(sign_cert(GUIDB_4,<br/>
-pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,<br/>
-PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,<br/>
-QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),ChallengeB_6,dh_pub(ID_G,dh_k(s_9)),GUIDA_4,<br/>
-make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
-participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256),ChallengeA_8,dh_pub(<br/>
-ID_G,dh_k(s_7)))</TD></TR></TABLE>>]
-P0_1_1__40 -> P0_1_1__41 [label = <>, weight = 100]
-P0_1_1__41 -> P0_1_1__42 [label = <>, weight = 100]
-P0_1_0__40 -> P0_1_0__41 [label = <>, weight = 100]
-P0_0__36 [label = "", style = invisible]
-P0_0__35 -> P0_0__36 [label = <>, weight = 100, style = invisible]
-P__45 -> P__46 [label = <>, weight = 100]
-{rank = same; P__46 P0_0__36 P0_1_0__41 P0_1_1__42}
-P0_1_1__42 -> P0_1_1__43 [label = <>, weight = 100]
-P__46 -> P__47 [label = <>, weight = 100]
-{rank = same; P__47 P0_1_1__43}
-P0_1_1__43 -> P__47 [label = <~X_6>, arrowhead = normal]
-P0_1_1__43 -> P0_1_1__44 [label = <>, weight = 100]
-P0_1_0__41 -> P0_1_0__42 [label = <>, weight = 100]
-P0_0__37 [label = "", style = invisible]
-P0_0__36 -> P0_0__37 [label = <>, weight = 100, style = invisible]
-P__47 -> P__48 [label = <>, weight = 100]
-{rank = same; P__48 P0_0__37 P0_1_0__42 P0_1_1__44}
-P0_2_0__32 -> P0_2_0__33 [label = <>, weight = 100]
-P0_1_2__38 -> P0_1_2__39 [label = <>, weight = 100]
-P0_1_1__44 -> P0_1_1__45 [label = <>, weight = 100]
-P0_1_0__42 -> P0_1_0__43 [label = <>, weight = 100]
-P0_0__38 [label = "", style = invisible]
-P0_0__37 -> P0_0__38 [label = <>, weight = 100, style = invisible]
-P__48 -> P__49 [label = <>, weight = 100]
-{rank = same; P__49 P0_0__38 P0_1_0__43 P0_1_1__45 P0_1_2__39 P0_2_0__33}
-P0_2_0__33 -> P0_2_0__34 [label = <>, weight = 100]
-P__49 -> P__50 [label = <>, weight = 100]
-{rank = same; P__50 P0_2_0__34}
-P0_2_0__34 -> P__50 [label = <~X_7>, dir = back, arrowhead = normal]
-P0_2_0__34 -> P0_2_0__35 [label = <>, weight = 100]
-P0_1_2__39 -> P0_1_2__40 [label = <>, weight = 100]
-P0_1_1__45 -> P0_1_1__46 [label = <>, weight = 100]
-P0_1_0__43 -> P0_1_0__44 [label = <>, weight = 100]
-P0_0__39 [label = "", style = invisible]
-P0_0__38 -> P0_0__39 [label = <>, weight = 100, style = invisible]
-P__50 -> P__51 [label = <>, weight = 100]
-{rank = same; P__51 P0_0__39 P0_1_0__44 P0_1_1__46 P0_1_2__40 P0_2_0__35}
-P0_2_0__35 -> P0_2_0__36 [label = <>, weight = 100]
-P0_2_0__36 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{43}</FONT><FONT COLOR="blue">event</FONT> endAtoB(GUIDB_4,sign_cert(GUIDB_4,pk(<br/>
-PrivKB_1),SN_CI,SK_CI),ChallengeA_8)</TD></TR><TR><TD><FONT COLOR="darkgreen">{47}</FONT><FONT COLOR="blue">event</FONT> beginBtoA(GUIDA_4,sign_cert(GUIDA_4,<br/>
-pk(PrivKA_1),SN_CI,SK_CI),ChallengeB_6)</TD></TR><TR><TD><FONT COLOR="darkgreen">{48}</FONT><FONT COLOR="blue">event</FONT> A_1(GUIDA_4,make_C_list(sign_cert(GUIDA_4,<br/>
-pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,<br/>
-PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),ChallengeA_8,dh_pub(ID_G,dh_k(s_7)),GUIDB_4,<br/>
-make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),<br/>
-participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256),ChallengeB_6,dh_pub(<br/>
-ID_G,dh_k(s_9)),e2b(dh_exp(dh_pub(ID_G,dh_k(s_9)),<br/>
-dh_k(s_7))))</TD></TR></TABLE>>]
-P0_2_0__36 -> P0_2_0__37 [label = <>, weight = 100]
-P0_2_0__37 -> P0_2_0__38 [label = <>, weight = 100]
-P0_1_2__40 -> P0_1_2__41 [label = <>, weight = 100]
-P0_1_1__46 -> P0_1_1__47 [label = <>, weight = 100]
-P0_1_0__44 -> P0_1_0__45 [label = <>, weight = 100]
-P0_0__40 [label = "", style = invisible]
-P0_0__39 -> P0_0__40 [label = <>, weight = 100, style = invisible]
-P__51 -> P__52 [label = <>, weight = 100]
-{rank = same; P__52 P0_0__40 P0_1_0__45 P0_1_1__47 P0_1_2__41 P0_2_0__38}
-P0_2_0__38 -> P0_2_0__39 [label = <>, weight = 100]
-P__52 -> P__53 [label = <>, weight = 100]
-{rank = same; P__53 P0_2_0__39}
-P0_2_0__39 -> P__53 [label = <(~M_88,~M_89,~M_90,~M_91,~M_92,~M_93,~M_94)>, arrowhead = normal]
-P0_2_0__39 -> P0_2_0__40 [label = <>, weight = 100]
-P0_1_2__41 -> P0_1_2__42 [label = <>, weight = 100]
-P0_1_1__47 -> P0_1_1__48 [label = <>, weight = 100]
-P0_1_0__45 -> P0_1_0__46 [label = <>, weight = 100]
-P0_0__41 [label = "", style = invisible]
-P0_0__40 -> P0_0__41 [label = <>, weight = 100, style = invisible]
-P__53 -> P__54 [label = <>, weight = 100]
-{rank = same; P__54 P0_0__41 P0_1_0__46 P0_1_1__48 P0_1_2__42 P0_2_0__40}
-P0_2_0__40 -> P0_2_0__41 [label = <>, weight = 100]
-P0_1_2__42 -> P0_1_2__43 [label = <>, weight = 100]
-P0_1_1__48 -> P0_1_1__49 [label = <>, weight = 100]
-P0_1_0__46 -> P0_1_0__47 [label = <>, weight = 100]
-P0_0__42 [label = "", style = invisible]
-P0_0__41 -> P0_0__42 [label = <>, weight = 100, style = invisible]
-P__54 -> P__55 [label = <>, weight = 100]
-{rank = same; P__55 P0_0__42 P0_1_0__47 P0_1_1__49 P0_1_2__43 P0_2_0__41}
-P0_2_0__41 -> P0_2_0__42 [label = <>, weight = 100]
-P__55 -> P__56 [label = <>, weight = 100]
-{rank = same; P__56 P0_2_0__42}
-P0_2_0__42 -> P__56 [label = <~X_8>, dir = back, arrowhead = normal]
-P0_2_0__42 -> P0_2_0__43 [label = <>, weight = 100]
-P0_1_2__43 -> P0_1_2__44 [label = <>, weight = 100]
-P0_1_1__49 -> P0_1_1__50 [label = <>, weight = 100]
-P0_1_0__47 -> P0_1_0__48 [label = <>, weight = 100]
-P0_0__43 [label = "", style = invisible]
-P0_0__42 -> P0_0__43 [label = <>, weight = 100, style = invisible]
-P__56 -> P__57 [label = <>, weight = 100]
-{rank = same; P__57 P0_0__43 P0_1_0__48 P0_1_1__50 P0_1_2__44 P0_2_0__43}
-P0_2_0__43 -> P0_2_0__44 [label = <>, weight = 100]
-P0_2_0__44 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{53}</FONT><FONT COLOR="blue">event</FONT> PERM_CHECK(GUIDB_4,sign_perm(GUIDB_4,<br/>
-DGB_2,PPB_2,SK_Perm),a_11)</TD></TR></TABLE>>]
-P0_2_0__44 -> P0_2_0__45 [label = <>, weight = 100]
-P0_2_0__45 -> P0_2_0__46 [label = <>, weight = 100]
-P0_1_2__44 -> P0_1_2__45 [label = <>, weight = 100]
-P0_1_1__50 -> P0_1_1__51 [label = <>, weight = 100]
-P0_1_0__48 -> P0_1_0__49 [label = <>, weight = 100]
-P0_0__44 [label = "", style = invisible]
-P0_0__43 -> P0_0__44 [label = <>, weight = 100, style = invisible]
-P__57 -> P__58 [label = <>, weight = 100]
-{rank = same; P__58 P0_0__44 P0_1_0__49 P0_1_1__51 P0_1_2__45 P0_2_0__46}
-P0_2_0__46 -> P0_2_0__47 [label = <>, weight = 100]
-P__58 -> P__59 [label = <>, weight = 100]
-{rank = same; P__59 P0_2_0__47}
-P0_2_0__47 -> P__59 [label = <(~M_95,~M_96,~M_97,~M_98) = (GUIDA_4,PermissionChecked,<br/>
-GUIDB_4,a_11)>, arrowhead = normal]
-P0_2_0__47 -> P0_2_0__48 [label = <>, weight = 100]
-P0_1_2__45 -> P0_1_2__46 [label = <>, weight = 100]
-P0_1_1__51 -> P0_1_1__52 [label = <>, weight = 100]
-P0_1_0__49 -> P0_1_0__50 [label = <>, weight = 100]
-P0_0__45 [label = "", style = invisible]
-P0_0__44 -> P0_0__45 [label = <>, weight = 100, style = invisible]
-P__59 -> P__60 [label = <>, weight = 100]
-{rank = same; P__60 P0_0__45 P0_1_0__50 P0_1_1__52 P0_1_2__46 P0_2_0__48}
-P0_2_0__48 -> P0_2_0__49 [label = <>, weight = 100]
-P0_2_0__49 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{57}</FONT><FONT COLOR="blue">event</FONT> A_2(GUIDA_4,make_C_list(sign_cert(GUIDA_4,<br/>
-pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,<br/>
-PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),ChallengeA_8,dh_pub(ID_G,dh_k(s_7)),GUIDB_4,<br/>
-make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),<br/>
-participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256),ChallengeB_6,dh_pub(<br/>
-ID_G,dh_k(s_9)),e2b(dh_exp(dh_pub(ID_G,dh_k(s_9)),<br/>
-dh_k(s_7))),KDF(e2b(dh_exp(dh_pub(ID_G,dh_k(s_9)),<br/>
-dh_k(s_7))),ChallengeA_8,ChallengeB_6))</TD></TR></TABLE>>]
-P0_2_0__49 -> P0_2_0__50 [label = <>, weight = 100]
-P0_2_0__50 -> P0_2_0__51 [label = <>, weight = 100]
-P0_1_2__46 -> P0_1_2__47 [label = <>, weight = 100]
-P0_1_1__52 -> P0_1_1__53 [label = <>, weight = 100]
-P0_1_0__50 -> P0_1_0__51 [label = <>, weight = 100]
-P0_0__46 [label = "", style = invisible]
-P0_0__45 -> P0_0__46 [label = <>, weight = 100, style = invisible]
-P__60 -> P__61 [label = <>, weight = 100]
-{rank = same; P__61 P0_0__46 P0_1_0__51 P0_1_1__53 P0_1_2__47 P0_2_0__51}
-P0_2_0__51 -> P0_2_0__52 [label = <>, weight = 100]
-P__61 -> P__62 [label = <>, weight = 100]
-{rank = same; P__62 P0_2_0__52}
-P0_2_0__52 -> P__62 [label = <~M_99>, arrowhead = normal]
-P0_2_0__52 -> P0_2_0__53 [label = <>, weight = 100]
-P0_1_2__47 -> P0_1_2__48 [label = <>, weight = 100]
-P0_1_1__53 -> P0_1_1__54 [label = <>, weight = 100]
-P0_1_0__51 -> P0_1_0__52 [label = <>, weight = 100]
-P0_0__47 [label = "", style = invisible]
-P0_0__46 -> P0_0__47 [label = <>, weight = 100, style = invisible]
-P__62 -> P__63 [label = <>, weight = 100]
-{rank = same; P__63 P0_0__47 P0_1_0__52 P0_1_1__54 P0_1_2__48 P0_2_0__53}
-P0_1_1__54 -> P0_1_1__55 [label = <>, weight = 100]
-P0_1_0__52 -> P0_1_0__53 [label = <>, weight = 100]
-P0_0__48 [label = "", style = invisible]
-P0_0__47 -> P0_0__48 [label = <>, weight = 100, style = invisible]
-P__63 -> P__64 [label = <>, weight = 100]
-{rank = same; P__64 P0_0__48 P0_1_0__53 P0_1_1__55}
-P0_1_1__55 -> P0_1_1__56 [label = <>, weight = 100]
-P__64 -> P__65 [label = <>, weight = 100]
-{rank = same; P__65 P0_1_1__56}
-P0_1_1__56 -> P__65 [label = <~X_9>, dir = back, arrowhead = normal]
-P0_1_1__56 -> P0_1_1__57 [label = <>, weight = 100]
-P0_1_0__53 -> P0_1_0__54 [label = <>, weight = 100]
-P0_0__49 [label = "", style = invisible]
-P0_0__48 -> P0_0__49 [label = <>, weight = 100, style = invisible]
-P__65 -> P__66 [label = <>, weight = 100]
-{rank = same; P__66 P0_0__49 P0_1_0__54 P0_1_1__57}
-P0_1_1__57 -> P0_1_1__58 [label = <>, weight = 100]
-P0_1_1__58 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{113}</FONT><FONT COLOR="blue">event</FONT> endBtoA(GUIDA_4,sign_cert(GUIDA_4,pk(<br/>
-PrivKA_1),SN_CI,SK_CI),ChallengeB_6)</TD></TR><TR><TD><FONT COLOR="darkgreen">{116}</FONT><FONT COLOR="blue">event</FONT> B_1(GUIDB_4,make_C_list(sign_cert(GUIDB_4,<br/>
-pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,<br/>
-PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,<br/>
-QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),ChallengeB_6,dh_pub(ID_G,dh_k(s_9)),GUIDA_4,<br/>
-make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
-participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256),ChallengeA_8,dh_pub(<br/>
-ID_G,dh_k(s_7)),e2b(dh_exp(dh_pub(ID_G,dh_k(s_7)),<br/>
-dh_k(s_9))))</TD></TR><TR><TD><FONT COLOR="darkgreen">{117}</FONT><FONT COLOR="blue">new </FONT>Topic_5</TD></TR><TR><TD><FONT COLOR="darkgreen">{118}</FONT><FONT COLOR="blue">event</FONT> TOPIC_CRT_REQ(GUIDB_4,sign_perm(GUIDB_4,<br/>
-DGB_2,PPB_2,SK_Perm),Topic_5)</TD></TR></TABLE>>]
-P0_1_1__58 -> P0_1_1__59 [label = <>, weight = 100]
-P0_1_1__59 -> P0_1_1__60 [label = <>, weight = 100]
-P0_1_0__54 -> P0_1_0__55 [label = <>, weight = 100]
-P0_0__50 [label = "", style = invisible]
-P0_0__49 -> P0_0__50 [label = <>, weight = 100, style = invisible]
-P__66 -> P__67 [label = <>, weight = 100]
-{rank = same; P__67 P0_0__50 P0_1_0__55 P0_1_1__60}
-P0_1_1__60 -> P0_1_1__61 [label = <>, weight = 100]
-P__67 -> P__68 [label = <>, weight = 100]
-{rank = same; P__68 P0_1_1__61}
-P0_1_1__61 -> P__68 [label = <(~M_100,~M_101,~M_102,participant_data(~M_103,<br/>
-~M_104,~M_105,~M_106))>, arrowhead = normal]
-P0_1_1__61 -> P0_1_1__62 [label = <>, weight = 100]
-P0_1_0__55 -> P0_1_0__56 [label = <>, weight = 100]
-P0_0__51 [label = "", style = invisible]
-P0_0__50 -> P0_0__51 [label = <>, weight = 100, style = invisible]
-P__68 -> P__69 [label = <>, weight = 100]
-{rank = same; P__69 P0_0__51 P0_1_0__56 P0_1_1__62}
-P0_1_1__62 -> P0_1_1__63 [label = <>, weight = 100]
-P0_1_0__56 -> P0_1_0__57 [label = <>, weight = 100]
-P0_0__52 [label = "", style = invisible]
-P0_0__51 -> P0_0__52 [label = <>, weight = 100, style = invisible]
-P__69 -> P__70 [label = <>, weight = 100]
-{rank = same; P__70 P0_0__52 P0_1_0__57 P0_1_1__63}
-P0_1_1__63 -> P0_1_1__64 [label = <>, weight = 100]
-P__70 -> P__71 [label = <>, weight = 100]
-{rank = same; P__71 P0_1_1__64}
-P0_1_1__64 -> P__71 [label = <(~M_17,PermissionChecked,~M_2,~M_102) = (GUIDA_4,<br/>
-PermissionChecked,GUIDB_4,Topic_5)>, dir = back, arrowhead = normal]
-P0_1_1__64 -> P0_1_1__65 [label = <>, weight = 100]
-P0_1_0__57 -> P0_1_0__58 [label = <>, weight = 100]
-P0_0__53 [label = "", style = invisible]
-P0_0__52 -> P0_0__53 [label = <>, weight = 100, style = invisible]
-P__71 -> P__72 [label = <>, weight = 100]
-{rank = same; P__72 P0_0__53 P0_1_0__58 P0_1_1__65}
-P0_1_1__65 -> P0_1_1__66 [label = <>, weight = 100]
-P0_1_0__58 -> P0_1_0__59 [label = <>, weight = 100]
-P0_0__54 [label = "", style = invisible]
-P0_0__53 -> P0_0__54 [label = <>, weight = 100, style = invisible]
-P__72 -> P__73 [label = <>, weight = 100]
-{rank = same; P__73 P0_0__54 P0_1_0__59 P0_1_1__66}
-P0_1_1__66 -> P0_1_1__67 [label = <>, weight = 100]
-P__73 -> P__74 [label = <>, weight = 100]
-{rank = same; P__74 P0_1_1__67}
-P0_1_1__67 -> P__74 [label = <~M_99>, dir = back, arrowhead = normal]
-P0_1_1__67 -> P0_1_1__68 [label = <>, weight = 100]
-P0_1_0__59 -> P0_1_0__60 [label = <>, weight = 100]
-P0_0__55 [label = "", style = invisible]
-P0_0__54 -> P0_0__55 [label = <>, weight = 100, style = invisible]
-P__74 -> P__75 [label = <>, weight = 100]
-{rank = same; P__75 P0_0__55 P0_1_0__60 P0_1_1__68}
-P0_1_1__68 -> P0_1_1__69 [label = <>, weight = 100]
-P0_1_1__69 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{124}</FONT><FONT COLOR="blue">new </FONT>sessionID_3</TD></TR><TR><TD><FONT COLOR="darkgreen">{125}</FONT><FONT COLOR="blue">new </FONT>IV_3</TD></TR><TR><TD><FONT COLOR="darkgreen">{128}</FONT><FONT COLOR="blue">event</FONT> B_2(GUIDB_4,make_C_list(sign_cert(GUIDB_4,<br/>
-pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,<br/>
-PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,<br/>
-QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),ChallengeB_6,dh_pub(ID_G,dh_k(s_9)),GUIDA_4,<br/>
-make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
-participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256),ChallengeA_8,dh_pub(<br/>
-ID_G,dh_k(s_7)),e2b(dh_exp(dh_pub(ID_G,dh_k(s_7)),<br/>
-dh_k(s_9))),KDF(e2b(dh_exp(dh_pub(ID_G,dh_k(s_7)),<br/>
-dh_k(s_9))),ChallengeA_8,ChallengeB_6),makeCryptoHeader(<br/>
-sessionID_3,IV_3),hmac(SHA256,b2mk(km2b(KDF(e2b(<br/>
-dh_exp(dh_pub(ID_G,dh_k(s_7)),dh_k(s_9))),ChallengeA_8,<br/>
-ChallengeB_6))),(sessionID_3,KDF(e2b(dh_exp(dh_pub(<br/>
-ID_G,dh_k(s_7)),dh_k(s_9))),ChallengeA_8,ChallengeB_6))))<br/>
-</TD></TR><TR><TD><FONT COLOR="darkgreen">{129}</FONT><FONT COLOR="blue">new </FONT>applicationData_MAC_2</TD></TR><TR><TD><FONT COLOR="darkgreen">{130}</FONT><FONT COLOR="blue">event</FONT> B_3(GUIDB_4,GUIDA_4,applicationData_MAC_2,<br/>
-makeCryptoHeader(sessionID_3,IV_3),hmac(SHA256,<br/>
-b2mk(km2b(KDF(e2b(dh_exp(dh_pub(ID_G,dh_k(s_7)),<br/>
-dh_k(s_9))),ChallengeA_8,ChallengeB_6))),(sessionID_3,<br/>
-KDF(e2b(dh_exp(dh_pub(ID_G,dh_k(s_7)),dh_k(s_9))),<br/>
-ChallengeA_8,ChallengeB_6))))</TD></TR></TABLE>>]
-P0_1_1__69 -> P0_1_1__70 [label = <>, weight = 100]
-P0_1_1__70 -> P0_1_1__71 [label = <>, weight = 100]
-P0_1_0__60 -> P0_1_0__61 [label = <>, weight = 100]
-P0_0__56 [label = "", style = invisible]
-P0_0__55 -> P0_0__56 [label = <>, weight = 100, style = invisible]
-P__75 -> P__76 [label = <>, weight = 100]
-{rank = same; P__76 P0_0__56 P0_1_0__61 P0_1_1__71}
-P0_1_1__71 -> P0_1_1__72 [label = <>, weight = 100]
-P__76 -> P__77 [label = <>, weight = 100]
-{rank = same; P__77 P0_1_1__72}
-P0_1_1__72 -> P__77 [label = <(makeCryptoHeader(~M_107,~M_108),(~M_109,~M_110),<br/>
-~M_111)>, arrowhead = normal]
-P0_1_1__72 -> P0_1_1__73 [label = <>, weight = 100]
-P0_1_0__61 -> P0_1_0__62 [label = <>, weight = 100]
-P0_0__57 [label = "", style = invisible]
-P0_0__56 -> P0_0__57 [label = <>, weight = 100, style = invisible]
-P__77 -> P__78 [label = <>, weight = 100]
-{rank = same; P__78 P0_0__57 P0_1_0__62 P0_1_1__73}
-P0_2_0__53 -> P0_2_0__54 [label = <>, weight = 100]
-P0_1_2__48 -> P0_1_2__49 [label = <>, weight = 100]
-P0_1_1__73 -> P0_1_1__74 [label = <>, weight = 100]
-P0_1_0__62 -> P0_1_0__63 [label = <>, weight = 100]
-P0_0__58 [label = "", style = invisible]
-P0_0__57 -> P0_0__58 [label = <>, weight = 100, style = invisible]
-P__78 -> P__79 [label = <>, weight = 100]
-{rank = same; P__79 P0_0__58 P0_1_0__63 P0_1_1__74 P0_1_2__49 P0_2_0__54}
-P0_2_0__54 -> P0_2_0__55 [label = <>, weight = 100]
-P__79 -> P__80 [label = <>, weight = 100]
-{rank = same; P__80 P0_2_0__55}
-P0_2_0__55 -> P__80 [label = <(makeCryptoHeader(~M_107,~M_108),(~M_109,~M_110),<br/>
-~M_111)>, dir = back, arrowhead = normal]
-P0_2_0__55 -> P0_2_0__56 [label = <>, weight = 100]
-P0_1_2__49 -> P0_1_2__50 [label = <>, weight = 100]
-P0_1_1__74 -> P0_1_1__75 [label = <>, weight = 100]
-P0_1_0__63 -> P0_1_0__64 [label = <>, weight = 100]
-P0_0__59 [label = "", style = invisible]
-P0_0__58 -> P0_0__59 [label = <>, weight = 100, style = invisible]
-P__80 -> P__81 [label = <>, weight = 100]
-{rank = same; P__81 P0_0__59 P0_1_0__64 P0_1_1__75 P0_1_2__50 P0_2_0__56}
-P0_2_0__56 -> P0_2_0__57 [label = <>, weight = 100]
-P0_2_0__57 [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{63}</FONT><FONT COLOR="blue">event</FONT> A_3(GUIDB_4,GUIDA_4,(applicationData_MAC_2,<br/>
-secretData),makeCryptoHeader(sessionID_3,IV_3),<br/>
-hmac(SHA256,b2mk(km2b(KDF(e2b(dh_exp(dh_pub(ID_G,<br/>
-dh_k(s_9)),dh_k(s_7))),ChallengeA_8,ChallengeB_6))),<br/>
-(sessionID_3,KDF(e2b(dh_exp(dh_pub(ID_G,dh_k(s_9)),<br/>
-dh_k(s_7))),ChallengeA_8,ChallengeB_6))))</TD></TR></TABLE>>]
-P0_2_0__57 -> P0_2_0__58 [label = <>, weight = 100]
-P0_2_0__58 -> P0_2_0__59 [label = <>, weight = 100]
-P0_2_0__59 [color = red, shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"> <TR><TD><FONT COLOR="darkgreen">{64}</FONT><FONT COLOR="blue">event</FONT> ENC_COMMUNICATION(GUIDA_4,make_C_list(<br/>
-sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(<br/>
-GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(<br/>
-GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256),ChallengeA_8,dh_pub(ID_G,<br/>
-dh_k(s_7)),GUIDB_4,make_C_list(sign_cert(GUIDB_4,<br/>
-pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,<br/>
-PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,<br/>
-QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),ChallengeB_6,dh_pub(ID_G,dh_k(s_9)),e2b(<br/>
-dh_exp(dh_pub(ID_G,dh_k(s_9)),dh_k(s_7))),KDF(<br/>
-e2b(dh_exp(dh_pub(ID_G,dh_k(s_9)),dh_k(s_7))),<br/>
-ChallengeA_8,ChallengeB_6),makeCryptoHeader(sessionID_3,<br/>
-IV_3),hmac(SHA256,b2mk(km2b(KDF(e2b(dh_exp(dh_pub(<br/>
-ID_G,dh_k(s_9)),dh_k(s_7))),ChallengeA_8,ChallengeB_6))),<br/>
-(sessionID_3,KDF(e2b(dh_exp(dh_pub(ID_G,dh_k(s_9)),<br/>
-dh_k(s_7))),ChallengeA_8,ChallengeB_6))))</TD></TR></TABLE>>]
-P0_2_0__59 -> P0_2_0__60 [label = <>, weight = 100]
-Abbrev [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR> <TD> Abbreviations </TD></TR><TR><TD>~X_1 = (a_6,discoveredParticipant,participant_data(~M_17,<br/>
-~M_4,~M_20,discoveryRegister))<br/>
-= (a_6,discoveredParticipant,<br/>
-participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister))</TD></TR><TR><TD>~M_32 = sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI)</TD></TR><TR><TD>~M_33 = sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm)</TD></TR><TR><TD>~M_34 = GUIDA_4</TD></TR><TR><TD>~M_35 = Topic_bd_4</TD></TR><TR><TD>~M_36 = QoSA_2</TD></TR><TR><TD>~M_37 = discoveryRegister</TD></TR><TR><TD>~M_38 = ID_G</TD></TR><TR><TD>~M_39 = DH_RSA</TD></TR><TR><TD>~M_40 = SHA256</TD></TR><TR><TD>~M_41 = hash(SHA256,Clist2bit(make_C_list(sign_cert(<br/>
-GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,<br/>
-DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,<br/>
-Topic_bd_4,QoSA_2,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256)))</TD></TR><TR><TD>~M_42 = ChallengeA_7</TD></TR><TR><TD>~M_43 = dh_pub(ID_G,dh_k(s_6))</TD></TR><TR><TD>~X_2 = (participant_data(~M_2,~M_4,~M_5,discoveryRegister),<br/>
-discoveredParticipant,participant_data(~M_17,~M_4,<br/>
-~M_20,discoveryRegister))<br/>
-= (participant_data(<br/>
-GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),discoveredParticipant,<br/>
-participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister))</TD></TR><TR><TD>~M_44 = sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI)</TD></TR><TR><TD>~M_45 = sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm)</TD></TR><TR><TD>~M_46 = GUIDA_4</TD></TR><TR><TD>~M_47 = Topic_bd_4</TD></TR><TR><TD>~M_48 = QoSA_2</TD></TR><TR><TD>~M_49 = discoveryRegister</TD></TR><TR><TD>~M_50 = ID_G</TD></TR><TR><TD>~M_51 = DH_RSA</TD></TR><TR><TD>~M_52 = SHA256</TD></TR><TR><TD>~M_53 = hash(SHA256,Clist2bit(make_C_list(sign_cert(<br/>
-GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,<br/>
-DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,<br/>
-Topic_bd_4,QoSA_2,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256)))</TD></TR><TR><TD>~M_54 = ChallengeA_8</TD></TR><TR><TD>~M_55 = dh_pub(ID_G,dh_k(s_7))</TD></TR><TR><TD>~X_3 = (make_C_list(~M_32,a_7,a_8,make_algo(ID_G,DH_RSA),<br/>
-SHA256),hash(SHA256,Clist2bit(make_C_list(~M_32,<br/>
-a_7,a_8,make_algo(ID_G,DH_RSA),SHA256))),a_9,a_10)<br/>
-=<br/>
-(make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),<br/>
-SN_CI,SK_CI),a_7,a_8,make_algo(ID_G,DH_RSA),SHA256),<br/>
-hash(SHA256,Clist2bit(make_C_list(sign_cert(GUIDA_4,<br/>
-pk(PrivKA_1),SN_CI,SK_CI),a_7,a_8,make_algo(ID_G,<br/>
-DH_RSA),SHA256))),a_9,a_10)</TD></TR><TR><TD>~X_4 = (make_C_list(~M_56,~M_57,participant_data(~M_58,<br/>
-~M_59,~M_60,~M_61),make_algo(~M_62,~M_63),~M_64),<br/>
-~M_65,~M_66,~M_67,~M_68,~M_69,~M_70,~M_71)<br/>
-= (<br/>
-make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),<br/>
-participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,Clist2bit(<br/>
-make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),<br/>
-participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),a_9,ChallengeB_5,<br/>
-dh_pub(ID_G,dh_k(s_8)),hash(SHA256,Clist2bit(make_C_list(<br/>
-sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),a_7,<br/>
-a_8,make_algo(ID_G,DH_RSA),SHA256))),a_10,sign(<br/>
-PrivKB_1,(hash(SHA256,Clist2bit(make_C_list(sign_cert(<br/>
-GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,<br/>
-DGB_2,PPB_2,SK_Perm),participant_data(GUIDB_4,<br/>
-Topic_bd_4,QosB_3,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256))),ChallengeB_5,dh_pub(ID_G,<br/>
-dh_k(s_8)),a_9,a_10,hash(SHA256,Clist2bit(make_C_list(<br/>
-sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),a_7,<br/>
-a_8,make_algo(ID_G,DH_RSA),SHA256))))))</TD></TR><TR><TD>~X_5 = (make_C_list(~M_32,~M_33,participant_data(~M_17,<br/>
-~M_4,~M_20,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),hash(SHA256,Clist2bit(make_C_list(~M_32,<br/>
-~M_33,participant_data(~M_17,~M_4,~M_20,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),~M_54,~M_55)<br/>
-=<br/>
-(make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
-participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,Clist2bit(<br/>
-make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
-participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),ChallengeA_8,<br/>
-dh_pub(ID_G,dh_k(s_7)))</TD></TR><TR><TD>~X_6 = (make_C_list(~M_72,~M_73,participant_data(~M_74,<br/>
-~M_75,~M_76,~M_77),make_algo(~M_78,~M_79),~M_80),<br/>
-~M_81,~M_82,~M_83,~M_84,~M_85,~M_86,~M_87)<br/>
-= (<br/>
-make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),<br/>
-participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,Clist2bit(<br/>
-make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),<br/>
-participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),ChallengeA_8,<br/>
-ChallengeB_6,dh_pub(ID_G,dh_k(s_9)),hash(SHA256,<br/>
-Clist2bit(make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),<br/>
-SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
-participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),dh_pub(ID_G,dh_k(<br/>
-s_7)),sign(PrivKB_1,(hash(SHA256,Clist2bit(make_C_list(<br/>
-sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(<br/>
-GUIDB_4,DGB_2,PPB_2,SK_Perm),participant_data(<br/>
-GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256))),ChallengeB_6,dh_pub(ID_G,<br/>
-dh_k(s_9)),ChallengeA_8,dh_pub(ID_G,dh_k(s_7)),<br/>
-hash(SHA256,Clist2bit(make_C_list(sign_cert(GUIDA_4,<br/>
-pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,<br/>
-PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256))))))</TD></TR><TR><TD>~X_7 = (make_C_list(~M_56,~M_57,participant_data(~M_2,<br/>
-~M_4,~M_5,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256),hash(SHA256,Clist2bit(make_C_list(~M_56,<br/>
-~M_57,participant_data(~M_2,~M_4,~M_5,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),~M_54,~M_83,~M_84,<br/>
-hash(SHA256,Clist2bit(make_C_list(~M_32,~M_33,<br/>
-participant_data(~M_17,~M_4,~M_20,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),~M_55,~M_87)<br/>
-=<br/>
-(make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),<br/>
-participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,Clist2bit(<br/>
-make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,<br/>
-SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),<br/>
-participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),ChallengeA_8,<br/>
-ChallengeB_6,dh_pub(ID_G,dh_k(s_9)),hash(SHA256,<br/>
-Clist2bit(make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),<br/>
-SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),<br/>
-participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),dh_pub(ID_G,dh_k(<br/>
-s_7)),sign(PrivKB_1,(hash(SHA256,Clist2bit(make_C_list(<br/>
-sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(<br/>
-GUIDB_4,DGB_2,PPB_2,SK_Perm),participant_data(<br/>
-GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256))),ChallengeB_6,dh_pub(ID_G,<br/>
-dh_k(s_9)),ChallengeA_8,dh_pub(ID_G,dh_k(s_7)),<br/>
-hash(SHA256,Clist2bit(make_C_list(sign_cert(GUIDA_4,<br/>
-pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,<br/>
-PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256))))))</TD></TR><TR><TD>~M_88 = hash(SHA256,Clist2bit(make_C_list(sign_cert(<br/>
-GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,<br/>
-DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,<br/>
-Topic_bd_4,QoSA_2,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256)))</TD></TR><TR><TD>~M_89 = hash(SHA256,Clist2bit(make_C_list(sign_cert(<br/>
-GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,<br/>
-DGB_2,PPB_2,SK_Perm),participant_data(GUIDB_4,<br/>
-Topic_bd_4,QosB_3,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256)))</TD></TR><TR><TD>~M_90 = dh_pub(ID_G,dh_k(s_7))</TD></TR><TR><TD>~M_91 = dh_pub(ID_G,dh_k(s_9))</TD></TR><TR><TD>~M_92 = ChallengeA_8</TD></TR><TR><TD>~M_93 = ChallengeB_6</TD></TR><TR><TD>~M_94 = sign(PrivKA_1,(hash(SHA256,Clist2bit(make_C_list(<br/>
-sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(<br/>
-GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(<br/>
-GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256))),ChallengeA_8,dh_pub(ID_G,<br/>
-dh_k(s_7)),ChallengeB_6,dh_pub(ID_G,dh_k(s_9)),<br/>
-hash(SHA256,Clist2bit(make_C_list(sign_cert(GUIDB_4,<br/>
-pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,<br/>
-PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,<br/>
-QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256)))))</TD></TR><TR><TD>~X_8 = (~M_57,TopicDiscovered,a_11,participant_data(~M_2,<br/>
-~M_4,~M_5,discoveryRegister))<br/>
-= (sign_perm(GUIDB_4,<br/>
-DGB_2,PPB_2,SK_Perm),TopicDiscovered,a_11,participant_data(<br/>
-GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister))</TD></TR><TR><TD>~M_99 = encCryptoToken(KDF(e2b(dh_exp(dh_pub(ID_G,<br/>
-dh_k(s_9)),dh_k(s_7))),ChallengeA_8,ChallengeB_6),<br/>
-make_algo(ID_G,DH_RSA),SHA256,AES_GCM_128)</TD></TR><TR><TD>~X_9 = (hash(SHA256,Clist2bit(make_C_list(~M_32,~M_33,<br/>
-participant_data(~M_17,~M_4,~M_20,discoveryRegister),<br/>
-make_algo(ID_G,DH_RSA),SHA256))),hash(SHA256,Clist2bit(<br/>
-make_C_list(~M_56,~M_57,participant_data(~M_2,<br/>
-~M_4,~M_5,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256))),~M_55,~M_84,~M_54,~M_83,~M_94)<br/>
-= (hash(<br/>
-SHA256,Clist2bit(make_C_list(sign_cert(GUIDA_4,<br/>
-pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,<br/>
-PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,<br/>
-QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256))),hash(SHA256,Clist2bit(make_C_list(sign_cert(<br/>
-GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,<br/>
-DGB_2,PPB_2,SK_Perm),participant_data(GUIDB_4,<br/>
-Topic_bd_4,QosB_3,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256))),dh_pub(ID_G,dh_k(s_7)),<br/>
-dh_pub(ID_G,dh_k(s_9)),ChallengeA_8,ChallengeB_6,<br/>
-sign(PrivKA_1,(hash(SHA256,Clist2bit(make_C_list(<br/>
-sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(<br/>
-GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(<br/>
-GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(<br/>
-ID_G,DH_RSA),SHA256))),ChallengeA_8,dh_pub(ID_G,<br/>
-dh_k(s_7)),ChallengeB_6,dh_pub(ID_G,dh_k(s_9)),<br/>
-hash(SHA256,Clist2bit(make_C_list(sign_cert(GUIDB_4,<br/>
-pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,<br/>
-PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,<br/>
-QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),<br/>
-SHA256))))))</TD></TR><TR><TD>~M_100 = sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm)</TD></TR><TR><TD>~M_101 = TopicCreateReq</TD></TR><TR><TD>~M_102 = Topic_5</TD></TR><TR><TD>~M_103 = GUIDB_4</TD></TR><TR><TD>~M_104 = Topic_bd_4</TD></TR><TR><TD>~M_105 = QosB_3</TD></TR><TR><TD>~M_106 = discoveryRegister</TD></TR><TR><TD>~M_107 = sessionID_3</TD></TR><TR><TD>~M_108 = IV_3</TD></TR><TR><TD>~M_109 = applicationData_MAC_2</TD></TR><TR><TD>~M_110 = secretData</TD></TR><TR><TD>~M_111 = aead_mac(AES_GCM_128,b2ae(hmac(SHA256,b2mk(<br/>
-km2b(KDF(e2b(dh_exp(dh_pub(ID_G,dh_k(s_7)),dh_k(<br/>
-s_9))),ChallengeA_8,ChallengeB_6))),(sessionID_3,<br/>
-KDF(e2b(dh_exp(dh_pub(ID_G,dh_k(s_7)),dh_k(s_9))),<br/>
-ChallengeA_8,ChallengeB_6)))),IV_3,chtob(makeCryptoHeader(<br/>
-sessionID_3,IV_3)),(applicationData_MAC_2,secretData))</TD></TR></TABLE>>]Abbrev -> P__0 [style = invisible, weight =100]}
+Abbrev [shape = plaintext, label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4"><TR> <TD> Abbreviations </TD></TR><TR><TD>~M_7 = a_1</TD></TR><TR><TD>~M_8 = Topic_bd_4</TD></TR><TR><TD>~M_9 = a_2</TD></TR><TR><TD>~M_10 = discoveryRegister</TD></TR><TR><TD>~M_11 = discoveredParticipant</TD></TR><TR><TD>~M_12 = a_4</TD></TR><TR><TD>~M_13 = Topic_bd_4</TD></TR><TR><TD>~M_14 = a_5</TD></TR><TR><TD>~M_15 = discoveryRegister</TD></TR><TR><TD>~X_1 = (a_6,TopicCreateReq,a_7,participant_data(a_1,~M_4,<br/>
+a_2,discoveryRegister))<br/>
+= (a_6,TopicCreateReq,<br/>
+a_7,participant_data(a_1,Topic_bd_4,a_2,discoveryRegister))</TD></TR></TABLE>>]Abbrev -> P__0 [style = invisible, weight =100]}
