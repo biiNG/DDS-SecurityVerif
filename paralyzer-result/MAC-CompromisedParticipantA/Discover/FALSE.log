@@ -1,0 +1,6 @@
+Verification summary:
+
+Query event(A_discover(PdataB_3)) ==> event(B_discover(PdataB_3)) is false.
+
+--------------------------------------------------------------
+

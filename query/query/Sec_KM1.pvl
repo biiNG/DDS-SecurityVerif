@@ -1,0 +1,9 @@
+query(* <Sec_KM1>: the p2pKeyMaterial maintains confidentiality when A generate it(A_2) *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t;
+    attacker(p2pKeyMaterial) 
+    && event(A_2(GUIDA,CA,ChallengeA,gx_DHA,
+                 GUIDB,CB,ChallengeB,gy_DHB,
+                 SharedSecret,p2pKeyMaterial))
+    ==> false.

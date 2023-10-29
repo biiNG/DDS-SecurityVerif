@@ -1,0 +1,7 @@
+query(*!! <Auth_B>: stepwise---when authentication begin, AB were discovered *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      PdataB:Pdata_t,PdataA:Pdata_t;
+    event(A_0(GUIDA,CA,ChallengeA,gx_DHA,PdataB)) && event(B_0(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA))
+    ==>
+    event(DISCOVERY(GUIDB,PdataB,GUIDA,PdataA)).

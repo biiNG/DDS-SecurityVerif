@@ -1,0 +1,16 @@
+query(*!! <Sequence_C>: the permission check is executed after DISCOVERY *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,Topic:TopicID_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring,PermB:PermDoc_t,
+      PdataA:Pdata_t,PdataB:Pdata_t,
+      t1:time,t2:time,t3:time,t4:time,t5:time;
+    event(ENC_COMMUNICATION(GUIDA,CA,ChallengeA,gx_DHA,
+                            GUIDB,CB,ChallengeB,gy_DHB,
+                            SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))@t5
+    ==>
+        (event(PERM_CHECK(GUIDB,PermB,Topic))@t4
+    &&  event(TOPIC_DISCOVERED(GUIDB,PermB,Topic))@t3
+    &&  event(TOPIC_CRT_REQ(GUIDB,PermB,Topic))@t2
+    &&  event(DISCOVERY(GUIDB,PdataB,GUIDA,PdataA))@t1
+    && t1<t2 && t2<t3 && t3<t4 && t4<t5).

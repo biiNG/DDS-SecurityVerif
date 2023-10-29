@@ -1,0 +1,15 @@
+query(* <Sequence_B>: the secure channel is created after TOPIC_CRT_REQ and B_2 *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,
+      SharedSecret:bitstring,p2pKeyMaterial:KeyMaterial_t,Topic:TopicID_t,
+      cryptoHeader:CryptoHeader_t,sessionKey:bitstring,PermB:PermDoc_t,
+      t1:time,t2:time,t3:time;
+    event(ENC_COMMUNICATION(GUIDA,CA,ChallengeA,gx_DHA,
+                            GUIDB,CB,ChallengeB,gy_DHB,
+                            SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))@t3
+    ==>
+        (event(TOPIC_CRT_REQ(GUIDB,PermB,Topic))@t1
+    &&  event(B_2(GUIDB,CB,ChallengeB,gy_DHB,
+                 GUIDA,CA,ChallengeA,gx_DHA,
+                 SharedSecret,p2pKeyMaterial,cryptoHeader,sessionKey))@t2 
+    &&  t1<t2 && t2<t3).

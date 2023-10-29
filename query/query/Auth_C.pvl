@@ -1,0 +1,6 @@
+query(*!! <Auth_C>: stepwise *)
+      GUIDA:GUID_t,CA:Clist_t,ChallengeA:bitstring,gx_DHA:element_t,
+      GUIDB:GUID_t,CB:Clist_t,ChallengeB:bitstring,gy_DHB:element_t,PdataB:Pdata_t;
+    event(B_0(GUIDB,CB,ChallengeB,gy_DHB,GUIDA,CA,ChallengeA,gx_DHA))
+    ==>
+    event(A_0(GUIDA,CA,ChallengeA,gx_DHA,PdataB)).

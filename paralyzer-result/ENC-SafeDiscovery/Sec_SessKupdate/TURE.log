@@ -1,0 +1,6 @@
+Verification summary:
+
+Query not (event(KEY_UPDATE_end(GUIDA_4,GUIDB_4,cryptoHeader_n_1,sessionKey_new_2,applicationData_new_2)) && attacker(sessionKey_new_2)) is true.
+
+--------------------------------------------------------------
+

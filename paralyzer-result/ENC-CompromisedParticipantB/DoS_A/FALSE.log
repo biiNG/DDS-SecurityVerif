@@ -1,0 +1,6 @@
+Verification summary:
+
+Query event(A_1(GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,SharedSecret_2)) ==> event(B_0(GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2)) is false.
+
+--------------------------------------------------------------
+

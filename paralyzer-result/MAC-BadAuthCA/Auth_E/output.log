@@ -1,0 +1,560 @@
+Linear part:
+dh_exp(dh_pub(g,x),y) = dh_exp(dh_pub(g,y),x)
+Completing equations...
+Completed equations:
+dh_exp(dh_pub(g,x),y) = dh_exp(dh_pub(g,y),x)
+Convergent part: No equation.
+Process 0 (that is, the initial process):
+{1}let PK_CI: PK_t = pk(SK_CI) in
+{2}out(RTPS_Ch, PK_CI);
+{3}let PK_Perm: PK_t = pk(SK_Perm) in
+{4}out(RTPS_Ch, PK_Perm);
+{5}new GUIDA: GUID_t;
+{6}new PrivKA: SK_t;
+{7}let sn: GUID_t = GUIDA in
+{8}let Pk: PK_t = pk(PrivKA) in
+{9}let CertA: Cert_t = sign_cert(sn,Pk,SN_CI,SK_CI) in
+{10}new DGA: DomainGovernance_t;
+{11}new PPA: ParticipantPermission_t;
+{12}new QoSA: Qos_t;
+{13}let sn_1: GUID_t = GUIDA in
+{14}let DG: DomainGovernance_t = DGA in
+{15}let PP: ParticipantPermission_t = PPA in
+{16}let PermA: PermDoc_t = sign_perm(sn_1,DG,PP,SK_Perm) in
+{17}let DHAlgoA: Algo_t = make_algo(ID_G,DH_RSA) in
+{18}new GUIDB: GUID_t;
+{19}new PrivKB: SK_t;
+{20}let sn_2: GUID_t = GUIDB in
+{21}let Pk_1: PK_t = pk(PrivKB) in
+{22}let CertB: Cert_t = sign_cert(sn_2,Pk_1,SN_CI,SK_CI) in
+{23}new DGB: DomainGovernance_t;
+{24}new PPB: ParticipantPermission_t;
+{25}new QosB: Qos_t;
+{26}let sn_3: GUID_t = GUIDB in
+{27}let DG_1: DomainGovernance_t = DGB in
+{28}let PP_1: ParticipantPermission_t = PPB in
+{29}let PermB: PermDoc_t = sign_perm(sn_3,DG_1,PP_1,SK_Perm) in
+{30}let DHAlgoB: Algo_t = make_algo(ID_G,DH_RSA) in
+{31}new Topic_bd: TopicID_t;
+(
+    {32}out(RTPS_Ch, SK_CI)
+) | (
+    {33}!
+    {34}let GUIDA_1: GUID_t = GUIDA in
+    {35}let PrivK_A: SK_t = PrivKA in
+    {36}let HashAlgoA: Hash_alg_t = SHA256 in
+    {37}let QoSA_1: Qos_t = QoSA in
+    {38}let AeadAlgoA: Aead_alg_t = AES_GCM_128 in
+    {39}let Topic_bd_1: TopicID_t = Topic_bd in
+    {40}let PdataA: Pdata_t = participant_data(GUIDA_1,Topic_bd_1,QoSA_1,discoveryRegister) in
+    {41}out(Discovery_ch, (GUIDA_1,PdataA));
+    {42}in(Discovery_ch, (PdataB: Pdata_t,=discoveredParticipant,=PdataA));
+    {43}event A_discover(PdataB);
+    {44}let make_algo(g: group_t,algoName: AlgoName_t) = DHAlgoA in
+    {45}new ChallengeA: bitstring;
+    {46}new s[]: Seed_t;
+    {47}let gx: element_t = dh_pub(g,dh_k(s)) in
+    {48}let (x: bitstring,gx_DHA: element_t) = (dh_k(s),gx) in
+    {49}let CA: Clist_t = make_C_list(CertA,PermA,PdataA,DHAlgoA,HashAlgoA) in
+    {50}let hash_CA: bitstring = hash(HashAlgoA,CA) in
+    {51}event A_0(GUIDA_1,CA,ChallengeA,gx_DHA,PdataB);
+    {52}out(RTPS_Ch, (CA,hash_CA,ChallengeA,gx_DHA));
+    {53}in(RTPS_Ch, (CB: Clist_t,hash_CB: bitstring,=ChallengeA,ChallengeB: bitstring,gy_DHB: element_t,=hash_CA,=gx_DHA,sigB: Sig_t));
+    {54}let make_C_list(CertB_1: Cert_t,PermB_1: PermDoc_t,=PdataB,=DHAlgoA,=HashAlgoA) = CB in
+    {55}let (GUIDB_1: GUID_t,PkB: PK_t,=SN_CI) = check_cert(CertB_1,PK_CI) in
+    {56}if verify(PkB,(hash(HashAlgoA,CB),ChallengeB,gy_DHB,ChallengeA,gx_DHA,hash_CA),sigB) then
+    {57}event endAtoB(GUIDB_1,CertB_1,ChallengeA);
+    {58}let gxy_SharedSecret: element_t = dh_exp(gy_DHB,x) in
+    {59}let SharedSecret: bitstring = gxy_SharedSecret in
+    {60}let sigA: Sig_t = sign(PrivK_A,(hash_CA,ChallengeA,gx_DHA,ChallengeB,gy_DHB,hash_CB)) in
+    {61}event beginBtoA(GUIDA_1,CertA,ChallengeB);
+    {62}event A_1(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret);
+    {63}out(RTPS_Ch, (hash_CA,hash(HashAlgoA,CB),gx_DHA,gy_DHB,ChallengeA,ChallengeB,sigA));
+    {64}in(Discovery_ch, (PermB_x: PermDoc_t,=TopicDiscovered,Topic: TopicID_t,=PdataB));
+    {65}if (PermB_x = PermB_1) then
+    {66}let (=GUIDB_1,DGB_1: DomainGovernance_t,PPB_1: ParticipantPermission_t) = check_perm(PermB_1,PK_Perm) in
+    {67}event PERM_CHECK(GUIDB_1,PermB_1,Topic);
+    {68}out(RTPS_Ch, (GUIDA_1,PermissionChecked,GUIDB_1,Topic));
+    {69}let KeyMaterial: KeyMaterial_t = KDF(SharedSecret,ChallengeA,ChallengeB) in
+    {70}let CryptoToken: CryptoToken_t = encCryptoToken(KeyMaterial,DHAlgoA,HashAlgoA,AeadAlgoA) in
+    {71}event A_2(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial);
+    {72}out(RTPS_Ch, CryptoToken);
+    {73}in(RTPS_Ch, (cryptoHeader: CryptoHeader_t,applicationData_x: bitstring,applicationDataMAC: bitstring));
+    {74}let makeCryptoHeader(sessionID: bitstring,IV: bitstring) = cryptoHeader in
+    {75}let sessionKey: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID,KeyMaterial)) in
+    {76}if aead_mac_check(AeadAlgoA,sessionKey,IV,cryptoHeader,applicationData_x,applicationDataMAC) then
+    {77}event A_3(GUIDB_1,GUIDA_1,applicationData_x,cryptoHeader,sessionKey);
+    {78}event ENC_COMMUNICATION(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial,cryptoHeader,sessionKey);
+    {79}new sessionID_new: bitstring;
+    {80}new IV_new: bitstring;
+    {81}let cryptoHeader_new: CryptoHeader_t = makeCryptoHeader(sessionID_new,IV_new) in
+    {82}let sessionKey_new: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID_new,KeyMaterial)) in
+    {83}new applicationData_new: bitstring;
+    {84}event KEY_UPDATE_begin(GUIDA_1,GUIDB_1,cryptoHeader_new,sessionKey_new,applicationData_new);
+    {85}out(RTPS_Ch, (cryptoHeader_new,applicationData_new,aead_mac(AeadAlgoA,sessionKey_new,IV,cryptoHeader_new,applicationData_new)));
+    {86}out(RTPS_Ch, finishA)
+) | (
+    {87}!
+    {88}let GUIDB_2: GUID_t = GUIDB in
+    {89}let PrivK_B: SK_t = PrivKB in
+    {90}let HashAlgoB: Hash_alg_t = SHA256 in
+    {91}let QosB_1: Qos_t = QosB in
+    {92}let AeadAlgoB: Aead_alg_t = AES_GCM_128 in
+    {93}let Topic_bd_2: TopicID_t = Topic_bd in
+    {94}let PdataB_1: Pdata_t = participant_data(GUIDB_2,Topic_bd_2,QosB_1,discoveryRegister) in
+    {95}event B_discover(PdataB_1);
+    {96}out(Discovery_ch, (GUIDB_2,PdataB_1));
+    {97}in(RTPS_Ch, (CA_1: Clist_t,hash_CA_1: bitstring,ChallengeA_1: bitstring,gx_DHA_1: element_t));
+    {98}let make_C_list(CertA_1: Cert_t,PermA_1: PermDoc_t,PdataA_1: Pdata_t,=DHAlgoB,=HashAlgoB) = CA_1 in
+    {99}let make_algo(g_1: group_t,algoName_1: AlgoName_t) = DHAlgoB in
+    {100}let (GUIDA_2: GUID_t,PkA: PK_t,=SN_CI) = check_cert(CertA_1,PK_CI) in
+    {101}if (hash(HashAlgoB,CA_1) = hash_CA_1) then
+    {102}new ChallengeB_1: bitstring;
+    {103}new s_1[]: Seed_t;
+    {104}let gx_1: element_t = dh_pub(g_1,dh_k(s_1)) in
+    {105}let (y: bitstring,gy_DHB_1: element_t) = (dh_k(s_1),gx_1) in
+    {106}let CB_1: Clist_t = make_C_list(CertB,PermB,PdataB_1,DHAlgoB,HashAlgoB) in
+    {107}let hash_CB_1: bitstring = hash(HashAlgoB,CB_1) in
+    {108}let sigB_1: Sig_t = sign(PrivK_B,(hash_CB_1,ChallengeB_1,gy_DHB_1,ChallengeA_1,gx_DHA_1,hash_CA_1)) in
+    {109}event beginAtoB(GUIDB_2,CertB,ChallengeA_1);
+    {110}event B_0(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1);
+    {111}out(RTPS_Ch, (CB_1,hash_CB_1,ChallengeA_1,ChallengeB_1,gy_DHB_1,hash_CA_1,gx_DHA_1,sigB_1));
+    {112}in(RTPS_Ch, (=hash_CA_1,=hash_CB_1,=gx_DHA_1,=gy_DHB_1,=ChallengeA_1,=ChallengeB_1,sigA_1: Sig_t));
+    {113}if verify(PkA,(hash_CA_1,ChallengeA_1,gx_DHA_1,ChallengeB_1,gy_DHB_1,hash_CB_1),sigA_1) then
+    {114}event endBtoA(GUIDA_2,CertA_1,ChallengeB_1);
+    {115}let gxy_SharedSecret_1: element_t = dh_exp(gx_DHA_1,y) in
+    {116}let SharedSecret_1: bitstring = gxy_SharedSecret_1 in
+    {117}event B_1(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1);
+    {118}new Topic_1: TopicID_t;
+    {119}event TOPIC_CRT_REQ(GUIDB_2,PermB,Topic_1);
+    {120}out(Discovery_ch, (PermB,TopicCreateReq,Topic_1,PdataB_1));
+    {121}in(RTPS_Ch, (=GUIDA_2,=PermissionChecked,=GUIDB_2,=Topic_1));
+    {122}let KeyMaterial_1: KeyMaterial_t = KDF(SharedSecret_1,ChallengeA_1,ChallengeB_1) in
+    {123}in(RTPS_Ch, CryptoToken_1: CryptoToken_t);
+    {124}if decCryptoToken(CryptoToken_1,KeyMaterial_1,DHAlgoB,HashAlgoB,AeadAlgoB) then
+    {125}new sessionID_1: bitstring;
+    {126}new IV_1: bitstring;
+    {127}let cryptoHeader_1: CryptoHeader_t = makeCryptoHeader(sessionID_1,IV_1) in
+    {128}let sessionKey_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_1,KeyMaterial_1)) in
+    {129}event B_2(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1,KeyMaterial_1,cryptoHeader_1,sessionKey_1);
+    {130}new applicationData_MAC: bitstring;
+    {131}event B_3(GUIDB_2,GUIDA_2,applicationData_MAC,cryptoHeader_1,sessionKey_1);
+    {132}out(RTPS_Ch, (cryptoHeader_1,(applicationData_MAC,secretData),aead_mac(AeadAlgoB,sessionKey_1,IV_1,cryptoHeader_1,(applicationData_MAC,secretData))));
+    {133}in(RTPS_Ch, (cryptoHeader_n: CryptoHeader_t,applicationData_x_new: bitstring,applicationDataMAC_new: bitstring));
+    {134}let makeCryptoHeader(sessionID_new_1: bitstring,IV_new_1: bitstring) = cryptoHeader_n in
+    {135}if (sessionID_new_1 ≠ sessionID_1) then
+    {136}let sessionKey_new_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_new_1,KeyMaterial_1)) in
+    {137}if aead_mac_check(AeadAlgoB,sessionKey_new_1,IV_new_1,cryptoHeader_n,applicationData_x_new,applicationDataMAC_new) then
+        {138}event KEY_UPDATE_end(GUIDA_2,GUIDB_2,cryptoHeader_n,sessionKey_new_1,applicationData_x_new);
+        {139}out(RTPS_Ch, finishB)
+    else
+        {140}out(RTPS_Ch, finishB)
+) | (
+    {141}!
+    {142}let Topic_bd_3: TopicID_t = Topic_bd in
+    {143}in(Discovery_ch, (GUIDB_3: GUID_t,PdataB_2: Pdata_t));
+    {144}let participant_data(=GUIDB_3,=Topic_bd_3,QosB_2: Qos_t,=discoveryRegister) = PdataB_2 in
+    {145}in(Discovery_ch, (GUIDA_3: GUID_t,PdataA_2: Pdata_t));
+    {146}let participant_data(=GUIDA_3,=Topic_bd_3,QosA: Qos_t,=discoveryRegister) = PdataA_2 in
+    {147}event DISCOVERY(GUIDB_3,PdataB_2,GUIDA_3,PdataA_2);
+    {148}out(Discovery_ch, (PdataB_2,discoveredParticipant,PdataA_2));
+    {149}in(Discovery_ch, (PermB_2: PermDoc_t,=TopicCreateReq,Topic_2: TopicID_t,=PdataB_2));
+    {150}event TOPIC_DISCOVERED(GUIDB_3,PermB_2,Topic_2);
+    {151}out(Discovery_ch, (PermB_2,TopicDiscovered,Topic_2,PdataB_2));
+    {152}out(RTPS_Ch, finishDiscovery)
+)
+
+--  Process 1 (that is, process 0, with let moved downwards):
+{1}let PK_CI: PK_t = pk(SK_CI) in
+{2}out(RTPS_Ch, PK_CI);
+{3}let PK_Perm: PK_t = pk(SK_Perm) in
+{4}out(RTPS_Ch, PK_Perm);
+{5}new GUIDA: GUID_t;
+{6}new PrivKA: SK_t;
+{10}new DGA: DomainGovernance_t;
+{11}new PPA: ParticipantPermission_t;
+{12}new QoSA: Qos_t;
+{18}new GUIDB: GUID_t;
+{19}new PrivKB: SK_t;
+{23}new DGB: DomainGovernance_t;
+{24}new PPB: ParticipantPermission_t;
+{25}new QosB: Qos_t;
+{31}new Topic_bd: TopicID_t;
+(
+    {32}out(RTPS_Ch, SK_CI)
+) | (
+    {33}!
+    {39}let Topic_bd_1: TopicID_t = Topic_bd in
+    {37}let QoSA_1: Qos_t = QoSA in
+    {34}let GUIDA_1: GUID_t = GUIDA in
+    {40}let PdataA: Pdata_t = participant_data(GUIDA_1,Topic_bd_1,QoSA_1,discoveryRegister) in
+    {41}out(Discovery_ch, (GUIDA_1,PdataA));
+    {42}in(Discovery_ch, (PdataB: Pdata_t,=discoveredParticipant,=PdataA));
+    {43}event A_discover(PdataB);
+    {17}let DHAlgoA: Algo_t = make_algo(ID_G,DH_RSA) in
+    {44}let make_algo(g: group_t,algoName: AlgoName_t) = DHAlgoA in
+    {45}new ChallengeA: bitstring;
+    {46}new s[]: Seed_t;
+    {47}let gx: element_t = dh_pub(g,dh_k(s)) in
+    {48}let (x: bitstring,gx_DHA: element_t) = (dh_k(s),gx) in
+    {36}let HashAlgoA: Hash_alg_t = SHA256 in
+    {15}let PP: ParticipantPermission_t = PPA in
+    {14}let DG: DomainGovernance_t = DGA in
+    {13}let sn_1: GUID_t = GUIDA in
+    {16}let PermA: PermDoc_t = sign_perm(sn_1,DG,PP,SK_Perm) in
+    {8}let Pk: PK_t = pk(PrivKA) in
+    {7}let sn: GUID_t = GUIDA in
+    {9}let CertA: Cert_t = sign_cert(sn,Pk,SN_CI,SK_CI) in
+    {49}let CA: Clist_t = make_C_list(CertA,PermA,PdataA,DHAlgoA,HashAlgoA) in
+    {51}event A_0(GUIDA_1,CA,ChallengeA,gx_DHA,PdataB);
+    {50}let hash_CA: bitstring = hash(HashAlgoA,CA) in
+    {52}out(RTPS_Ch, (CA,hash_CA,ChallengeA,gx_DHA));
+    {53}in(RTPS_Ch, (CB: Clist_t,hash_CB: bitstring,=ChallengeA,ChallengeB: bitstring,gy_DHB: element_t,=hash_CA,=gx_DHA,sigB: Sig_t));
+    {54}let make_C_list(CertB_1: Cert_t,PermB_1: PermDoc_t,=PdataB,=DHAlgoA,=HashAlgoA) = CB in
+    {55}let (GUIDB_1: GUID_t,PkB: PK_t,=SN_CI) = check_cert(CertB_1,PK_CI) in
+    {56}if verify(PkB,(hash(HashAlgoA,CB),ChallengeB,gy_DHB,ChallengeA,gx_DHA,hash_CA),sigB) then
+    {57}event endAtoB(GUIDB_1,CertB_1,ChallengeA);
+    {61}event beginBtoA(GUIDA_1,CertA,ChallengeB);
+    {58}let gxy_SharedSecret: element_t = dh_exp(gy_DHB,x) in
+    {59}let SharedSecret: bitstring = gxy_SharedSecret in
+    {62}event A_1(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret);
+    {35}let PrivK_A: SK_t = PrivKA in
+    {60}let sigA: Sig_t = sign(PrivK_A,(hash_CA,ChallengeA,gx_DHA,ChallengeB,gy_DHB,hash_CB)) in
+    {63}out(RTPS_Ch, (hash_CA,hash(HashAlgoA,CB),gx_DHA,gy_DHB,ChallengeA,ChallengeB,sigA));
+    {64}in(Discovery_ch, (PermB_x: PermDoc_t,=TopicDiscovered,Topic: TopicID_t,=PdataB));
+    {65}if (PermB_x = PermB_1) then
+    {66}let (=GUIDB_1,DGB_1: DomainGovernance_t,PPB_1: ParticipantPermission_t) = check_perm(PermB_1,PK_Perm) in
+    {67}event PERM_CHECK(GUIDB_1,PermB_1,Topic);
+    {68}out(RTPS_Ch, (GUIDA_1,PermissionChecked,GUIDB_1,Topic));
+    {69}let KeyMaterial: KeyMaterial_t = KDF(SharedSecret,ChallengeA,ChallengeB) in
+    {71}event A_2(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial);
+    {38}let AeadAlgoA: Aead_alg_t = AES_GCM_128 in
+    {70}let CryptoToken: CryptoToken_t = encCryptoToken(KeyMaterial,DHAlgoA,HashAlgoA,AeadAlgoA) in
+    {72}out(RTPS_Ch, CryptoToken);
+    {73}in(RTPS_Ch, (cryptoHeader: CryptoHeader_t,applicationData_x: bitstring,applicationDataMAC: bitstring));
+    {74}let makeCryptoHeader(sessionID: bitstring,IV: bitstring) = cryptoHeader in
+    {75}let sessionKey: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID,KeyMaterial)) in
+    {76}if aead_mac_check(AeadAlgoA,sessionKey,IV,cryptoHeader,applicationData_x,applicationDataMAC) then
+    {77}event A_3(GUIDB_1,GUIDA_1,applicationData_x,cryptoHeader,sessionKey);
+    {78}event ENC_COMMUNICATION(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial,cryptoHeader,sessionKey);
+    {79}new sessionID_new: bitstring;
+    {80}new IV_new: bitstring;
+    {83}new applicationData_new: bitstring;
+    {82}let sessionKey_new: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID_new,KeyMaterial)) in
+    {81}let cryptoHeader_new: CryptoHeader_t = makeCryptoHeader(sessionID_new,IV_new) in
+    {84}event KEY_UPDATE_begin(GUIDA_1,GUIDB_1,cryptoHeader_new,sessionKey_new,applicationData_new);
+    {85}out(RTPS_Ch, (cryptoHeader_new,applicationData_new,aead_mac(AeadAlgoA,sessionKey_new,IV,cryptoHeader_new,applicationData_new)));
+    {86}out(RTPS_Ch, finishA)
+) | (
+    {87}!
+    {93}let Topic_bd_2: TopicID_t = Topic_bd in
+    {91}let QosB_1: Qos_t = QosB in
+    {88}let GUIDB_2: GUID_t = GUIDB in
+    {94}let PdataB_1: Pdata_t = participant_data(GUIDB_2,Topic_bd_2,QosB_1,discoveryRegister) in
+    {95}event B_discover(PdataB_1);
+    {96}out(Discovery_ch, (GUIDB_2,PdataB_1));
+    {97}in(RTPS_Ch, (CA_1: Clist_t,hash_CA_1: bitstring,ChallengeA_1: bitstring,gx_DHA_1: element_t));
+    {90}let HashAlgoB: Hash_alg_t = SHA256 in
+    {30}let DHAlgoB: Algo_t = make_algo(ID_G,DH_RSA) in
+    {98}let make_C_list(CertA_1: Cert_t,PermA_1: PermDoc_t,PdataA_1: Pdata_t,=DHAlgoB,=HashAlgoB) = CA_1 in
+    {99}let make_algo(g_1: group_t,algoName_1: AlgoName_t) = DHAlgoB in
+    {100}let (GUIDA_2: GUID_t,PkA: PK_t,=SN_CI) = check_cert(CertA_1,PK_CI) in
+    {101}if (hash(HashAlgoB,CA_1) = hash_CA_1) then
+    {102}new ChallengeB_1: bitstring;
+    {103}new s_1[]: Seed_t;
+    {104}let gx_1: element_t = dh_pub(g_1,dh_k(s_1)) in
+    {105}let (y: bitstring,gy_DHB_1: element_t) = (dh_k(s_1),gx_1) in
+    {21}let Pk_1: PK_t = pk(PrivKB) in
+    {20}let sn_2: GUID_t = GUIDB in
+    {22}let CertB: Cert_t = sign_cert(sn_2,Pk_1,SN_CI,SK_CI) in
+    {109}event beginAtoB(GUIDB_2,CertB,ChallengeA_1);
+    {28}let PP_1: ParticipantPermission_t = PPB in
+    {27}let DG_1: DomainGovernance_t = DGB in
+    {26}let sn_3: GUID_t = GUIDB in
+    {29}let PermB: PermDoc_t = sign_perm(sn_3,DG_1,PP_1,SK_Perm) in
+    {106}let CB_1: Clist_t = make_C_list(CertB,PermB,PdataB_1,DHAlgoB,HashAlgoB) in
+    {110}event B_0(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1);
+    {107}let hash_CB_1: bitstring = hash(HashAlgoB,CB_1) in
+    {89}let PrivK_B: SK_t = PrivKB in
+    {108}let sigB_1: Sig_t = sign(PrivK_B,(hash_CB_1,ChallengeB_1,gy_DHB_1,ChallengeA_1,gx_DHA_1,hash_CA_1)) in
+    {111}out(RTPS_Ch, (CB_1,hash_CB_1,ChallengeA_1,ChallengeB_1,gy_DHB_1,hash_CA_1,gx_DHA_1,sigB_1));
+    {112}in(RTPS_Ch, (=hash_CA_1,=hash_CB_1,=gx_DHA_1,=gy_DHB_1,=ChallengeA_1,=ChallengeB_1,sigA_1: Sig_t));
+    {113}if verify(PkA,(hash_CA_1,ChallengeA_1,gx_DHA_1,ChallengeB_1,gy_DHB_1,hash_CB_1),sigA_1) then
+    {114}event endBtoA(GUIDA_2,CertA_1,ChallengeB_1);
+    {115}let gxy_SharedSecret_1: element_t = dh_exp(gx_DHA_1,y) in
+    {116}let SharedSecret_1: bitstring = gxy_SharedSecret_1 in
+    {117}event B_1(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1);
+    {118}new Topic_1: TopicID_t;
+    {119}event TOPIC_CRT_REQ(GUIDB_2,PermB,Topic_1);
+    {120}out(Discovery_ch, (PermB,TopicCreateReq,Topic_1,PdataB_1));
+    {121}in(RTPS_Ch, (=GUIDA_2,=PermissionChecked,=GUIDB_2,=Topic_1));
+    {123}in(RTPS_Ch, CryptoToken_1: CryptoToken_t);
+    {122}let KeyMaterial_1: KeyMaterial_t = KDF(SharedSecret_1,ChallengeA_1,ChallengeB_1) in
+    {92}let AeadAlgoB: Aead_alg_t = AES_GCM_128 in
+    {124}if decCryptoToken(CryptoToken_1,KeyMaterial_1,DHAlgoB,HashAlgoB,AeadAlgoB) then
+    {125}new sessionID_1: bitstring;
+    {126}new IV_1: bitstring;
+    {128}let sessionKey_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_1,KeyMaterial_1)) in
+    {127}let cryptoHeader_1: CryptoHeader_t = makeCryptoHeader(sessionID_1,IV_1) in
+    {129}event B_2(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1,KeyMaterial_1,cryptoHeader_1,sessionKey_1);
+    {130}new applicationData_MAC: bitstring;
+    {131}event B_3(GUIDB_2,GUIDA_2,applicationData_MAC,cryptoHeader_1,sessionKey_1);
+    {132}out(RTPS_Ch, (cryptoHeader_1,(applicationData_MAC,secretData),aead_mac(AeadAlgoB,sessionKey_1,IV_1,cryptoHeader_1,(applicationData_MAC,secretData))));
+    {133}in(RTPS_Ch, (cryptoHeader_n: CryptoHeader_t,applicationData_x_new: bitstring,applicationDataMAC_new: bitstring));
+    {134}let makeCryptoHeader(sessionID_new_1: bitstring,IV_new_1: bitstring) = cryptoHeader_n in
+    {135}if (sessionID_new_1 ≠ sessionID_1) then
+    {136}let sessionKey_new_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_new_1,KeyMaterial_1)) in
+    {137}if aead_mac_check(AeadAlgoB,sessionKey_new_1,IV_new_1,cryptoHeader_n,applicationData_x_new,applicationDataMAC_new) then
+        {138}event KEY_UPDATE_end(GUIDA_2,GUIDB_2,cryptoHeader_n,sessionKey_new_1,applicationData_x_new);
+        {139}out(RTPS_Ch, finishB)
+    else
+        {140}out(RTPS_Ch, finishB)
+) | (
+    {141}!
+    {143}in(Discovery_ch, (GUIDB_3: GUID_t,PdataB_2: Pdata_t));
+    {142}let Topic_bd_3: TopicID_t = Topic_bd in
+    {144}let participant_data(=GUIDB_3,=Topic_bd_3,QosB_2: Qos_t,=discoveryRegister) = PdataB_2 in
+    {145}in(Discovery_ch, (GUIDA_3: GUID_t,PdataA_2: Pdata_t));
+    {146}let participant_data(=GUIDA_3,=Topic_bd_3,QosA: Qos_t,=discoveryRegister) = PdataA_2 in
+    {147}event DISCOVERY(GUIDB_3,PdataB_2,GUIDA_3,PdataA_2);
+    {148}out(Discovery_ch, (PdataB_2,discoveredParticipant,PdataA_2));
+    {149}in(Discovery_ch, (PermB_2: PermDoc_t,=TopicCreateReq,Topic_2: TopicID_t,=PdataB_2));
+    {150}event TOPIC_DISCOVERED(GUIDB_3,PermB_2,Topic_2);
+    {151}out(Discovery_ch, (PermB_2,TopicDiscovered,Topic_2,PdataB_2));
+    {152}out(RTPS_Ch, finishDiscovery)
+)
+
+-- Query event(B_1(GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,SharedSecret_2)) ==> event(A_1(GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,SharedSecret_2)) && event(B_0(GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2)) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Termination warning: Selecting an hypothesis matching the conclusion.
+In case of non-termination, try a noselect declaration implying the following one:
+   noselect PkA_1:PK_t, GUIDA_4:GUID_t; attacker(sign_cert(GUIDA_4,PkA_1,SN_CI,SK_CI)).
+200 rules inserted. Base: 174 rules (55 with conclusion selected). Queue: 30 rules.
+Termination warning: Selecting an hypothesis matching the conclusion.
+In case of non-termination, try a noselect declaration implying the following one:
+   noselect PdataA_3:Pdata_t, PermA_2:PermDoc_t, PkA_1:PK_t, GUIDA_4:GUID_t; attacker(hash(SHA256,make_C_list(sign_cert(GUIDA_4,PkA_1,SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256))).
+Termination warning: Selecting an hypothesis matching the conclusion.
+In case of non-termination, try a noselect declaration implying the following one:
+   noselect PdataA_3:Pdata_t, PermA_2:PermDoc_t; attacker(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256))).
+400 rules inserted. Base: 268 rules (91 with conclusion selected). Queue: 70 rules.
+600 rules inserted. Base: 336 rules (91 with conclusion selected). Queue: 139 rules.
+800 rules inserted. Base: 391 rules (91 with conclusion selected). Queue: 215 rules.
+1000 rules inserted. Base: 438 rules (91 with conclusion selected). Queue: 283 rules.
+1200 rules inserted. Base: 519 rules (91 with conclusion selected). Queue: 331 rules.
+1400 rules inserted. Base: 660 rules (91 with conclusion selected). Queue: 380 rules.
+1600 rules inserted. Base: 712 rules (93 with conclusion selected). Queue: 346 rules.
+1800 rules inserted. Base: 843 rules (94 with conclusion selected). Queue: 253 rules.
+2000 rules inserted. Base: 924 rules (106 with conclusion selected). Queue: 249 rules.
+2200 rules inserted. Base: 948 rules (113 with conclusion selected). Queue: 297 rules.
+2400 rules inserted. Base: 1011 rules (115 with conclusion selected). Queue: 331 rules.
+2600 rules inserted. Base: 1071 rules (123 with conclusion selected). Queue: 419 rules.
+2800 rules inserted. Base: 1106 rules (123 with conclusion selected). Queue: 439 rules.
+3000 rules inserted. Base: 1159 rules (123 with conclusion selected). Queue: 482 rules.
+3200 rules inserted. Base: 1257 rules (123 with conclusion selected). Queue: 419 rules.
+3400 rules inserted. Base: 1268 rules (123 with conclusion selected). Queue: 466 rules.
+3600 rules inserted. Base: 1310 rules (139 with conclusion selected). Queue: 546 rules.
+3800 rules inserted. Base: 1324 rules (139 with conclusion selected). Queue: 578 rules.
+4000 rules inserted. Base: 1372 rules (143 with conclusion selected). Queue: 634 rules.
+4200 rules inserted. Base: 1377 rules (143 with conclusion selected). Queue: 645 rules.
+4400 rules inserted. Base: 1404 rules (157 with conclusion selected). Queue: 631 rules.
+4600 rules inserted. Base: 1491 rules (157 with conclusion selected). Queue: 758 rules.
+4800 rules inserted. Base: 1503 rules (157 with conclusion selected). Queue: 758 rules.
+5000 rules inserted. Base: 1594 rules (167 with conclusion selected). Queue: 804 rules.
+5200 rules inserted. Base: 1665 rules (167 with conclusion selected). Queue: 836 rules.
+5400 rules inserted. Base: 1713 rules (167 with conclusion selected). Queue: 844 rules.
+5600 rules inserted. Base: 1758 rules (167 with conclusion selected). Queue: 839 rules.
+5800 rules inserted. Base: 1817 rules (167 with conclusion selected). Queue: 831 rules.
+6000 rules inserted. Base: 1896 rules (167 with conclusion selected). Queue: 799 rules.
+6200 rules inserted. Base: 1958 rules (167 with conclusion selected). Queue: 828 rules.
+6400 rules inserted. Base: 2018 rules (167 with conclusion selected). Queue: 768 rules.
+6600 rules inserted. Base: 2067 rules (167 with conclusion selected). Queue: 760 rules.
+6800 rules inserted. Base: 2146 rules (167 with conclusion selected). Queue: 681 rules.
+7000 rules inserted. Base: 2272 rules (167 with conclusion selected). Queue: 588 rules.
+7200 rules inserted. Base: 2344 rules (169 with conclusion selected). Queue: 521 rules.
+7400 rules inserted. Base: 2461 rules (171 with conclusion selected). Queue: 420 rules.
+7600 rules inserted. Base: 2551 rules (171 with conclusion selected). Queue: 346 rules.
+7800 rules inserted. Base: 2668 rules (187 with conclusion selected). Queue: 285 rules.
+8000 rules inserted. Base: 2742 rules (204 with conclusion selected). Queue: 304 rules.
+8200 rules inserted. Base: 2806 rules (214 with conclusion selected). Queue: 377 rules.
+8400 rules inserted. Base: 2924 rules (224 with conclusion selected). Queue: 584 rules.
+8600 rules inserted. Base: 3057 rules (228 with conclusion selected). Queue: 605 rules.
+8800 rules inserted. Base: 3113 rules (228 with conclusion selected). Queue: 617 rules.
+9000 rules inserted. Base: 3166 rules (229 with conclusion selected). Queue: 622 rules.
+9200 rules inserted. Base: 3235 rules (229 with conclusion selected). Queue: 634 rules.
+9400 rules inserted. Base: 3256 rules (229 with conclusion selected). Queue: 675 rules.
+9600 rules inserted. Base: 3268 rules (229 with conclusion selected). Queue: 699 rules.
+9800 rules inserted. Base: 3268 rules (229 with conclusion selected). Queue: 738 rules.
+10000 rules inserted. Base: 3307 rules (229 with conclusion selected). Queue: 775 rules.
+10200 rules inserted. Base: 3325 rules (229 with conclusion selected). Queue: 775 rules.
+10400 rules inserted. Base: 3351 rules (229 with conclusion selected). Queue: 805 rules.
+10600 rules inserted. Base: 3367 rules (229 with conclusion selected). Queue: 805 rules.
+10800 rules inserted. Base: 3377 rules (229 with conclusion selected). Queue: 840 rules.
+11000 rules inserted. Base: 3387 rules (229 with conclusion selected). Queue: 879 rules.
+11200 rules inserted. Base: 3373 rules (229 with conclusion selected). Queue: 926 rules.
+11400 rules inserted. Base: 3373 rules (229 with conclusion selected). Queue: 928 rules.
+11600 rules inserted. Base: 3411 rules (229 with conclusion selected). Queue: 944 rules.
+11800 rules inserted. Base: 3456 rules (229 with conclusion selected). Queue: 982 rules.
+12000 rules inserted. Base: 3517 rules (253 with conclusion selected). Queue: 1089 rules.
+12200 rules inserted. Base: 3566 rules (253 with conclusion selected). Queue: 1132 rules.
+12400 rules inserted. Base: 3576 rules (253 with conclusion selected). Queue: 1152 rules.
+12600 rules inserted. Base: 3576 rules (253 with conclusion selected). Queue: 1152 rules.
+12800 rules inserted. Base: 3581 rules (253 with conclusion selected). Queue: 1166 rules.
+13000 rules inserted. Base: 3537 rules (253 with conclusion selected). Queue: 1175 rules.
+13200 rules inserted. Base: 3537 rules (253 with conclusion selected). Queue: 1175 rules.
+13400 rules inserted. Base: 3537 rules (253 with conclusion selected). Queue: 1175 rules.
+13600 rules inserted. Base: 3565 rules (253 with conclusion selected). Queue: 1217 rules.
+13800 rules inserted. Base: 3581 rules (253 with conclusion selected). Queue: 1221 rules.
+14000 rules inserted. Base: 3601 rules (253 with conclusion selected). Queue: 1247 rules.
+14200 rules inserted. Base: 3616 rules (253 with conclusion selected). Queue: 1314 rules.
+14400 rules inserted. Base: 3637 rules (253 with conclusion selected). Queue: 1308 rules.
+14600 rules inserted. Base: 3649 rules (253 with conclusion selected). Queue: 1311 rules.
+14800 rules inserted. Base: 3661 rules (255 with conclusion selected). Queue: 1339 rules.
+15000 rules inserted. Base: 3629 rules (255 with conclusion selected). Queue: 1339 rules.
+15200 rules inserted. Base: 3636 rules (257 with conclusion selected). Queue: 1375 rules.
+15400 rules inserted. Base: 3675 rules (257 with conclusion selected). Queue: 1415 rules.
+15600 rules inserted. Base: 3690 rules (257 with conclusion selected). Queue: 1415 rules.
+15800 rules inserted. Base: 3679 rules (257 with conclusion selected). Queue: 1415 rules.
+16000 rules inserted. Base: 3700 rules (261 with conclusion selected). Queue: 1427 rules.
+16200 rules inserted. Base: 3700 rules (261 with conclusion selected). Queue: 1407 rules.
+16400 rules inserted. Base: 3671 rules (261 with conclusion selected). Queue: 1407 rules.
+16600 rules inserted. Base: 3704 rules (261 with conclusion selected). Queue: 1407 rules.
+16800 rules inserted. Base: 3703 rules (261 with conclusion selected). Queue: 1407 rules.
+17000 rules inserted. Base: 3668 rules (261 with conclusion selected). Queue: 1407 rules.
+17200 rules inserted. Base: 3668 rules (261 with conclusion selected). Queue: 1407 rules.
+17400 rules inserted. Base: 3708 rules (261 with conclusion selected). Queue: 1367 rules.
+17600 rules inserted. Base: 3805 rules (261 with conclusion selected). Queue: 1467 rules.
+17800 rules inserted. Base: 3848 rules (261 with conclusion selected). Queue: 1429 rules.
+18000 rules inserted. Base: 3886 rules (261 with conclusion selected). Queue: 1436 rules.
+18200 rules inserted. Base: 4011 rules (261 with conclusion selected). Queue: 1566 rules.
+18400 rules inserted. Base: 4050 rules (261 with conclusion selected). Queue: 1542 rules.
+18600 rules inserted. Base: 4095 rules (261 with conclusion selected). Queue: 1502 rules.
+18800 rules inserted. Base: 4223 rules (261 with conclusion selected). Queue: 1551 rules.
+19000 rules inserted. Base: 4235 rules (261 with conclusion selected). Queue: 1535 rules.
+19200 rules inserted. Base: 4273 rules (261 with conclusion selected). Queue: 1492 rules.
+19400 rules inserted. Base: 4435 rules (261 with conclusion selected). Queue: 1537 rules.
+19600 rules inserted. Base: 4498 rules (261 with conclusion selected). Queue: 1538 rules.
+19800 rules inserted. Base: 4430 rules (261 with conclusion selected). Queue: 1510 rules.
+20000 rules inserted. Base: 4469 rules (261 with conclusion selected). Queue: 1470 rules.
+20200 rules inserted. Base: 4469 rules (261 with conclusion selected). Queue: 1470 rules.
+20400 rules inserted. Base: 4554 rules (261 with conclusion selected). Queue: 1505 rules.
+20600 rules inserted. Base: 4571 rules (261 with conclusion selected). Queue: 1488 rules.
+20800 rules inserted. Base: 4571 rules (261 with conclusion selected). Queue: 1488 rules.
+21000 rules inserted. Base: 4652 rules (261 with conclusion selected). Queue: 1518 rules.
+21200 rules inserted. Base: 4773 rules (261 with conclusion selected). Queue: 1469 rules.
+21400 rules inserted. Base: 4813 rules (261 with conclusion selected). Queue: 1470 rules.
+21600 rules inserted. Base: 4928 rules (261 with conclusion selected). Queue: 1594 rules.
+21800 rules inserted. Base: 5095 rules (261 with conclusion selected). Queue: 1598 rules.
+22000 rules inserted. Base: 5203 rules (291 with conclusion selected). Queue: 2067 rules.
+22200 rules inserted. Base: 5318 rules (321 with conclusion selected). Queue: 2822 rules.
+22400 rules inserted. Base: 5476 rules (321 with conclusion selected). Queue: 3220 rules.
+22600 rules inserted. Base: 5594 rules (321 with conclusion selected). Queue: 3064 rules.
+22800 rules inserted. Base: 5620 rules (352 with conclusion selected). Queue: 3658 rules.
+23000 rules inserted. Base: 5756 rules (381 with conclusion selected). Queue: 4569 rules.
+23200 rules inserted. Base: 5941 rules (381 with conclusion selected). Queue: 4428 rules.
+23400 rules inserted. Base: 6095 rules (382 with conclusion selected). Queue: 4284 rules.
+23600 rules inserted. Base: 6272 rules (388 with conclusion selected). Queue: 4417 rules.
+23800 rules inserted. Base: 6444 rules (394 with conclusion selected). Queue: 4570 rules.
+24000 rules inserted. Base: 6599 rules (405 with conclusion selected). Queue: 4803 rules.
+24200 rules inserted. Base: 6763 rules (415 with conclusion selected). Queue: 4779 rules.
+24400 rules inserted. Base: 6947 rules (419 with conclusion selected). Queue: 4906 rules.
+24600 rules inserted. Base: 7131 rules (425 with conclusion selected). Queue: 4930 rules.
+24800 rules inserted. Base: 7331 rules (425 with conclusion selected). Queue: 4888 rules.
+25000 rules inserted. Base: 7521 rules (425 with conclusion selected). Queue: 4703 rules.
+25200 rules inserted. Base: 7716 rules (425 with conclusion selected). Queue: 4513 rules.
+25400 rules inserted. Base: 7911 rules (425 with conclusion selected). Queue: 4328 rules.
+25600 rules inserted. Base: 8090 rules (425 with conclusion selected). Queue: 4150 rules.
+25800 rules inserted. Base: 8244 rules (427 with conclusion selected). Queue: 4242 rules.
+26000 rules inserted. Base: 8416 rules (431 with conclusion selected). Queue: 4085 rules.
+26200 rules inserted. Base: 8580 rules (440 with conclusion selected). Queue: 4164 rules.
+26400 rules inserted. Base: 8770 rules (441 with conclusion selected). Queue: 3987 rules.
+26600 rules inserted. Base: 8944 rules (450 with conclusion selected). Queue: 4042 rules.
+26800 rules inserted. Base: 9124 rules (451 with conclusion selected). Queue: 3890 rules.
+27000 rules inserted. Base: 9306 rules (457 with conclusion selected). Queue: 4046 rules.
+27200 rules inserted. Base: 9479 rules (461 with conclusion selected). Queue: 3908 rules.
+27400 rules inserted. Base: 9678 rules (461 with conclusion selected). Queue: 3709 rules.
+27600 rules inserted. Base: 9855 rules (465 with conclusion selected). Queue: 3680 rules.
+27800 rules inserted. Base: 9938 rules (461 with conclusion selected). Queue: 3520 rules.
+28000 rules inserted. Base: 10111 rules (455 with conclusion selected). Queue: 3326 rules.
+28200 rules inserted. Base: 10274 rules (451 with conclusion selected). Queue: 3154 rules.
+28400 rules inserted. Base: 10447 rules (445 with conclusion selected). Queue: 2965 rules.
+28600 rules inserted. Base: 10613 rules (443 with conclusion selected). Queue: 2792 rules.
+28800 rules inserted. Base: 10783 rules (435 with conclusion selected). Queue: 2604 rules.
+29000 rules inserted. Base: 10949 rules (433 with conclusion selected). Queue: 2441 rules.
+29200 rules inserted. Base: 11146 rules (431 with conclusion selected). Queue: 2242 rules.
+29400 rules inserted. Base: 11319 rules (425 with conclusion selected). Queue: 2058 rules.
+29600 rules inserted. Base: 11519 rules (425 with conclusion selected). Queue: 1858 rules.
+29800 rules inserted. Base: 11458 rules (425 with conclusion selected). Queue: 1815 rules.
+30000 rules inserted. Base: 11621 rules (421 with conclusion selected). Queue: 1638 rules.
+30200 rules inserted. Base: 11774 rules (413 with conclusion selected). Queue: 1482 rules.
+30400 rules inserted. Base: 11940 rules (405 with conclusion selected). Queue: 1313 rules.
+30600 rules inserted. Base: 12103 rules (401 with conclusion selected). Queue: 1146 rules.
+30800 rules inserted. Base: 12281 rules (395 with conclusion selected). Queue: 972 rules.
+31000 rules inserted. Base: 12444 rules (391 with conclusion selected). Queue: 815 rules.
+31200 rules inserted. Base: 11964 rules (393 with conclusion selected). Queue: 1046 rules.
+31400 rules inserted. Base: 11433 rules (405 with conclusion selected). Queue: 1246 rules.
+31600 rules inserted. Base: 11005 rules (415 with conclusion selected). Queue: 1433 rules.
+31800 rules inserted. Base: 10392 rules (425 with conclusion selected). Queue: 1656 rules.
+32000 rules inserted. Base: 10532 rules (425 with conclusion selected). Queue: 1516 rules.
+32200 rules inserted. Base: 10672 rules (425 with conclusion selected). Queue: 1376 rules.
+32400 rules inserted. Base: 10812 rules (425 with conclusion selected). Queue: 1236 rules.
+32600 rules inserted. Base: 10711 rules (425 with conclusion selected). Queue: 1190 rules.
+32800 rules inserted. Base: 10805 rules (425 with conclusion selected). Queue: 1070 rules.
+33000 rules inserted. Base: 10915 rules (425 with conclusion selected). Queue: 955 rules.
+33200 rules inserted. Base: 11075 rules (425 with conclusion selected). Queue: 790 rules.
+33400 rules inserted. Base: 11217 rules (425 with conclusion selected). Queue: 630 rules.
+33600 rules inserted. Base: 11249 rules (425 with conclusion selected). Queue: 660 rules.
+33800 rules inserted. Base: 11304 rules (425 with conclusion selected). Queue: 606 rules.
+34000 rules inserted. Base: 11339 rules (425 with conclusion selected). Queue: 606 rules.
+34200 rules inserted. Base: 11369 rules (430 with conclusion selected). Queue: 611 rules.
+34400 rules inserted. Base: 11346 rules (435 with conclusion selected). Queue: 611 rules.
+34600 rules inserted. Base: 11376 rules (435 with conclusion selected). Queue: 626 rules.
+34800 rules inserted. Base: 11352 rules (435 with conclusion selected). Queue: 631 rules.
+35000 rules inserted. Base: 11228 rules (351 with conclusion selected). Queue: 620 rules.
+35200 rules inserted. Base: 11201 rules (351 with conclusion selected). Queue: 630 rules.
+35400 rules inserted. Base: 11199 rules (361 with conclusion selected). Queue: 660 rules.
+35600 rules inserted. Base: 7185 rules (411 with conclusion selected). Queue: 1430 rules.
+35800 rules inserted. Base: 7195 rules (411 with conclusion selected). Queue: 1480 rules.
+36000 rules inserted. Base: 7218 rules (411 with conclusion selected). Queue: 1529 rules.
+36200 rules inserted. Base: 7240 rules (411 with conclusion selected). Queue: 1569 rules.
+36400 rules inserted. Base: 7379 rules (411 with conclusion selected). Queue: 1450 rules.
+36600 rules inserted. Base: 7559 rules (411 with conclusion selected). Queue: 1270 rules.
+36800 rules inserted. Base: 7739 rules (411 with conclusion selected). Queue: 1090 rules.
+37000 rules inserted. Base: 7919 rules (411 with conclusion selected). Queue: 910 rules.
+37200 rules inserted. Base: 7960 rules (411 with conclusion selected). Queue: 880 rules.
+37400 rules inserted. Base: 7969 rules (411 with conclusion selected). Queue: 877 rules.
+37600 rules inserted. Base: 7959 rules (411 with conclusion selected). Queue: 874 rules.
+37800 rules inserted. Base: 7963 rules (411 with conclusion selected). Queue: 878 rules.
+38000 rules inserted. Base: 7961 rules (411 with conclusion selected). Queue: 852 rules.
+38200 rules inserted. Base: 7959 rules (411 with conclusion selected). Queue: 826 rules.
+38400 rules inserted. Base: 8029 rules (411 with conclusion selected). Queue: 873 rules.
+38600 rules inserted. Base: 8091 rules (411 with conclusion selected). Queue: 922 rules.
+38800 rules inserted. Base: 8148 rules (411 with conclusion selected). Queue: 971 rules.
+39000 rules inserted. Base: 8223 rules (411 with conclusion selected). Queue: 1028 rules.
+39200 rules inserted. Base: 8248 rules (411 with conclusion selected). Queue: 1043 rules.
+39400 rules inserted. Base: 8248 rules (411 with conclusion selected). Queue: 1053 rules.
+39600 rules inserted. Base: 8269 rules (411 with conclusion selected). Queue: 1070 rules.
+39800 rules inserted. Base: 8251 rules (411 with conclusion selected). Queue: 1082 rules.
+40000 rules inserted. Base: 8271 rules (411 with conclusion selected). Queue: 1106 rules.
+40200 rules inserted. Base: 8262 rules (411 with conclusion selected). Queue: 1117 rules.
+40400 rules inserted. Base: 8293 rules (411 with conclusion selected). Queue: 1093 rules.
+40600 rules inserted. Base: 8338 rules (411 with conclusion selected). Queue: 1092 rules.
+40800 rules inserted. Base: 8333 rules (411 with conclusion selected). Queue: 1056 rules.
+41000 rules inserted. Base: 8378 rules (411 with conclusion selected). Queue: 1027 rules.
+41200 rules inserted. Base: 8414 rules (411 with conclusion selected). Queue: 995 rules.
+41400 rules inserted. Base: 8375 rules (411 with conclusion selected). Queue: 950 rules.
+41600 rules inserted. Base: 8367 rules (411 with conclusion selected). Queue: 912 rules.
+41800 rules inserted. Base: 8354 rules (411 with conclusion selected). Queue: 921 rules.
+42000 rules inserted. Base: 8326 rules (411 with conclusion selected). Queue: 915 rules.
+42200 rules inserted. Base: 8322 rules (411 with conclusion selected). Queue: 865 rules.
+42400 rules inserted. Base: 8266 rules (411 with conclusion selected). Queue: 812 rules.
+42600 rules inserted. Base: 8218 rules (411 with conclusion selected). Queue: 747 rules.
+42800 rules inserted. Base: 8173 rules (411 with conclusion selected). Queue: 649 rules.
+43000 rules inserted. Base: 8143 rules (411 with conclusion selected). Queue: 563 rules.
+43200 rules inserted. Base: 8028 rules (411 with conclusion selected). Queue: 529 rules.
+43400 rules inserted. Base: 7994 rules (411 with conclusion selected). Queue: 454 rules.
+43600 rules inserted. Base: 8029 rules (411 with conclusion selected). Queue: 416 rules.
+43800 rules inserted. Base: 8080 rules (411 with conclusion selected). Queue: 362 rules.
+44000 rules inserted. Base: 8087 rules (411 with conclusion selected). Queue: 354 rules.
+44200 rules inserted. Base: 8079 rules (411 with conclusion selected). Queue: 354 rules.
+44400 rules inserted. Base: 8139 rules (471 with conclusion selected). Queue: 294 rules.

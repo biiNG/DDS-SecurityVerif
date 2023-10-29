@@ -1,0 +1,792 @@
+Linear part:
+dh_exp(dh_pub(g,x),y) = dh_exp(dh_pub(g,y),x)
+Completing equations...
+Completed equations:
+dh_exp(dh_pub(g,x),y) = dh_exp(dh_pub(g,y),x)
+Convergent part: No equation.
+Process 0 (that is, the initial process):
+{1}let PK_CI: PK_t = pk(SK_CI) in
+{2}out(RTPS_Ch, PK_CI);
+{3}let PK_Perm: PK_t = pk(SK_Perm) in
+{4}out(RTPS_Ch, PK_Perm);
+{5}new GUIDA: GUID_t;
+{6}new PrivKA: SK_t;
+{7}let sn: GUID_t = GUIDA in
+{8}let Pk: PK_t = pk(PrivKA) in
+{9}let CertA: Cert_t = sign_cert(sn,Pk,SN_CI,SK_CI) in
+{10}new DGA: DomainGovernance_t;
+{11}new PPA: ParticipantPermission_t;
+{12}new QoSA: Qos_t;
+{13}let sn_1: GUID_t = GUIDA in
+{14}let DG: DomainGovernance_t = DGA in
+{15}let PP: ParticipantPermission_t = PPA in
+{16}let PermA: PermDoc_t = sign_perm(sn_1,DG,PP,SK_Perm) in
+{17}let DHAlgoA: Algo_t = make_algo(ID_G,DH_RSA) in
+{18}new GUIDB: GUID_t;
+{19}new PrivKB: SK_t;
+{20}let sn_2: GUID_t = GUIDB in
+{21}let Pk_1: PK_t = pk(PrivKB) in
+{22}let CertB: Cert_t = sign_cert(sn_2,Pk_1,SN_CI,SK_CI) in
+{23}new DGB: DomainGovernance_t;
+{24}new PPB: ParticipantPermission_t;
+{25}new QosB: Qos_t;
+{26}let sn_3: GUID_t = GUIDB in
+{27}let DG_1: DomainGovernance_t = DGB in
+{28}let PP_1: ParticipantPermission_t = PPB in
+{29}let PermB: PermDoc_t = sign_perm(sn_3,DG_1,PP_1,SK_Perm) in
+{30}let DHAlgoB: Algo_t = make_algo(ID_G,DH_RSA) in
+{31}new Topic_bd: TopicID_t;
+(
+    {32}let sk: SK_t = PrivKB in
+    {33}out(RTPS_Ch, sk)
+) | (
+    {34}!
+    {35}let GUIDA_1: GUID_t = GUIDA in
+    {36}let PrivK_A: SK_t = PrivKA in
+    {37}let HashAlgoA: Hash_alg_t = SHA256 in
+    {38}let QoSA_1: Qos_t = QoSA in
+    {39}let AeadAlgoA: Aead_alg_t = AES_GCM_128 in
+    {40}let Topic_bd_1: TopicID_t = Topic_bd in
+    {41}let PdataA: Pdata_t = participant_data(GUIDA_1,Topic_bd_1,QoSA_1,discoveryRegister) in
+    {42}out(Discovery_ch, (GUIDA_1,PdataA));
+    {43}in(Discovery_ch, (PdataB: Pdata_t,=discoveredParticipant,=PdataA));
+    {44}event A_discover(PdataB);
+    {45}let make_algo(g: group_t,algoName: AlgoName_t) = DHAlgoA in
+    {46}new ChallengeA: bitstring;
+    {47}new s[]: Seed_t;
+    {48}let gx: element_t = dh_pub(g,dh_k(s)) in
+    {49}let (x: bitstring,gx_DHA: element_t) = (dh_k(s),gx) in
+    {50}let CA: Clist_t = make_C_list(CertA,PermA,PdataA,DHAlgoA,HashAlgoA) in
+    {51}let hash_CA: bitstring = hash(HashAlgoA,CA) in
+    {52}event A_0(GUIDA_1,CA,ChallengeA,gx_DHA,PdataB);
+    {53}out(RTPS_Ch, (CA,hash_CA,ChallengeA,gx_DHA));
+    {54}in(RTPS_Ch, (CB: Clist_t,hash_CB: bitstring,=ChallengeA,ChallengeB: bitstring,gy_DHB: element_t,=hash_CA,=gx_DHA,sigB: Sig_t));
+    {55}let make_C_list(CertB_1: Cert_t,PermB_1: PermDoc_t,=PdataB,=DHAlgoA,=HashAlgoA) = CB in
+    {56}let (GUIDB_1: GUID_t,PkB: PK_t,=SN_CI) = check_cert(CertB_1,PK_CI) in
+    {57}if verify(PkB,(hash(HashAlgoA,CB),ChallengeB,gy_DHB,ChallengeA,gx_DHA,hash_CA),sigB) then
+    {58}event endAtoB(GUIDB_1,CertB_1,ChallengeA);
+    {59}let gxy_SharedSecret: element_t = dh_exp(gy_DHB,x) in
+    {60}let SharedSecret: bitstring = gxy_SharedSecret in
+    {61}let sigA: Sig_t = sign(PrivK_A,(hash_CA,ChallengeA,gx_DHA,ChallengeB,gy_DHB,hash_CB)) in
+    {62}event beginBtoA(GUIDA_1,CertA,ChallengeB);
+    {63}event A_1(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret);
+    {64}out(RTPS_Ch, (hash_CA,hash(HashAlgoA,CB),gx_DHA,gy_DHB,ChallengeA,ChallengeB,sigA));
+    {65}in(Discovery_ch, (PermB_x: PermDoc_t,=TopicDiscovered,Topic: TopicID_t,=PdataB));
+    {66}if (PermB_x = PermB_1) then
+    {67}let (=GUIDB_1,DGB_1: DomainGovernance_t,PPB_1: ParticipantPermission_t) = check_perm(PermB_1,PK_Perm) in
+    {68}event PERM_CHECK(GUIDB_1,PermB_1,Topic);
+    {69}out(RTPS_Ch, (GUIDA_1,PermissionChecked,GUIDB_1,Topic));
+    {70}let KeyMaterial: KeyMaterial_t = KDF(SharedSecret,ChallengeA,ChallengeB) in
+    {71}let CryptoToken: CryptoToken_t = encCryptoToken(KeyMaterial,DHAlgoA,HashAlgoA,AeadAlgoA) in
+    {72}event A_2(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial);
+    {73}out(RTPS_Ch, CryptoToken);
+    {74}in(RTPS_Ch, (cryptoHeader: CryptoHeader_t,applicationData_x: bitstring,applicationDataMAC: bitstring));
+    {75}let makeCryptoHeader(sessionID: bitstring,IV: bitstring) = cryptoHeader in
+    {76}let sessionKey: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID,KeyMaterial)) in
+    {77}if aead_mac_check(AeadAlgoA,sessionKey,IV,cryptoHeader,applicationData_x,applicationDataMAC) then
+    {78}event A_3(GUIDB_1,GUIDA_1,applicationData_x,cryptoHeader,sessionKey);
+    {79}event ENC_COMMUNICATION(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial,cryptoHeader,sessionKey);
+    {80}new sessionID_new: bitstring;
+    {81}new IV_new: bitstring;
+    {82}let cryptoHeader_new: CryptoHeader_t = makeCryptoHeader(sessionID_new,IV_new) in
+    {83}let sessionKey_new: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID_new,KeyMaterial)) in
+    {84}new applicationData_new: bitstring;
+    {85}event KEY_UPDATE_begin(GUIDA_1,GUIDB_1,cryptoHeader_new,sessionKey_new,applicationData_new);
+    {86}out(RTPS_Ch, (cryptoHeader_new,applicationData_new,aead_mac(AeadAlgoA,sessionKey_new,IV,cryptoHeader_new,applicationData_new)));
+    {87}out(RTPS_Ch, finishA)
+) | (
+    {88}!
+    {89}let GUIDB_2: GUID_t = GUIDB in
+    {90}let PrivK_B: SK_t = PrivKB in
+    {91}let HashAlgoB: Hash_alg_t = SHA256 in
+    {92}let QosB_1: Qos_t = QosB in
+    {93}let AeadAlgoB: Aead_alg_t = AES_GCM_128 in
+    {94}let Topic_bd_2: TopicID_t = Topic_bd in
+    {95}let PdataB_1: Pdata_t = participant_data(GUIDB_2,Topic_bd_2,QosB_1,discoveryRegister) in
+    {96}event B_discover(PdataB_1);
+    {97}out(Discovery_ch, (GUIDB_2,PdataB_1));
+    {98}in(RTPS_Ch, (CA_1: Clist_t,hash_CA_1: bitstring,ChallengeA_1: bitstring,gx_DHA_1: element_t));
+    {99}let make_C_list(CertA_1: Cert_t,PermA_1: PermDoc_t,PdataA_1: Pdata_t,=DHAlgoB,=HashAlgoB) = CA_1 in
+    {100}let make_algo(g_1: group_t,algoName_1: AlgoName_t) = DHAlgoB in
+    {101}let (GUIDA_2: GUID_t,PkA: PK_t,=SN_CI) = check_cert(CertA_1,PK_CI) in
+    {102}if (hash(HashAlgoB,CA_1) = hash_CA_1) then
+    {103}new ChallengeB_1: bitstring;
+    {104}new s_1[]: Seed_t;
+    {105}let gx_1: element_t = dh_pub(g_1,dh_k(s_1)) in
+    {106}let (y: bitstring,gy_DHB_1: element_t) = (dh_k(s_1),gx_1) in
+    {107}let CB_1: Clist_t = make_C_list(CertB,PermB,PdataB_1,DHAlgoB,HashAlgoB) in
+    {108}let hash_CB_1: bitstring = hash(HashAlgoB,CB_1) in
+    {109}let sigB_1: Sig_t = sign(PrivK_B,(hash_CB_1,ChallengeB_1,gy_DHB_1,ChallengeA_1,gx_DHA_1,hash_CA_1)) in
+    {110}event beginAtoB(GUIDB_2,CertB,ChallengeA_1);
+    {111}event B_0(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1);
+    {112}out(RTPS_Ch, (CB_1,hash_CB_1,ChallengeA_1,ChallengeB_1,gy_DHB_1,hash_CA_1,gx_DHA_1,sigB_1));
+    {113}in(RTPS_Ch, (=hash_CA_1,=hash_CB_1,=gx_DHA_1,=gy_DHB_1,=ChallengeA_1,=ChallengeB_1,sigA_1: Sig_t));
+    {114}if verify(PkA,(hash_CA_1,ChallengeA_1,gx_DHA_1,ChallengeB_1,gy_DHB_1,hash_CB_1),sigA_1) then
+    {115}event endBtoA(GUIDA_2,CertA_1,ChallengeB_1);
+    {116}let gxy_SharedSecret_1: element_t = dh_exp(gx_DHA_1,y) in
+    {117}let SharedSecret_1: bitstring = gxy_SharedSecret_1 in
+    {118}event B_1(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1);
+    {119}new Topic_1: TopicID_t;
+    {120}event TOPIC_CRT_REQ(GUIDB_2,PermB,Topic_1);
+    {121}out(Discovery_ch, (PermB,TopicCreateReq,Topic_1,PdataB_1));
+    {122}in(RTPS_Ch, (=GUIDA_2,=PermissionChecked,=GUIDB_2,=Topic_1));
+    {123}let KeyMaterial_1: KeyMaterial_t = KDF(SharedSecret_1,ChallengeA_1,ChallengeB_1) in
+    {124}in(RTPS_Ch, CryptoToken_1: CryptoToken_t);
+    {125}if decCryptoToken(CryptoToken_1,KeyMaterial_1,DHAlgoB,HashAlgoB,AeadAlgoB) then
+    {126}new sessionID_1: bitstring;
+    {127}new IV_1: bitstring;
+    {128}let cryptoHeader_1: CryptoHeader_t = makeCryptoHeader(sessionID_1,IV_1) in
+    {129}let sessionKey_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_1,KeyMaterial_1)) in
+    {130}event B_2(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1,KeyMaterial_1,cryptoHeader_1,sessionKey_1);
+    {131}new applicationData_MAC: bitstring;
+    {132}event B_3(GUIDB_2,GUIDA_2,applicationData_MAC,cryptoHeader_1,sessionKey_1);
+    {133}out(RTPS_Ch, (cryptoHeader_1,(applicationData_MAC,secretData),aead_mac(AeadAlgoB,sessionKey_1,IV_1,cryptoHeader_1,(applicationData_MAC,secretData))));
+    {134}in(RTPS_Ch, (cryptoHeader_n: CryptoHeader_t,applicationData_x_new: bitstring,applicationDataMAC_new: bitstring));
+    {135}let makeCryptoHeader(sessionID_new_1: bitstring,IV_new_1: bitstring) = cryptoHeader_n in
+    {136}if (sessionID_new_1 ≠ sessionID_1) then
+    {137}let sessionKey_new_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_new_1,KeyMaterial_1)) in
+    {138}if aead_mac_check(AeadAlgoB,sessionKey_new_1,IV_new_1,cryptoHeader_n,applicationData_x_new,applicationDataMAC_new) then
+        {139}event KEY_UPDATE_end(GUIDA_2,GUIDB_2,cryptoHeader_n,sessionKey_new_1,applicationData_x_new);
+        {140}out(RTPS_Ch, finishB)
+    else
+        {141}out(RTPS_Ch, finishB)
+) | (
+    {142}!
+    {143}let Topic_bd_3: TopicID_t = Topic_bd in
+    {144}in(Discovery_ch, (GUIDB_3: GUID_t,PdataB_2: Pdata_t));
+    {145}let participant_data(=GUIDB_3,=Topic_bd_3,QosB_2: Qos_t,=discoveryRegister) = PdataB_2 in
+    {146}in(Discovery_ch, (GUIDA_3: GUID_t,PdataA_2: Pdata_t));
+    {147}let participant_data(=GUIDA_3,=Topic_bd_3,QosA: Qos_t,=discoveryRegister) = PdataA_2 in
+    {148}event DISCOVERY(GUIDB_3,PdataB_2,GUIDA_3,PdataA_2);
+    {149}out(Discovery_ch, (PdataB_2,discoveredParticipant,PdataA_2));
+    {150}in(Discovery_ch, (PermB_2: PermDoc_t,=TopicCreateReq,Topic_2: TopicID_t,=PdataB_2));
+    {151}event TOPIC_DISCOVERED(GUIDB_3,PermB_2,Topic_2);
+    {152}out(Discovery_ch, (PermB_2,TopicDiscovered,Topic_2,PdataB_2));
+    {153}out(RTPS_Ch, finishDiscovery)
+)
+
+--  Process 1 (that is, process 0, with let moved downwards):
+{1}let PK_CI: PK_t = pk(SK_CI) in
+{2}out(RTPS_Ch, PK_CI);
+{3}let PK_Perm: PK_t = pk(SK_Perm) in
+{4}out(RTPS_Ch, PK_Perm);
+{5}new GUIDA: GUID_t;
+{6}new PrivKA: SK_t;
+{10}new DGA: DomainGovernance_t;
+{11}new PPA: ParticipantPermission_t;
+{12}new QoSA: Qos_t;
+{18}new GUIDB: GUID_t;
+{19}new PrivKB: SK_t;
+{23}new DGB: DomainGovernance_t;
+{24}new PPB: ParticipantPermission_t;
+{25}new QosB: Qos_t;
+{31}new Topic_bd: TopicID_t;
+(
+    {32}let sk: SK_t = PrivKB in
+    {33}out(RTPS_Ch, sk)
+) | (
+    {34}!
+    {40}let Topic_bd_1: TopicID_t = Topic_bd in
+    {38}let QoSA_1: Qos_t = QoSA in
+    {35}let GUIDA_1: GUID_t = GUIDA in
+    {41}let PdataA: Pdata_t = participant_data(GUIDA_1,Topic_bd_1,QoSA_1,discoveryRegister) in
+    {42}out(Discovery_ch, (GUIDA_1,PdataA));
+    {43}in(Discovery_ch, (PdataB: Pdata_t,=discoveredParticipant,=PdataA));
+    {44}event A_discover(PdataB);
+    {17}let DHAlgoA: Algo_t = make_algo(ID_G,DH_RSA) in
+    {45}let make_algo(g: group_t,algoName: AlgoName_t) = DHAlgoA in
+    {46}new ChallengeA: bitstring;
+    {47}new s[]: Seed_t;
+    {48}let gx: element_t = dh_pub(g,dh_k(s)) in
+    {49}let (x: bitstring,gx_DHA: element_t) = (dh_k(s),gx) in
+    {37}let HashAlgoA: Hash_alg_t = SHA256 in
+    {15}let PP: ParticipantPermission_t = PPA in
+    {14}let DG: DomainGovernance_t = DGA in
+    {13}let sn_1: GUID_t = GUIDA in
+    {16}let PermA: PermDoc_t = sign_perm(sn_1,DG,PP,SK_Perm) in
+    {8}let Pk: PK_t = pk(PrivKA) in
+    {7}let sn: GUID_t = GUIDA in
+    {9}let CertA: Cert_t = sign_cert(sn,Pk,SN_CI,SK_CI) in
+    {50}let CA: Clist_t = make_C_list(CertA,PermA,PdataA,DHAlgoA,HashAlgoA) in
+    {52}event A_0(GUIDA_1,CA,ChallengeA,gx_DHA,PdataB);
+    {51}let hash_CA: bitstring = hash(HashAlgoA,CA) in
+    {53}out(RTPS_Ch, (CA,hash_CA,ChallengeA,gx_DHA));
+    {54}in(RTPS_Ch, (CB: Clist_t,hash_CB: bitstring,=ChallengeA,ChallengeB: bitstring,gy_DHB: element_t,=hash_CA,=gx_DHA,sigB: Sig_t));
+    {55}let make_C_list(CertB_1: Cert_t,PermB_1: PermDoc_t,=PdataB,=DHAlgoA,=HashAlgoA) = CB in
+    {56}let (GUIDB_1: GUID_t,PkB: PK_t,=SN_CI) = check_cert(CertB_1,PK_CI) in
+    {57}if verify(PkB,(hash(HashAlgoA,CB),ChallengeB,gy_DHB,ChallengeA,gx_DHA,hash_CA),sigB) then
+    {58}event endAtoB(GUIDB_1,CertB_1,ChallengeA);
+    {62}event beginBtoA(GUIDA_1,CertA,ChallengeB);
+    {59}let gxy_SharedSecret: element_t = dh_exp(gy_DHB,x) in
+    {60}let SharedSecret: bitstring = gxy_SharedSecret in
+    {63}event A_1(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret);
+    {36}let PrivK_A: SK_t = PrivKA in
+    {61}let sigA: Sig_t = sign(PrivK_A,(hash_CA,ChallengeA,gx_DHA,ChallengeB,gy_DHB,hash_CB)) in
+    {64}out(RTPS_Ch, (hash_CA,hash(HashAlgoA,CB),gx_DHA,gy_DHB,ChallengeA,ChallengeB,sigA));
+    {65}in(Discovery_ch, (PermB_x: PermDoc_t,=TopicDiscovered,Topic: TopicID_t,=PdataB));
+    {66}if (PermB_x = PermB_1) then
+    {67}let (=GUIDB_1,DGB_1: DomainGovernance_t,PPB_1: ParticipantPermission_t) = check_perm(PermB_1,PK_Perm) in
+    {68}event PERM_CHECK(GUIDB_1,PermB_1,Topic);
+    {69}out(RTPS_Ch, (GUIDA_1,PermissionChecked,GUIDB_1,Topic));
+    {70}let KeyMaterial: KeyMaterial_t = KDF(SharedSecret,ChallengeA,ChallengeB) in
+    {72}event A_2(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial);
+    {39}let AeadAlgoA: Aead_alg_t = AES_GCM_128 in
+    {71}let CryptoToken: CryptoToken_t = encCryptoToken(KeyMaterial,DHAlgoA,HashAlgoA,AeadAlgoA) in
+    {73}out(RTPS_Ch, CryptoToken);
+    {74}in(RTPS_Ch, (cryptoHeader: CryptoHeader_t,applicationData_x: bitstring,applicationDataMAC: bitstring));
+    {75}let makeCryptoHeader(sessionID: bitstring,IV: bitstring) = cryptoHeader in
+    {76}let sessionKey: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID,KeyMaterial)) in
+    {77}if aead_mac_check(AeadAlgoA,sessionKey,IV,cryptoHeader,applicationData_x,applicationDataMAC) then
+    {78}event A_3(GUIDB_1,GUIDA_1,applicationData_x,cryptoHeader,sessionKey);
+    {79}event ENC_COMMUNICATION(GUIDA_1,CA,ChallengeA,gx_DHA,GUIDB_1,CB,ChallengeB,gy_DHB,SharedSecret,KeyMaterial,cryptoHeader,sessionKey);
+    {80}new sessionID_new: bitstring;
+    {81}new IV_new: bitstring;
+    {84}new applicationData_new: bitstring;
+    {83}let sessionKey_new: bitstring = hmac(HashAlgoA,KeyMaterial,(sessionID_new,KeyMaterial)) in
+    {82}let cryptoHeader_new: CryptoHeader_t = makeCryptoHeader(sessionID_new,IV_new) in
+    {85}event KEY_UPDATE_begin(GUIDA_1,GUIDB_1,cryptoHeader_new,sessionKey_new,applicationData_new);
+    {86}out(RTPS_Ch, (cryptoHeader_new,applicationData_new,aead_mac(AeadAlgoA,sessionKey_new,IV,cryptoHeader_new,applicationData_new)));
+    {87}out(RTPS_Ch, finishA)
+) | (
+    {88}!
+    {94}let Topic_bd_2: TopicID_t = Topic_bd in
+    {92}let QosB_1: Qos_t = QosB in
+    {89}let GUIDB_2: GUID_t = GUIDB in
+    {95}let PdataB_1: Pdata_t = participant_data(GUIDB_2,Topic_bd_2,QosB_1,discoveryRegister) in
+    {96}event B_discover(PdataB_1);
+    {97}out(Discovery_ch, (GUIDB_2,PdataB_1));
+    {98}in(RTPS_Ch, (CA_1: Clist_t,hash_CA_1: bitstring,ChallengeA_1: bitstring,gx_DHA_1: element_t));
+    {91}let HashAlgoB: Hash_alg_t = SHA256 in
+    {30}let DHAlgoB: Algo_t = make_algo(ID_G,DH_RSA) in
+    {99}let make_C_list(CertA_1: Cert_t,PermA_1: PermDoc_t,PdataA_1: Pdata_t,=DHAlgoB,=HashAlgoB) = CA_1 in
+    {100}let make_algo(g_1: group_t,algoName_1: AlgoName_t) = DHAlgoB in
+    {101}let (GUIDA_2: GUID_t,PkA: PK_t,=SN_CI) = check_cert(CertA_1,PK_CI) in
+    {102}if (hash(HashAlgoB,CA_1) = hash_CA_1) then
+    {103}new ChallengeB_1: bitstring;
+    {104}new s_1[]: Seed_t;
+    {105}let gx_1: element_t = dh_pub(g_1,dh_k(s_1)) in
+    {106}let (y: bitstring,gy_DHB_1: element_t) = (dh_k(s_1),gx_1) in
+    {21}let Pk_1: PK_t = pk(PrivKB) in
+    {20}let sn_2: GUID_t = GUIDB in
+    {22}let CertB: Cert_t = sign_cert(sn_2,Pk_1,SN_CI,SK_CI) in
+    {110}event beginAtoB(GUIDB_2,CertB,ChallengeA_1);
+    {28}let PP_1: ParticipantPermission_t = PPB in
+    {27}let DG_1: DomainGovernance_t = DGB in
+    {26}let sn_3: GUID_t = GUIDB in
+    {29}let PermB: PermDoc_t = sign_perm(sn_3,DG_1,PP_1,SK_Perm) in
+    {107}let CB_1: Clist_t = make_C_list(CertB,PermB,PdataB_1,DHAlgoB,HashAlgoB) in
+    {111}event B_0(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1);
+    {108}let hash_CB_1: bitstring = hash(HashAlgoB,CB_1) in
+    {90}let PrivK_B: SK_t = PrivKB in
+    {109}let sigB_1: Sig_t = sign(PrivK_B,(hash_CB_1,ChallengeB_1,gy_DHB_1,ChallengeA_1,gx_DHA_1,hash_CA_1)) in
+    {112}out(RTPS_Ch, (CB_1,hash_CB_1,ChallengeA_1,ChallengeB_1,gy_DHB_1,hash_CA_1,gx_DHA_1,sigB_1));
+    {113}in(RTPS_Ch, (=hash_CA_1,=hash_CB_1,=gx_DHA_1,=gy_DHB_1,=ChallengeA_1,=ChallengeB_1,sigA_1: Sig_t));
+    {114}if verify(PkA,(hash_CA_1,ChallengeA_1,gx_DHA_1,ChallengeB_1,gy_DHB_1,hash_CB_1),sigA_1) then
+    {115}event endBtoA(GUIDA_2,CertA_1,ChallengeB_1);
+    {116}let gxy_SharedSecret_1: element_t = dh_exp(gx_DHA_1,y) in
+    {117}let SharedSecret_1: bitstring = gxy_SharedSecret_1 in
+    {118}event B_1(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1);
+    {119}new Topic_1: TopicID_t;
+    {120}event TOPIC_CRT_REQ(GUIDB_2,PermB,Topic_1);
+    {121}out(Discovery_ch, (PermB,TopicCreateReq,Topic_1,PdataB_1));
+    {122}in(RTPS_Ch, (=GUIDA_2,=PermissionChecked,=GUIDB_2,=Topic_1));
+    {124}in(RTPS_Ch, CryptoToken_1: CryptoToken_t);
+    {123}let KeyMaterial_1: KeyMaterial_t = KDF(SharedSecret_1,ChallengeA_1,ChallengeB_1) in
+    {93}let AeadAlgoB: Aead_alg_t = AES_GCM_128 in
+    {125}if decCryptoToken(CryptoToken_1,KeyMaterial_1,DHAlgoB,HashAlgoB,AeadAlgoB) then
+    {126}new sessionID_1: bitstring;
+    {127}new IV_1: bitstring;
+    {129}let sessionKey_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_1,KeyMaterial_1)) in
+    {128}let cryptoHeader_1: CryptoHeader_t = makeCryptoHeader(sessionID_1,IV_1) in
+    {130}event B_2(GUIDB_2,CB_1,ChallengeB_1,gy_DHB_1,GUIDA_2,CA_1,ChallengeA_1,gx_DHA_1,SharedSecret_1,KeyMaterial_1,cryptoHeader_1,sessionKey_1);
+    {131}new applicationData_MAC: bitstring;
+    {132}event B_3(GUIDB_2,GUIDA_2,applicationData_MAC,cryptoHeader_1,sessionKey_1);
+    {133}out(RTPS_Ch, (cryptoHeader_1,(applicationData_MAC,secretData),aead_mac(AeadAlgoB,sessionKey_1,IV_1,cryptoHeader_1,(applicationData_MAC,secretData))));
+    {134}in(RTPS_Ch, (cryptoHeader_n: CryptoHeader_t,applicationData_x_new: bitstring,applicationDataMAC_new: bitstring));
+    {135}let makeCryptoHeader(sessionID_new_1: bitstring,IV_new_1: bitstring) = cryptoHeader_n in
+    {136}if (sessionID_new_1 ≠ sessionID_1) then
+    {137}let sessionKey_new_1: bitstring = hmac(HashAlgoB,KeyMaterial_1,(sessionID_new_1,KeyMaterial_1)) in
+    {138}if aead_mac_check(AeadAlgoB,sessionKey_new_1,IV_new_1,cryptoHeader_n,applicationData_x_new,applicationDataMAC_new) then
+        {139}event KEY_UPDATE_end(GUIDA_2,GUIDB_2,cryptoHeader_n,sessionKey_new_1,applicationData_x_new);
+        {140}out(RTPS_Ch, finishB)
+    else
+        {141}out(RTPS_Ch, finishB)
+) | (
+    {142}!
+    {144}in(Discovery_ch, (GUIDB_3: GUID_t,PdataB_2: Pdata_t));
+    {143}let Topic_bd_3: TopicID_t = Topic_bd in
+    {145}let participant_data(=GUIDB_3,=Topic_bd_3,QosB_2: Qos_t,=discoveryRegister) = PdataB_2 in
+    {146}in(Discovery_ch, (GUIDA_3: GUID_t,PdataA_2: Pdata_t));
+    {147}let participant_data(=GUIDA_3,=Topic_bd_3,QosA: Qos_t,=discoveryRegister) = PdataA_2 in
+    {148}event DISCOVERY(GUIDB_3,PdataB_2,GUIDA_3,PdataA_2);
+    {149}out(Discovery_ch, (PdataB_2,discoveredParticipant,PdataA_2));
+    {150}in(Discovery_ch, (PermB_2: PermDoc_t,=TopicCreateReq,Topic_2: TopicID_t,=PdataB_2));
+    {151}event TOPIC_DISCOVERED(GUIDB_3,PermB_2,Topic_2);
+    {152}out(Discovery_ch, (PermB_2,TopicDiscovered,Topic_2,PdataB_2));
+    {153}out(RTPS_Ch, finishDiscovery)
+)
+
+-- Query not attacker(finishA[]) in process 1.
+Translating the process into Horn clauses...
+Completing...
+Termination warning: Selecting an hypothesis matching the conclusion.
+In case of non-termination, try a noselect declaration implying the following one:
+   noselect PkA_1:PK_t, GUIDA_4:GUID_t; attacker(sign_cert(GUIDA_4,PkA_1,SN_CI,SK_CI)).
+200 rules inserted. Base: 174 rules (55 with conclusion selected). Queue: 24 rules.
+Termination warning: Selecting an hypothesis matching the conclusion.
+In case of non-termination, try a noselect declaration implying the following one:
+   noselect PdataA_3:Pdata_t, PermA_2:PermDoc_t; attacker(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256))).
+400 rules inserted. Base: 253 rules (73 with conclusion selected). Queue: 48 rules.
+600 rules inserted. Base: 330 rules (73 with conclusion selected). Queue: 121 rules.
+800 rules inserted. Base: 420 rules (74 with conclusion selected). Queue: 117 rules.
+1000 rules inserted. Base: 483 rules (79 with conclusion selected). Queue: 89 rules.
+1200 rules inserted. Base: 583 rules (79 with conclusion selected). Queue: 59 rules.
+1400 rules inserted. Base: 622 rules (86 with conclusion selected). Queue: 44 rules.
+1600 rules inserted. Base: 676 rules (86 with conclusion selected). Queue: 20 rules.
+1800 rules inserted. Base: 683 rules (105 with conclusion selected). Queue: 24 rules.
+2000 rules inserted. Base: 711 rules (105 with conclusion selected). Queue: 68 rules.
+2200 rules inserted. Base: 798 rules (120 with conclusion selected). Queue: 17 rules.
+2400 rules inserted. Base: 822 rules (121 with conclusion selected). Queue: 52 rules.
+2600 rules inserted. Base: 882 rules (121 with conclusion selected). Queue: 44 rules.
+Starting query not attacker(finishA[])
+goal reachable: attacker(finishA[])
+
+Derivation:
+Abbreviations:
+s_2 = s[!1 = @sid]
+ChallengeA_2 = ChallengeA[PdataB = PdataB_3,!1 = @sid]
+ChallengeB_2 = ChallengeB_1[gx_DHA_1 = gx_DHA_2,ChallengeA_1 = ChallengeA_3,hash_CA_1 = hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)),CA_1 = make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256),!1 = @sid_1]
+s_3 = s_1[!1 = @sid_1]
+ChallengeA_4 = ChallengeA[PdataB = PdataB_4,!1 = @sid]
+ChallengeA_5 = ChallengeA[PdataB = PdataB_5,!1 = @sid_2]
+s_4 = s[!1 = @sid_2]
+
+1. Using the function discoveryRegister the attacker may obtain discoveryRegister.
+attacker(discoveryRegister).
+
+2. The message (GUIDA[],participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)) may be sent to the attacker at output {42}.
+attacker((GUIDA[],participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister))).
+
+3. By 2, the attacker may know (GUIDA[],participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)).
+Using the function 2-proj-2-tuple the attacker may obtain participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister).
+attacker(participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)).
+
+4. By 3, the attacker may know participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister).
+Using the function 3-proj-participant_data the attacker may obtain QoSA[].
+attacker(QoSA[]).
+
+5. By 3, the attacker may know participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister).
+Using the function 2-proj-participant_data the attacker may obtain Topic_bd[].
+attacker(Topic_bd[]).
+
+6. By 2, the attacker may know (GUIDA[],participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)).
+Using the function 1-proj-2-tuple the attacker may obtain GUIDA[].
+attacker(GUIDA[]).
+
+7. By 6, the attacker may know GUIDA[].
+By 5, the attacker may know Topic_bd[].
+By 4, the attacker may know QoSA[].
+By 1, the attacker may know discoveryRegister.
+Using the function participant_data the attacker may obtain participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister).
+attacker(participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)).
+
+8. Using the function discoveredParticipant the attacker may obtain discoveredParticipant.
+attacker(discoveredParticipant).
+
+9. The attacker has some term PdataB_3.
+attacker(PdataB_3).
+
+10. By 9, the attacker may know PdataB_3.
+By 8, the attacker may know discoveredParticipant.
+By 7, the attacker may know participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister).
+Using the function 3-tuple the attacker may obtain (PdataB_3,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)).
+attacker((PdataB_3,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister))).
+
+11. Using the function SHA256 the attacker may obtain SHA256.
+attacker(SHA256).
+
+12. Using the function DH_RSA the attacker may obtain DH_RSA.
+attacker(DH_RSA).
+
+13. Using the function ID_G the attacker may obtain ID_G.
+attacker(ID_G).
+
+14. By 13, the attacker may know ID_G.
+By 12, the attacker may know DH_RSA.
+Using the function make_algo the attacker may obtain make_algo(ID_G,DH_RSA).
+attacker(make_algo(ID_G,DH_RSA)).
+
+15. The attacker has some term PdataB_5.
+attacker(PdataB_5).
+
+16. By 15, the attacker may know PdataB_5.
+By 8, the attacker may know discoveredParticipant.
+By 7, the attacker may know participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister).
+Using the function 3-tuple the attacker may obtain (PdataB_5,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)).
+attacker((PdataB_5,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister))).
+
+17. The message (PdataB_5,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)) that the attacker may have by 16 may be received at input {43}.
+So the message (make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_5,dh_pub(ID_G,dh_k(s_4))) may be sent to the attacker at output {53}.
+attacker((make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_5,dh_pub(ID_G,dh_k(s_4)))).
+
+18. By 17, the attacker may know (make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_5,dh_pub(ID_G,dh_k(s_4))).
+Using the function 1-proj-4-tuple the attacker may obtain make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256).
+attacker(make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)).
+
+19. By 18, the attacker may know make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256).
+Using the function 2-proj-make_C_list the attacker may obtain sign_perm(GUIDA[],DGA[],PPA[],SK_Perm).
+attacker(sign_perm(GUIDA[],DGA[],PPA[],SK_Perm)).
+
+20. By 18, the attacker may know make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256).
+Using the function 1-proj-make_C_list the attacker may obtain sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI).
+attacker(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI)).
+
+21. By 20, the attacker may know sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI).
+By 19, the attacker may know sign_perm(GUIDA[],DGA[],PPA[],SK_Perm).
+By 7, the attacker may know participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister).
+By 14, the attacker may know make_algo(ID_G,DH_RSA).
+By 11, the attacker may know SHA256.
+Using the function make_C_list the attacker may obtain make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256).
+attacker(make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)).
+
+22. By 11, the attacker may know SHA256.
+By 21, the attacker may know make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256).
+Using the function hash the attacker may obtain hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)).
+attacker(hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256))).
+
+23. The attacker has some term PdataB_4.
+attacker(PdataB_4).
+
+24. By 23, the attacker may know PdataB_4.
+By 8, the attacker may know discoveredParticipant.
+By 7, the attacker may know participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister).
+Using the function 3-tuple the attacker may obtain (PdataB_4,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)).
+attacker((PdataB_4,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister))).
+
+25. The message (PdataB_4,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)) that the attacker may have by 24 may be received at input {43}.
+So the message (make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_4,dh_pub(ID_G,dh_k(s_2))) may be sent to the attacker at output {53}.
+attacker((make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_4,dh_pub(ID_G,dh_k(s_2)))).
+
+26. By 25, the attacker may know (make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_4,dh_pub(ID_G,dh_k(s_2))).
+Using the function 4-proj-4-tuple the attacker may obtain dh_pub(ID_G,dh_k(s_2)).
+attacker(dh_pub(ID_G,dh_k(s_2))).
+
+27. The message (PdataB_3,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)) that the attacker may have by 10 may be received at input {43}.
+So the message (make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_2,dh_pub(ID_G,dh_k(s_2))) may be sent to the attacker at output {53}.
+attacker((make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)))).
+
+28. By 27, the attacker may know (make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_2,dh_pub(ID_G,dh_k(s_2))).
+Using the function 3-proj-4-tuple the attacker may obtain ChallengeA_2.
+attacker(ChallengeA_2).
+
+29. The attacker has some term y_1.
+attacker(y_1).
+
+30. By 13, the attacker may know ID_G.
+By 29, the attacker may know y_1.
+Using the function dh_pub the attacker may obtain dh_pub(ID_G,y_1).
+attacker(dh_pub(ID_G,y_1)).
+
+31. The attacker has some term ChallengeB_3.
+attacker(ChallengeB_3).
+
+32. The attacker has some term gx_DHA_2.
+attacker(gx_DHA_2).
+
+33. The attacker has some term ChallengeA_3.
+attacker(ChallengeA_3).
+
+34. The attacker has some term PdataA_3.
+attacker(PdataA_3).
+
+35. The attacker has some term PermA_2.
+attacker(PermA_2).
+
+36. By 20, the attacker may know sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI).
+By 35, the attacker may know PermA_2.
+By 34, the attacker may know PdataA_3.
+By 14, the attacker may know make_algo(ID_G,DH_RSA).
+By 11, the attacker may know SHA256.
+Using the function make_C_list the attacker may obtain make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256).
+attacker(make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)).
+
+37. By 11, the attacker may know SHA256.
+By 36, the attacker may know make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256).
+Using the function hash the attacker may obtain hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)).
+attacker(hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256))).
+
+38. By 36, the attacker may know make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256).
+By 37, the attacker may know hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)).
+By 33, the attacker may know ChallengeA_3.
+By 32, the attacker may know gx_DHA_2.
+Using the function 4-tuple the attacker may obtain (make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_3,gx_DHA_2).
+attacker((make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_3,gx_DHA_2)).
+
+39. The message (make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_3,gx_DHA_2) that the attacker may have by 38 may be received at input {98}.
+So the message (make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_3,ChallengeB_2,dh_pub(ID_G,dh_k(s_3)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)),gx_DHA_2,sign(PrivKB[],(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_2,dh_pub(ID_G,dh_k(s_3)),ChallengeA_3,gx_DHA_2,hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256))))) may be sent to the attacker at output {112}.
+attacker((make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_3,ChallengeB_2,dh_pub(ID_G,dh_k(s_3)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)),gx_DHA_2,sign(PrivKB[],(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_2,dh_pub(ID_G,dh_k(s_3)),ChallengeA_3,gx_DHA_2,hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)))))).
+
+40. By 39, the attacker may know (make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_3,ChallengeB_2,dh_pub(ID_G,dh_k(s_3)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256)),gx_DHA_2,sign(PrivKB[],(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_2,dh_pub(ID_G,dh_k(s_3)),ChallengeA_3,gx_DHA_2,hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256))))).
+Using the function 1-proj-8-tuple the attacker may obtain make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256).
+attacker(make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)).
+
+41. By 40, the attacker may know make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256).
+Using the function 2-proj-make_C_list the attacker may obtain sign_perm(GUIDB[],DGB[],PPB[],SK_Perm).
+attacker(sign_perm(GUIDB[],DGB[],PPB[],SK_Perm)).
+
+42. By 40, the attacker may know make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),participant_data(GUIDB[],Topic_bd[],QosB[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256).
+Using the function 1-proj-make_C_list the attacker may obtain sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI).
+attacker(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI)).
+
+43. By 42, the attacker may know sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI).
+By 41, the attacker may know sign_perm(GUIDB[],DGB[],PPB[],SK_Perm).
+By 9, the attacker may know PdataB_3.
+By 14, the attacker may know make_algo(ID_G,DH_RSA).
+By 11, the attacker may know SHA256.
+Using the function make_C_list the attacker may obtain make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256).
+attacker(make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)).
+
+44. By 11, the attacker may know SHA256.
+By 43, the attacker may know make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256).
+Using the function hash the attacker may obtain hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)).
+attacker(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256))).
+
+45. By 44, the attacker may know hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)).
+By 31, the attacker may know ChallengeB_3.
+By 30, the attacker may know dh_pub(ID_G,y_1).
+By 28, the attacker may know ChallengeA_2.
+By 26, the attacker may know dh_pub(ID_G,dh_k(s_2)).
+By 22, the attacker may know hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)).
+Using the function 6-tuple the attacker may obtain (hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_3,dh_pub(ID_G,y_1),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256))).
+attacker((hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_3,dh_pub(ID_G,y_1),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)))).
+
+46. The message PrivKB[] may be sent to the attacker at output {33}.
+attacker(PrivKB[]).
+
+47. By 46, the attacker may know PrivKB[].
+By 45, the attacker may know (hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_3,dh_pub(ID_G,y_1),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256))).
+Using the function sign the attacker may obtain sign(PrivKB[],(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_3,dh_pub(ID_G,y_1),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)))).
+attacker(sign(PrivKB[],(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_3,dh_pub(ID_G,y_1),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256))))).
+
+48. The attacker has some term hash_CB_2.
+attacker(hash_CB_2).
+
+49. By 43, the attacker may know make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256).
+By 48, the attacker may know hash_CB_2.
+By 28, the attacker may know ChallengeA_2.
+By 31, the attacker may know ChallengeB_3.
+By 30, the attacker may know dh_pub(ID_G,y_1).
+By 22, the attacker may know hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)).
+By 26, the attacker may know dh_pub(ID_G,dh_k(s_2)).
+By 47, the attacker may know sign(PrivKB[],(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_3,dh_pub(ID_G,y_1),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)))).
+Using the function 8-tuple the attacker may obtain (make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256),hash_CB_2,ChallengeA_2,ChallengeB_3,dh_pub(ID_G,y_1),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),dh_pub(ID_G,dh_k(s_2)),sign(PrivKB[],(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_3,dh_pub(ID_G,y_1),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256))))).
+attacker((make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256),hash_CB_2,ChallengeA_2,ChallengeB_3,dh_pub(ID_G,y_1),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),dh_pub(ID_G,dh_k(s_2)),sign(PrivKB[],(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_3,dh_pub(ID_G,y_1),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)))))).
+
+50. The attacker has some term Topic_3.
+attacker(Topic_3).
+
+51. Using the function TopicDiscovered the attacker may obtain TopicDiscovered.
+attacker(TopicDiscovered).
+
+52. By 41, the attacker may know sign_perm(GUIDB[],DGB[],PPB[],SK_Perm).
+By 51, the attacker may know TopicDiscovered.
+By 50, the attacker may know Topic_3.
+By 9, the attacker may know PdataB_3.
+Using the function 4-tuple the attacker may obtain (sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),TopicDiscovered,Topic_3,PdataB_3).
+attacker((sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),TopicDiscovered,Topic_3,PdataB_3)).
+
+53. The attacker has some term p.
+attacker(p).
+
+54. The attacker has some term iv.
+attacker(iv).
+
+55. The attacker has some term sessionID_2.
+attacker(sessionID_2).
+
+56. By 55, the attacker may know sessionID_2.
+By 54, the attacker may know iv.
+Using the function makeCryptoHeader the attacker may obtain makeCryptoHeader(sessionID_2,iv).
+attacker(makeCryptoHeader(sessionID_2,iv)).
+
+57. By 26, the attacker may know dh_pub(ID_G,dh_k(s_2)).
+By 29, the attacker may know y_1.
+Using the function dh_exp the attacker may obtain dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)).
+attacker(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2))).
+
+58. By 57, the attacker may know dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)).
+By 28, the attacker may know ChallengeA_2.
+By 31, the attacker may know ChallengeB_3.
+Using the function KDF the attacker may obtain KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3).
+attacker(KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3)).
+
+59. By 55, the attacker may know sessionID_2.
+By 58, the attacker may know KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3).
+Using the function 2-tuple the attacker may obtain (sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3)).
+attacker((sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3))).
+
+60. By 11, the attacker may know SHA256.
+By 58, the attacker may know KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3).
+By 59, the attacker may know (sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3)).
+Using the function hmac the attacker may obtain hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3),(sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3))).
+attacker(hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3),(sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3)))).
+
+61. Using the function AES_GCM_128 the attacker may obtain AES_GCM_128.
+attacker(AES_GCM_128).
+
+62. By 61, the attacker may know AES_GCM_128.
+By 60, the attacker may know hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3),(sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3))).
+By 54, the attacker may know iv.
+By 56, the attacker may know makeCryptoHeader(sessionID_2,iv).
+By 53, the attacker may know p.
+Using the function aead_mac the attacker may obtain aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3),(sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3))),iv,makeCryptoHeader(sessionID_2,iv),p).
+attacker(aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3),(sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3))),iv,makeCryptoHeader(sessionID_2,iv),p)).
+
+63. By 56, the attacker may know makeCryptoHeader(sessionID_2,iv).
+By 53, the attacker may know p.
+By 62, the attacker may know aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3),(sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3))),iv,makeCryptoHeader(sessionID_2,iv),p).
+Using the function 3-tuple the attacker may obtain (makeCryptoHeader(sessionID_2,iv),p,aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3),(sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3))),iv,makeCryptoHeader(sessionID_2,iv),p)).
+attacker((makeCryptoHeader(sessionID_2,iv),p,aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3),(sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3))),iv,makeCryptoHeader(sessionID_2,iv),p))).
+
+64. The message (PdataB_3,discoveredParticipant,participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister)) that the attacker may have by 10 may be received at input {43}.
+The message (make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256),hash_CB_2,ChallengeA_2,ChallengeB_3,dh_pub(ID_G,y_1),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),dh_pub(ID_G,dh_k(s_2)),sign(PrivKB[],(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),PdataB_3,make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_3,dh_pub(ID_G,y_1),ChallengeA_2,dh_pub(ID_G,dh_k(s_2)),hash(SHA256,make_C_list(sign_cert(GUIDA[],pk(PrivKA[]),SN_CI,SK_CI),sign_perm(GUIDA[],DGA[],PPA[],SK_Perm),participant_data(GUIDA[],Topic_bd[],QoSA[],discoveryRegister),make_algo(ID_G,DH_RSA),SHA256))))) that the attacker may have by 49 may be received at input {54}.
+The message (sign_perm(GUIDB[],DGB[],PPB[],SK_Perm),TopicDiscovered,Topic_3,PdataB_3) that the attacker may have by 52 may be received at input {65}.
+The message (makeCryptoHeader(sessionID_2,iv),p,aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3),(sessionID_2,KDF(dh_exp(dh_pub(ID_G,y_1),dh_k(s_2)),ChallengeA_2,ChallengeB_3))),iv,makeCryptoHeader(sessionID_2,iv),p)) that the attacker may have by 63 may be received at input {74}.
+So the message finishA[] may be sent to the attacker at output {87}.
+attacker(finishA[]).
+
+65. By 64, attacker(finishA[]).
+The goal is reached, represented in the following fact:
+attacker(finishA[]).
+
+
+Unified PdataB_4 with PdataB_3
+The clause after UnifyDerivationPrecise is
+attacker(finishA[])
+This clause still contradicts the query.
+A more detailed output of the traces is available with
+  set traceDisplay = long.
+
+out(RTPS_Ch, ~M) with ~M = pk(SK_CI) at {2}
+
+out(RTPS_Ch, ~M_1) with ~M_1 = pk(SK_Perm) at {4}
+
+new GUIDA: GUID_t creating GUIDA_4 at {5}
+
+new PrivKA: SK_t creating PrivKA_1 at {6}
+
+new DGA: DomainGovernance_t creating DGA_1 at {10}
+
+new PPA: ParticipantPermission_t creating PPA_1 at {11}
+
+new QoSA: Qos_t creating QoSA_2 at {12}
+
+new GUIDB: GUID_t creating GUIDB_4 at {18}
+
+new PrivKB: SK_t creating PrivKB_1 at {19}
+
+new DGB: DomainGovernance_t creating DGB_2 at {23}
+
+new PPB: ParticipantPermission_t creating PPB_2 at {24}
+
+new QosB: Qos_t creating QosB_3 at {25}
+
+new Topic_bd: TopicID_t creating Topic_bd_4 at {31}
+
+event B_discover(participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister)) at {96} in copy a
+
+out(Discovery_ch, (~M_2,participant_data(~M_3,~M_4,~M_5,~M_6))) with ~M_2 = GUIDB_4, ~M_3 = GUIDB_4, ~M_4 = Topic_bd_4, ~M_5 = QosB_3, ~M_6 = discoveryRegister at {97} in copy a
+
+out(Discovery_ch, (~M_7,participant_data(~M_8,~M_9,~M_10,~M_11))) with ~M_7 = GUIDA_4, ~M_8 = GUIDA_4, ~M_9 = Topic_bd_4, ~M_10 = QoSA_2, ~M_11 = discoveryRegister at {42} in copy a_1
+
+out(Discovery_ch, (~M_12,participant_data(~M_13,~M_14,~M_15,~M_16))) with ~M_12 = GUIDA_4, ~M_13 = GUIDA_4, ~M_14 = Topic_bd_4, ~M_15 = QoSA_2, ~M_16 = discoveryRegister at {42} in copy a_2
+
+out(Discovery_ch, (~M_17,participant_data(~M_18,~M_19,~M_20,~M_21))) with ~M_17 = GUIDA_4, ~M_18 = GUIDA_4, ~M_19 = Topic_bd_4, ~M_20 = QoSA_2, ~M_21 = discoveryRegister at {42} in copy a_3
+
+out(RTPS_Ch, ~M_22) with ~M_22 = PrivKB_1 at {33}
+
+in(Discovery_ch, (a_4,discoveredParticipant,participant_data(~M_7,~M_4,~M_10,discoveryRegister))) with ~M_7 = GUIDA_4, ~M_4 = Topic_bd_4, ~M_10 = QoSA_2 at {43} in copy a_3
+
+event A_discover(a_4) at {44} in copy a_3
+
+new ChallengeA: bitstring creating ChallengeA_6 at {46} in copy a_3
+
+new s: Seed_t creating s_5 at {47} in copy a_3
+
+event A_0(GUIDA_4,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),ChallengeA_6,dh_pub(ID_G,dh_k(s_5)),a_4) at {52} in copy a_3
+
+out(RTPS_Ch, (make_C_list(~M_23,~M_24,participant_data(~M_25,~M_26,~M_27,~M_28),make_algo(~M_29,~M_30),~M_31),~M_32,~M_33,~M_34)) with ~M_23 = sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI), ~M_24 = sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm), ~M_25 = GUIDA_4, ~M_26 = Topic_bd_4, ~M_27 = QoSA_2, ~M_28 = discoveryRegister, ~M_29 = ID_G, ~M_30 = DH_RSA, ~M_31 = SHA256, ~M_32 = hash(SHA256,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)), ~M_33 = ChallengeA_6, ~M_34 = dh_pub(ID_G,dh_k(s_5)) at {53} in copy a_3
+
+in(Discovery_ch, (a_5,discoveredParticipant,participant_data(~M_7,~M_4,~M_10,discoveryRegister))) with ~M_7 = GUIDA_4, ~M_4 = Topic_bd_4, ~M_10 = QoSA_2 at {43} in copy a_1
+
+event A_discover(a_5) at {44} in copy a_1
+
+new ChallengeA: bitstring creating ChallengeA_7 at {46} in copy a_1
+
+new s: Seed_t creating s_6 at {47} in copy a_1
+
+event A_0(GUIDA_4,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),ChallengeA_7,dh_pub(ID_G,dh_k(s_6)),a_5) at {52} in copy a_1
+
+out(RTPS_Ch, (make_C_list(~M_35,~M_36,participant_data(~M_37,~M_38,~M_39,~M_40),make_algo(~M_41,~M_42),~M_43),~M_44,~M_45,~M_46)) with ~M_35 = sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI), ~M_36 = sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm), ~M_37 = GUIDA_4, ~M_38 = Topic_bd_4, ~M_39 = QoSA_2, ~M_40 = discoveryRegister, ~M_41 = ID_G, ~M_42 = DH_RSA, ~M_43 = SHA256, ~M_44 = hash(SHA256,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)), ~M_45 = ChallengeA_7, ~M_46 = dh_pub(ID_G,dh_k(s_6)) at {53} in copy a_1
+
+in(RTPS_Ch, (make_C_list(~M_23,a_6,a_7,make_algo(ID_G,DH_RSA),SHA256),hash(SHA256,make_C_list(~M_23,a_6,a_7,make_algo(ID_G,DH_RSA),SHA256)),a_8,a_9)) with ~M_23 = sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI), hash(SHA256,make_C_list(~M_23,a_6,a_7,make_algo(ID_G,DH_RSA),SHA256)) = hash(SHA256,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),a_6,a_7,make_algo(ID_G,DH_RSA),SHA256)) at {98} in copy a
+
+new ChallengeB_1: bitstring creating ChallengeB_4 at {103} in copy a
+
+new s_1: Seed_t creating s_7 at {104} in copy a
+
+event beginAtoB(GUIDB_4,sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),a_8) at {110} in copy a
+
+event B_0(GUIDB_4,make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),ChallengeB_4,dh_pub(ID_G,dh_k(s_7)),GUIDA_4,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),a_6,a_7,make_algo(ID_G,DH_RSA),SHA256),a_8,a_9) at {111} in copy a
+
+out(RTPS_Ch, (make_C_list(~M_47,~M_48,participant_data(~M_49,~M_50,~M_51,~M_52),make_algo(~M_53,~M_54),~M_55),~M_56,~M_57,~M_58,~M_59,~M_60,~M_61,~M_62)) with ~M_47 = sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI), ~M_48 = sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm), ~M_49 = GUIDB_4, ~M_50 = Topic_bd_4, ~M_51 = QosB_3, ~M_52 = discoveryRegister, ~M_53 = ID_G, ~M_54 = DH_RSA, ~M_55 = SHA256, ~M_56 = hash(SHA256,make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)), ~M_57 = a_8, ~M_58 = ChallengeB_4, ~M_59 = dh_pub(ID_G,dh_k(s_7)), ~M_60 = hash(SHA256,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),a_6,a_7,make_algo(ID_G,DH_RSA),SHA256)), ~M_61 = a_9, ~M_62 = sign(PrivKB_1,(hash(SHA256,make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),participant_data(GUIDB_4,Topic_bd_4,QosB_3,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeB_4,dh_pub(ID_G,dh_k(s_7)),a_8,a_9,hash(SHA256,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),a_6,a_7,make_algo(ID_G,DH_RSA),SHA256)))) at {112} in copy a
+
+in(RTPS_Ch, (make_C_list(~M_47,~M_48,a_5,make_algo(ID_G,DH_RSA),SHA256),a_10,~M_45,a_11,dh_pub(ID_G,a_12),hash(SHA256,make_C_list(~M_23,~M_24,participant_data(~M_7,~M_4,~M_10,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),~M_46,sign(~M_22,(hash(SHA256,make_C_list(~M_47,~M_48,a_5,make_algo(ID_G,DH_RSA),SHA256)),a_11,dh_pub(ID_G,a_12),~M_45,~M_46,hash(SHA256,make_C_list(~M_23,~M_24,participant_data(~M_7,~M_4,~M_10,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)))))) with ~M_47 = sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI), ~M_48 = sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm), ~M_45 = ChallengeA_7, hash(SHA256,make_C_list(~M_23,~M_24,participant_data(~M_7,~M_4,~M_10,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)) = hash(SHA256,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)), ~M_46 = dh_pub(ID_G,dh_k(s_6)), sign(~M_22,(hash(SHA256,make_C_list(~M_47,~M_48,a_5,make_algo(ID_G,DH_RSA),SHA256)),a_11,dh_pub(ID_G,a_12),~M_45,~M_46,hash(SHA256,make_C_list(~M_23,~M_24,participant_data(~M_7,~M_4,~M_10,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)))) = sign(PrivKB_1,(hash(SHA256,make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),a_5,make_algo(ID_G,DH_RSA),SHA256)),a_11,dh_pub(ID_G,a_12),ChallengeA_7,dh_pub(ID_G,dh_k(s_6)),hash(SHA256,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)))) at {54} in copy a_1
+
+event endAtoB(GUIDB_4,sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),ChallengeA_7) at {58} in copy a_1
+
+event beginBtoA(GUIDA_4,sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),a_11) at {62} in copy a_1
+
+event A_1(GUIDA_4,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),ChallengeA_7,dh_pub(ID_G,dh_k(s_6)),GUIDB_4,make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),a_5,make_algo(ID_G,DH_RSA),SHA256),a_11,dh_pub(ID_G,a_12),dh_exp(dh_pub(ID_G,a_12),dh_k(s_6))) at {63} in copy a_1
+
+out(RTPS_Ch, (~M_63,~M_64,~M_65,~M_66,~M_67,~M_68,~M_69)) with ~M_63 = hash(SHA256,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)), ~M_64 = hash(SHA256,make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),a_5,make_algo(ID_G,DH_RSA),SHA256)), ~M_65 = dh_pub(ID_G,dh_k(s_6)), ~M_66 = dh_pub(ID_G,a_12), ~M_67 = ChallengeA_7, ~M_68 = a_11, ~M_69 = sign(PrivKA_1,(hash(SHA256,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256)),ChallengeA_7,dh_pub(ID_G,dh_k(s_6)),a_11,dh_pub(ID_G,a_12),a_10)) at {64} in copy a_1
+
+in(Discovery_ch, (~M_48,TopicDiscovered,a_13,a_5)) with ~M_48 = sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm) at {65} in copy a_1
+
+event PERM_CHECK(GUIDB_4,sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),a_13) at {68} in copy a_1
+
+out(RTPS_Ch, (~M_70,~M_71,~M_72,~M_73)) with ~M_70 = GUIDA_4, ~M_71 = PermissionChecked, ~M_72 = GUIDB_4, ~M_73 = a_13 at {69} in copy a_1
+
+event A_2(GUIDA_4,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),ChallengeA_7,dh_pub(ID_G,dh_k(s_6)),GUIDB_4,make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),a_5,make_algo(ID_G,DH_RSA),SHA256),a_11,dh_pub(ID_G,a_12),dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11)) at {72} in copy a_1
+
+out(RTPS_Ch, ~M_74) with ~M_74 = encCryptoToken(KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11),make_algo(ID_G,DH_RSA),SHA256,AES_GCM_128) at {73} in copy a_1
+
+in(RTPS_Ch, (makeCryptoHeader(a_14,a_15),a_16,aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(~M_46,a_12),~M_45,a_11),(a_14,KDF(dh_exp(~M_46,a_12),~M_45,a_11))),a_15,makeCryptoHeader(a_14,a_15),a_16))) with aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(~M_46,a_12),~M_45,a_11),(a_14,KDF(dh_exp(~M_46,a_12),~M_45,a_11))),a_15,makeCryptoHeader(a_14,a_15),a_16) = aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11),(a_14,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11))),a_15,makeCryptoHeader(a_14,a_15),a_16) at {74} in copy a_1
+
+event A_3(GUIDB_4,GUIDA_4,a_16,makeCryptoHeader(a_14,a_15),hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11),(a_14,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11)))) at {78} in copy a_1
+
+event ENC_COMMUNICATION(GUIDA_4,make_C_list(sign_cert(GUIDA_4,pk(PrivKA_1),SN_CI,SK_CI),sign_perm(GUIDA_4,DGA_1,PPA_1,SK_Perm),participant_data(GUIDA_4,Topic_bd_4,QoSA_2,discoveryRegister),make_algo(ID_G,DH_RSA),SHA256),ChallengeA_7,dh_pub(ID_G,dh_k(s_6)),GUIDB_4,make_C_list(sign_cert(GUIDB_4,pk(PrivKB_1),SN_CI,SK_CI),sign_perm(GUIDB_4,DGB_2,PPB_2,SK_Perm),a_5,make_algo(ID_G,DH_RSA),SHA256),a_11,dh_pub(ID_G,a_12),dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11),makeCryptoHeader(a_14,a_15),hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11),(a_14,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11)))) at {79} in copy a_1
+
+new sessionID_new: bitstring creating sessionID_new_2 at {80} in copy a_1
+
+new IV_new: bitstring creating IV_new_2 at {81} in copy a_1
+
+new applicationData_new: bitstring creating applicationData_new_1 at {84} in copy a_1
+
+event KEY_UPDATE_begin(GUIDA_4,GUIDB_4,makeCryptoHeader(sessionID_new_2,IV_new_2),hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11),(sessionID_new_2,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11))),applicationData_new_1) at {85} in copy a_1
+
+out(RTPS_Ch, (makeCryptoHeader(~M_75,~M_76),~M_77,~M_78)) with ~M_75 = sessionID_new_2, ~M_76 = IV_new_2, ~M_77 = applicationData_new_1, ~M_78 = aead_mac(AES_GCM_128,hmac(SHA256,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11),(sessionID_new_2,KDF(dh_exp(dh_pub(ID_G,a_12),dh_k(s_6)),ChallengeA_7,a_11))),a_15,makeCryptoHeader(sessionID_new_2,IV_new_2),applicationData_new_1) at {86} in copy a_1
+
+out(RTPS_Ch, ~M_79) with ~M_79 = finishA at {87} in copy a_1
+
+The attacker has the message ~M_79 = finishA.
+A trace has been found.
+RESULT not attacker(finishA[]) is false.
+
+--------------------------------------------------------------
+Verification summary:
+
+Query not attacker(finishA[]) is false.
+
+--------------------------------------------------------------
+

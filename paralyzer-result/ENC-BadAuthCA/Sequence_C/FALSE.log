@@ -1,0 +1,6 @@
+Verification summary:
+
+Query event(ENC_COMMUNICATION(GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,SharedSecret_2,p2pKeyMaterial,cryptoHeader_2,sessionKey_2))@t5 ==> event(PERM_CHECK(GUIDB_4,PermB_3,Topic_3))@t4 && event(TOPIC_DISCOVERED(GUIDB_4,PermB_3,Topic_3))@t3 && event(TOPIC_CRT_REQ(GUIDB_4,PermB_3,Topic_3))@t2 && event(DISCOVERY(GUIDB_4,PdataB_3,GUIDA_4,PdataA_3))@t1 && t2 > t1 && t3 > t2 && t4 > t3 && t5 > t4 is false.
+
+--------------------------------------------------------------
+

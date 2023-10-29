@@ -1,0 +1,6 @@
+Verification summary:
+
+Query not (event(DISCOVERY(GUIDB_4,PdataB_3,GUIDA_4,PdataA_3)) && attacker(PermA_2) && attacker(PermB_3) && attacker(PdataA_3) && attacker(PdataB_3) && attacker(Topic_3)) is false.
+
+--------------------------------------------------------------
+

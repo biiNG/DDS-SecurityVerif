@@ -1,0 +1,7 @@
+query(* <Pri_A> *)
+    GUIDA:GUID_t,GUIDB:GUID_t,
+    PermA:PermDoc_t,PdataA:Pdata_t,
+    PermB:PermDoc_t,PdataB:Pdata_t,Topic:TopicID_t;
+    (attacker(PermA)&&attacker(PermB)&&attacker(PdataA)&&attacker(PdataB)&&attacker(Topic))
+    && event(DISCOVERY(GUIDB,PdataB,GUIDA,PdataA)) 
+    ==> false.

@@ -339,3 +339,14 @@ In case of non-termination, try a noselect declaration implying the following on
 800 rules inserted. Base: 432 rules (73 with conclusion selected). Queue: 75 rules.
 1000 rules inserted. Base: 508 rules (77 with conclusion selected). Queue: 7 rules.
 1200 rules inserted. Base: 520 rules (84 with conclusion selected). Queue: 22 rules.
+1400 rules inserted. Base: 557 rules (84 with conclusion selected). Queue: 54 rules.
+Starting query not (event(A_3(GUIDB_4,GUIDA_4,ad,cryptoHeader_2,sessionKey_2)) && attacker(ad))
+RESULT not (event(A_3(GUIDB_4,GUIDA_4,ad,cryptoHeader_2,sessionKey_2)) && attacker(ad)) is true.
+
+--------------------------------------------------------------
+Verification summary:
+
+Query not (event(A_3(GUIDB_4,GUIDA_4,ad,cryptoHeader_2,sessionKey_2)) && attacker(ad)) is true.
+
+--------------------------------------------------------------
+

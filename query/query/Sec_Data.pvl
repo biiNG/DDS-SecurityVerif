@@ -1,0 +1,5 @@
+query(* <Sec_Data>: the applicationData maintains confidentiality when A_3 *)
+    GUIDB:GUID_t,GUIDA:GUID_t,ad:bitstring,cryptoHeader:CryptoHeader_t,sessionKey:bitstring;
+    attacker(ad)
+    && event(A_3(GUIDB,GUIDA,ad,cryptoHeader,sessionKey))
+    ==> false.

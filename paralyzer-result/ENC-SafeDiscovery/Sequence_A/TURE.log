@@ -1,0 +1,6 @@
+Verification summary:
+
+Query event(ENC_COMMUNICATION(GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,SharedSecret_2,p2pKeyMaterial,cryptoHeader_2,sessionKey_2))@t3 ==> event(PERM_CHECK(GUIDB_4,PermB_3,Topic_3))@t1 && event(A_2(GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,SharedSecret_2,p2pKeyMaterial))@t2 && t2 > t1 && t3 > t2 is true.
+
+--------------------------------------------------------------
+

@@ -1,0 +1,6 @@
+Verification summary:
+
+Query event(KEY_UPDATE_end(GUIDA_4,GUIDB_4,cryptoHeader_n_1,sessionKey_new_2,applicationData_new_2)) ==> event(KEY_UPDATE_begin(GUIDA_4,GUIDB_4,cryptoHeader_n_1,sessionKey_new_2,applicationData_new_2)) is false.
+
+--------------------------------------------------------------
+

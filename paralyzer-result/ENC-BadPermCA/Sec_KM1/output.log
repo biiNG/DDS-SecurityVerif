@@ -336,3 +336,17 @@ In case of non-termination, try a noselect declaration implying the following on
    noselect PdataA_3:Pdata_t, PermA_2:PermDoc_t; attacker(hash(SHA256,make_C_list(sign_cert(GUIDB[],pk(PrivKB[]),SN_CI,SK_CI),PermA_2,PdataA_3,make_algo(ID_G,DH_RSA),SHA256))).
 400 rules inserted. Base: 246 rules (74 with conclusion selected). Queue: 48 rules.
 600 rules inserted. Base: 342 rules (74 with conclusion selected). Queue: 93 rules.
+800 rules inserted. Base: 443 rules (74 with conclusion selected). Queue: 40 rules.
+1000 rules inserted. Base: 491 rules (80 with conclusion selected). Queue: 7 rules.
+1200 rules inserted. Base: 506 rules (87 with conclusion selected). Queue: 30 rules.
+1400 rules inserted. Base: 571 rules (87 with conclusion selected). Queue: 7 rules.
+Starting query not (event(A_2(GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,SharedSecret_2,p2pKeyMaterial)) && attacker(p2pKeyMaterial))
+RESULT not (event(A_2(GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,SharedSecret_2,p2pKeyMaterial)) && attacker(p2pKeyMaterial)) is true.
+
+--------------------------------------------------------------
+Verification summary:
+
+Query not (event(A_2(GUIDA_4,CA_2,ChallengeA_2,gx_DHA_2,GUIDB_4,CB_2,ChallengeB_2,gy_DHB_2,SharedSecret_2,p2pKeyMaterial)) && attacker(p2pKeyMaterial)) is true.
+
+--------------------------------------------------------------
+
