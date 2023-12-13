@@ -20,6 +20,12 @@ In **MP** scenario, it needs to do some change in ENC.pv (or MAC.pv). Please cha
 
 We have also designed other compromised scenarios, which are also included in the `.\attacker.pvl`. Some of them maybe too strong to make sense. Please check it and try in the same way.
 
+The html result are generated with following command. It needs to install graphiv and GTK, please follow the installation in proverif manual.
+
+```powershell
+proverif  -html .\result -lib .\lib.pvl -lib .\query.pvl -lib .\attacker.pvl  .\MAC.pv
+```
+
  ## Parallel analysis
 
 ### How to use
@@ -87,7 +93,7 @@ The `Resulter.py` is the resulter. Before use it, please install **pandas** firs
 python Resulter.py
 ```
 
-The Resulter will read and process all the results in the results folder, and finally generate an xlsx file. 
+The Resulter will read and process all the results in the paralyzer-result folder, and finally generate an xlsx file. 
 
 You can quickly view the analysis results by reading this table. The first column represents mode-attacker, corresponding to the first level folder in  `./paralyzer-result`. The remaining columns are the names of the query, and the contents of the values are the results of the query.
 
